@@ -1,0 +1,1344 @@
+<!doctype html>
+<html lang="th" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>คืนสินค้าให้ผู้จำหน่าย · LTS Solution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Public+Sans:ital,wght@0,400..700;1,400&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+
+<style>
+/* ===== LTS Solution design tokens (generated from tokens.json) ===== */
+:root {
+  --canvas: #3f538c;
+  --on-canvas: #ffffff;
+  --on-canvas-muted: #d8d9d9;
+  --canvas-rule: #5b6da0;
+  --surface: #ffffff;
+  --surface-sunken: #f7f8fa;
+  --surface-hover: #eef1f7;
+  --border: #e2e5eb;
+  --border-input: #8a92a2;
+  --ink: #141b2b;
+  --ink-2: #3a4357;
+  --muted: #5d6576;
+  --placeholder: #6b7385;
+  --primary: #22407a;
+  --primary-hover: #1a3262;
+  --primary-soft: #e8edf7;
+  --on-primary: #ffffff;
+  --gold: #d9a53b;
+  --gold-hover: #c8932a;
+  --gold-soft: #fbf1dc;
+  --gold-text: #7f5a12;
+  --on-gold: #1f1605;
+  --teal: #0e6e6c;
+  --teal-soft: #e0f2f1;
+  --teal-text: #0b5856;
+  --rose: #a8365a;
+  --rose-soft: #fbe7ee;
+  --rose-text: #8c2b4a;
+  --success: #1b7a48;
+  --success-soft: #e3f3e8;
+  --success-text: #176239;
+  --warning: #c26a0a;
+  --warning-soft: #fdefd6;
+  --warning-text: #874604;
+  --danger: #c02a2a;
+  --danger-hover: #a11f22;
+  --danger-soft: #fce5e4;
+  --danger-text: #a11f22;
+  --info: #1f6fb2;
+  --info-soft: #e1eef9;
+  --info-text: #1a5a91;
+  --neutral-soft: #eceef2;
+  --neutral-text: #3a4357;
+  --sidebar-bg: #101b30;
+  --sidebar-raised: #1d2b47;
+  --sidebar-text: #c3cada;
+  --sidebar-muted: #8e98ae;
+  --sidebar-active: #ffffff;
+  --focus: #2e6be6;
+  --overlay: rgba(16, 27, 48, 0.55);
+  --shadow-1: {'light': '0 1px 2px rgba(16, 27, 48, 0.06), 0 0 0 1px rgba(16, 27, 48, 0.05)'};
+  --shadow-2: {'light': '0 6px 16px -4px rgba(16, 27, 48, 0.14), 0 0 0 1px rgba(16, 27, 48, 0.06)'};
+  --shadow-3: {'light': '0 24px 48px -12px rgba(16, 27, 48, 0.32)'};
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --sidebar-width: 264px;
+  --sidebar-collapsed: 76px;
+  --topbar-height: 64px;
+  --content-max: 1600px;
+  --control-height: 40px;
+  --row-height: 52px;
+  --z-sidebar: 20;
+  --z-menu: 40;
+  --z-modal: 60;
+  --font-display: "Bricolage Grotesque", "IBM Plex Sans Thai", "Public Sans", system-ui, sans-serif;
+  --font-sans: "Public Sans", "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ===== LTS Solution component styles (components/bundle.css) ===== */
+/* LTS Solution components — every value comes from tokens.json */
+.gg, .gg *, [class^="gg-"], [class*=" gg-"] { box-sizing: border-box; }
+body { margin: 0; background: var(--canvas); color: var(--ink-2); font-family: var(--font-sans); font-size: 14px; line-height: 20px; }
+.gg-num { font-variant-numeric: tabular-nums; }
+.gg-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.gg-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+.gg-stack > *, .gg-shell-content > * { min-width: 0; }
+.gg-pad { padding: var(--space-6); }
+.gg :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.gg-icon { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.gg-icon.sm { width: 16px; height: 16px; }
+.gg-icon.lg { width: 22px; height: 22px; }
+.gg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Button */
+.gg-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); border: 1px solid transparent; font: 600 14px/20px var(--font-sans); cursor: pointer; white-space: nowrap; transition: background-color .12s, border-color .12s, color .12s; }
+.gg-btn.sm { height: 32px; padding: 0 var(--space-3); font-size: 13px; }
+.gg-btn.lg { height: 48px; padding: 0 var(--space-6); font-size: 15px; }
+.gg-btn.icon-only { width: var(--control-height); padding: 0; }
+.gg-btn.sm.icon-only { width: 32px; }
+.gg-btn-primary { background: var(--primary); color: var(--on-primary); }
+.gg-btn-primary:hover { background: var(--primary-hover); }
+.gg-btn-secondary { background: var(--surface); color: var(--primary); border-color: var(--border-input); }
+.gg-btn-secondary:hover { background: var(--surface-hover); border-color: var(--primary); }
+.gg-btn-danger { background: var(--danger); color: var(--on-primary); }
+.gg-btn-danger:hover { background: var(--danger-hover); }
+.gg-btn-gold { background: var(--gold); color: var(--on-gold); }
+.gg-btn-gold:hover { background: var(--gold-hover); }
+.gg-btn-ghost { background: transparent; color: var(--ink-2); }
+.gg-btn-ghost:hover { background: var(--surface-hover); color: var(--ink); }
+.gg-btn[disabled], .gg-btn[aria-busy="true"] { cursor: not-allowed; opacity: .45; }
+.gg-btn-ghost.danger { color: var(--danger); }
+
+/* Badge */
+.gg-badge { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--radius-sm); font: 600 12px/16px var(--font-sans); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.gg-badge-dot { width: 6px; height: 6px; border-radius: var(--radius-pill); background: currentColor; }
+.gg-badge.success { background: var(--success-soft); color: var(--success-text); }
+.gg-badge.warning { background: var(--warning-soft); color: var(--warning-text); }
+.gg-badge.danger { background: var(--danger-soft); color: var(--danger-text); }
+.gg-badge.info { background: var(--info-soft); color: var(--info-text); }
+.gg-badge.neutral { background: var(--neutral-soft); color: var(--neutral-text); }
+.gg-badge.gold { background: var(--gold-soft); color: var(--gold-text); }
+.gg-badge.primary { background: var(--primary-soft); color: var(--primary); }
+.gg-badge.mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 500; letter-spacing: .02em; }
+
+/* Field + controls */
+.gg-field { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.gg-field.span-2 { grid-column: 1 / -1; }
+.gg-label { font: 600 13px/18px var(--font-sans); color: var(--ink); }
+.gg-req { color: var(--danger); margin-left: 2px; }
+.gg-hint { font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-error { font: 500 12px/16px var(--font-sans); color: var(--danger-text); }
+.gg-control { position: relative; display: flex; align-items: stretch; height: var(--control-height); background: var(--surface); border: 1px solid var(--border-input); border-radius: var(--radius-md); transition: border-color .12s, box-shadow .12s; }
+.gg-control:hover { border-color: var(--ink-2); }
+.gg-control:focus-within { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
+.gg-control input:focus-visible, .gg-control select:focus-visible, .gg-control textarea:focus-visible { outline: none; }
+.gg-control.invalid { border-color: var(--danger); }
+.gg-control.disabled { background: var(--surface-sunken); border-color: var(--border); }
+.gg-control.textarea { height: auto; }
+.gg-control input, .gg-control select, .gg-control textarea { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: 0 var(--space-4); font: 400 14px/20px var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; border-radius: var(--radius-md); }
+.gg-control textarea { padding: 10px var(--space-4); min-height: 96px; resize: vertical; }
+.gg-control select { appearance: none; padding-right: 40px; cursor: pointer; }
+.gg-control ::placeholder { color: var(--placeholder); opacity: 1; }
+.gg-control .gg-lead { display: flex; align-items: center; padding-left: var(--space-3); color: var(--muted); }
+.gg-control .gg-lead + input { padding-left: var(--space-2); }
+.gg-control .gg-caret { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.gg-addon { display: flex; align-items: center; padding: 0 var(--space-4); background: var(--surface-sunken); color: var(--muted); font: 600 13px/18px var(--font-sans); border-left: 1px solid var(--border); border-radius: 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0; }
+.gg-addon.btn { background: var(--primary); color: var(--on-primary); border-left: 0; cursor: pointer; border: 0; }
+.gg-stepper { display: inline-flex; height: 36px; border: 1px solid var(--border-input); border-radius: var(--radius-md); overflow: hidden; background: var(--surface); }
+.gg-stepper button { width: 36px; border: 0; background: var(--surface-sunken); color: var(--primary); cursor: pointer; display: grid; place-items: center; }
+.gg-stepper button:hover { background: var(--primary-soft); }
+.gg-stepper input { width: 52px; border: 0; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; font: 600 14px/20px var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; outline: 0; }
+
+/* Card + FormCard */
+.gg-card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); }
+.gg-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-6) 0; }
+.gg-card-title { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.gg-card-sub { margin: 2px 0 0; font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-card-body { padding: var(--space-5) var(--space-6) var(--space-6); }
+.gg-card-foot { display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border); }
+.gg-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+.gg-form-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gg-form-section { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-2); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.gg-form-section::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+/* StatCard */
+.gg-stat { position: relative; display: flex; align-items: center; gap: var(--space-4); min-height: 112px; padding: var(--space-5) var(--space-6); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); overflow: hidden; }
+.gg-stat-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-md); flex: none; }
+.gg-stat-body { min-width: 0; }
+.gg-stat-label { font: 600 13px/18px var(--font-sans); }
+.gg-stat-value { margin-top: 2px; font: 800 28px/32px var(--font-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gg-stat-delta { margin-top: 4px; font: 600 12px/16px var(--font-sans); }
+.gg-stat.strong { color: var(--on-primary); }
+.gg-stat.strong .gg-stat-icon { background: rgba(255, 255, 255, 0.14); }
+.gg-stat.strong .gg-stat-label, .gg-stat.strong .gg-stat-delta { opacity: .86; }
+.gg-stat.strong.navy { background: var(--primary); }
+.gg-stat.strong.teal { background: var(--teal); }
+.gg-stat.strong.rose { background: var(--rose); }
+.gg-stat.strong.gold { background: var(--gold); color: var(--on-gold); }
+.gg-stat.strong.gold .gg-stat-icon { background: rgba(31, 22, 5, 0.1); }
+.gg-stat.soft { background: var(--surface); }
+.gg-stat.soft .gg-stat-value { color: var(--ink); }
+.gg-stat.soft .gg-stat-label { color: var(--muted); }
+.gg-stat.soft.navy .gg-stat-icon { background: var(--primary-soft); color: var(--primary); }
+.gg-stat.soft.gold .gg-stat-icon { background: var(--gold-soft); color: var(--gold-text); }
+.gg-stat.soft.teal .gg-stat-icon { background: var(--teal-soft); color: var(--teal-text); }
+.gg-stat.soft.rose .gg-stat-icon { background: var(--rose-soft); color: var(--rose-text); }
+.gg-stat.soft .gg-stat-delta.up { color: var(--success-text); }
+.gg-stat.soft .gg-stat-delta.down { color: var(--danger-text); }
+.gg-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+
+/* DataTable */
+.gg-table-card { min-width: 0; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); }
+.gg-table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-5) var(--space-6); }
+.gg-table-wrap { overflow-x: auto; }
+.gg-table { width: 100%; border-collapse: separate; border-spacing: 0; font: 400 14px/20px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.gg-table th { position: sticky; top: 0; height: 44px; padding: 0 var(--space-4); background: var(--surface-sunken); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: left; font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.gg-table th:first-child, .gg-table td:first-child { padding-left: var(--space-6); }
+.gg-table th:last-child, .gg-table td:last-child { padding-right: var(--space-6); }
+.gg-table th.sortable { cursor: pointer; }
+.gg-table th.sortable:hover { color: var(--ink); }
+.gg-table th .gg-sort { display: inline-flex; vertical-align: -3px; margin-left: 4px; }
+.gg-table td { height: var(--row-height); padding: 0 var(--space-4); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.gg-table.compact td { height: 44px; }
+.gg-table .right { text-align: right; }
+.gg-table .center { text-align: center; }
+.gg-table td.primary { color: var(--ink); font-weight: 600; }
+.gg-table tbody tr { transition: background-color .08s; }
+.gg-table tbody tr:hover { background: var(--surface-hover); }
+.gg-table tbody tr.selected { background: var(--primary-soft); }
+.gg-table tfoot td { height: 52px; border-bottom: 0; background: var(--surface-sunken); color: var(--ink); font-weight: 700; }
+.gg-table .gg-check { width: 16px; height: 16px; accent-color: var(--primary); }
+.gg-thumb { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--surface-sunken); object-fit: cover; display: block; border: 1px solid var(--border); }
+.gg-empty { padding: var(--space-12) var(--space-6); text-align: center; color: var(--muted); }
+.gg-actions-cell { width: 56px; }
+.gg-menu-anchor { position: relative; display: inline-block; }
+.gg-menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: var(--z-menu); min-width: 184px; padding: 6px; background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-2); text-align: left; }
+.gg-menu.up { top: auto; bottom: calc(100% + 4px); }
+.gg-menu-item { display: flex; align-items: center; gap: 10px; width: 100%; height: 36px; padding: 0 10px; border: 0; background: none; border-radius: var(--radius-sm); font: 500 14px/20px var(--font-sans); color: var(--ink-2); cursor: pointer; text-align: left; }
+.gg-menu-item:hover { background: var(--surface-hover); color: var(--ink); }
+.gg-menu-item.danger { color: var(--danger-text); }
+.gg-menu-item.danger:hover { background: var(--danger-soft); }
+.gg-menu-sep { height: 1px; margin: 6px 4px; background: var(--border); }
+
+/* Pagination */
+.gg-pager { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-6); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.gg-pager-size { display: flex; align-items: center; gap: var(--space-2); }
+.gg-pager-size .gg-control { height: 32px; width: 76px; }
+.gg-pager-size select { padding: 0 28px 0 10px; font-size: 13px; }
+.gg-pager-pages { display: flex; align-items: center; gap: 4px; }
+.gg-page { min-width: 32px; height: 32px; padding: 0 8px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--ink-2); font: 600 13px/18px var(--font-sans); cursor: pointer; display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+.gg-page:hover { background: var(--surface-hover); }
+.gg-page.active { background: var(--primary); color: var(--on-primary); }
+.gg-page[disabled] { opacity: .4; cursor: default; background: transparent; }
+
+/* Modal */
+.gg-scrim { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-8); background: var(--overlay); }
+.gg-scrim.inline { position: relative; inset: auto; min-height: 100%; }
+.gg-modal { width: 100%; max-width: 560px; max-height: calc(100vh - 64px); display: flex; flex-direction: column; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-3); }
+.gg-modal.sm { max-width: 420px; }
+.gg-modal.lg { max-width: 800px; }
+.gg-modal-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--border); }
+.gg-modal-title { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.gg-modal-body { padding: var(--space-6); overflow-y: auto; }
+.gg-modal-foot { display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border); }
+.gg-modal-confirm { display: flex; gap: var(--space-4); }
+.gg-modal-confirm .gg-stat-icon { background: var(--danger-soft); color: var(--danger); }
+
+/* Sidebar */
+.gg-sidebar { position: sticky; top: 0; z-index: var(--z-sidebar); height: 100vh; width: var(--sidebar-width); flex: none; display: flex; flex-direction: column; background: var(--sidebar-bg); color: var(--sidebar-text); transition: width .18s ease; }
+.gg-sidebar.static { position: relative; height: auto; min-height: 100%; }
+.gg-sidebar.collapsed { width: var(--sidebar-collapsed); }
+.gg-sidebar :focus-visible { outline-color: var(--gold); }
+.gg-brand { display: flex; align-items: center; gap: var(--space-3); height: var(--topbar-height); padding: 0 var(--space-5); border-bottom: 1px solid var(--sidebar-raised); flex: none; }
+.gg-brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--gold); color: var(--on-gold); font: 800 17px/1 var(--font-display); flex: none; }
+.gg-brand-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.gg-brand-name { font: 700 18px/24px var(--font-display); color: var(--sidebar-active); white-space: nowrap; letter-spacing: -0.01em; }
+.gg-brand-name b { color: var(--gold); font-weight: 700; }
+.gg-nav { flex: 1; overflow-y: auto; padding: var(--space-4) var(--space-3); scrollbar-width: thin; scrollbar-color: var(--sidebar-raised) transparent; }
+.gg-nav-label { padding: var(--space-4) var(--space-3) var(--space-2); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--sidebar-muted); white-space: nowrap; }
+.gg-nav-item { position: relative; display: flex; align-items: center; gap: var(--space-3); width: 100%; height: 40px; padding: 0 var(--space-3); margin-bottom: 2px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--sidebar-text); font: 500 14px/20px var(--font-sans); text-align: left; cursor: pointer; white-space: nowrap; text-decoration: none; }
+.gg-nav-item:hover { background: var(--sidebar-raised); color: var(--sidebar-active); }
+.gg-nav-item.active { background: var(--sidebar-raised); color: var(--sidebar-active); font-weight: 600; }
+.gg-nav-item.active::before { content: ""; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 4px; border-radius: 0 4px 4px 0; background: var(--gold); }
+.gg-nav-item.active .gg-icon { color: var(--gold); }
+.gg-nav-item.open-parent { color: var(--sidebar-active); }
+.gg-nav-item .gg-nav-text { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.gg-nav-item .gg-chev { color: var(--sidebar-muted); transition: transform .15s; }
+.gg-nav-item[aria-expanded="true"] .gg-chev { transform: rotate(90deg); }
+.gg-nav-count { min-width: 22px; height: 20px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--gold); color: var(--on-gold); font: 700 11px/20px var(--font-sans); text-align: center; }
+.gg-subnav { margin: 2px 0 6px; padding-left: 30px; position: relative; }
+.gg-subnav::before { content: ""; position: absolute; left: 20px; top: 4px; bottom: 4px; width: 1px; background: var(--sidebar-raised); }
+.gg-subnav .gg-nav-item { height: 36px; font-size: 13px; }
+.gg-subnav .gg-nav-item.active::before { left: -11px; top: 10px; bottom: 10px; width: 3px; border-radius: 3px; }
+.gg-sidebar.collapsed .gg-brand { justify-content: center; padding: 0; }
+.gg-sidebar.collapsed .gg-brand-name, .gg-sidebar.collapsed .gg-nav-text, .gg-sidebar.collapsed .gg-chev, .gg-sidebar.collapsed .gg-nav-count, .gg-sidebar.collapsed .gg-subnav, .gg-sidebar.collapsed .gg-nav-label { display: none; }
+.gg-sidebar.collapsed .gg-nav-item { justify-content: center; padding: 0; }
+.gg-sidebar.collapsed .gg-nav-item.child-active { background: var(--sidebar-raised); color: var(--sidebar-active); }
+.gg-sidebar.collapsed .gg-nav-item.child-active .gg-icon { color: var(--gold); }
+.gg-sidebar-foot { padding: var(--space-3); border-top: 1px solid var(--sidebar-raised); }
+
+/* TopBar */
+.gg-topbar { position: sticky; top: 0; z-index: var(--z-sidebar); display: flex; align-items: center; gap: var(--space-4); height: var(--topbar-height); padding: 0 var(--space-8) 0 var(--space-4); background: var(--surface); border-bottom: 1px solid var(--border); }
+.gg-topbar.static { position: relative; }
+.gg-crumbs { display: flex; align-items: center; gap: var(--space-2); font: 500 13px/18px var(--font-sans); color: var(--muted); white-space: nowrap; }
+.gg-crumbs .current { color: var(--ink); font-weight: 600; }
+.gg-topbar-search { flex: 1; max-width: 440px; margin-left: var(--space-4); }
+.gg-topbar-search .gg-control { height: 40px; background: var(--surface-sunken); border-color: var(--border); }
+.gg-kbd { align-self: center; margin-right: 10px; padding: 1px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); font: 600 11px/16px var(--font-sans); color: var(--muted); }
+.gg-topbar-end { margin-left: auto; display: flex; align-items: center; gap: var(--space-2); }
+.gg-pos { border-radius: var(--radius-pill); padding: 0 var(--space-5); }
+.gg-iconbtn-wrap { position: relative; }
+.gg-iconbtn-dot { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--danger); border: 2px solid var(--surface); }
+.gg-user { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 var(--space-2) 0 4px; margin-left: var(--space-2); border: 0; border-radius: var(--radius-pill); background: transparent; cursor: pointer; text-align: left; }
+.gg-user:hover { background: var(--surface-hover); }
+.gg-avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary); font: 700 14px/1 var(--font-display); flex: none; }
+.gg-user-name { font: 600 13px/18px var(--font-sans); color: var(--ink); }
+.gg-user-role { font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-divider-v { width: 1px; height: 28px; background: var(--border); margin: 0 var(--space-2); }
+
+/* PageHeader */
+.gg-pagehead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+.gg-pagehead-title { margin: 0; font: 700 26px/32px var(--font-display); letter-spacing: -0.01em; color: var(--on-canvas); }
+.gg-pagehead-sub { margin: 4px 0 0; font: 500 13px/18px var(--font-sans); color: var(--on-canvas-muted); }
+.gg-pagehead :focus-visible, .gg-shell-foot :focus-visible { outline-color: var(--on-canvas); }
+.gg-pagehead-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+/* AppShell */
+.gg-shell { display: flex; min-height: 100vh; background: var(--canvas); }
+.gg-shell.static { min-height: 0; height: 100%; }
+.gg-shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.gg-shell-content { flex: 1; width: 100%; min-width: 0; max-width: var(--content-max); padding: var(--space-8); }
+.gg-shell-foot { display: flex; justify-content: space-between; margin: 0 var(--space-8); padding: var(--space-5) 0; border-top: 1px solid var(--canvas-rule); font: 500 12px/16px var(--font-sans); color: var(--on-canvas-muted); max-width: calc(var(--content-max) - 64px); }
+.gg-shell-foot a { color: var(--on-canvas); font-weight: 600; text-decoration: none; }
+.gg-shell-foot a:hover { text-decoration: underline; }
+.gg-grid-2-1 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--space-6); }
+
+
+/* ===== Page composition ===== */
+html, body { min-width: 1440px; }
+.gg-topbar .gg-crumbs .gg-icon { width: 16px; height: 16px; }
+.gg-crumbs a { color: var(--muted); text-decoration: none; }
+.gg-crumbs a:hover { color: var(--primary); }
+a.gg-btn { text-decoration: none; }
+.gg-scrim[hidden], .gg-btn[hidden], [data-icon][hidden], .logo-pick [hidden] { display: none; }
+.gg-table td { height: 60px; }
+.rl-table .gg-table th, .rl-table .gg-table td { padding-left: 10px; padding-right: 10px; }
+.rl-table .gg-table th:first-child, .rl-table .gg-table td:first-child { padding-left: var(--space-6); }
+.created { font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+.created span { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.filters { display: none; gap: var(--space-4); align-items: flex-end; padding: 0 var(--space-6) var(--space-5); }
+.filters.open { display: flex; }
+.filters .gg-field { width: 220px; }
+.gg-btn.on { background: var(--primary-soft); border-color: var(--primary); }
+.range { width: 210px; }
+.range-custom { display: none; align-items: center; gap: var(--space-2); }
+.range-custom.open { display: flex; }
+.range-custom .gg-control { width: 160px; }
+.gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.gg-table tfoot .label { font: 700 15px/20px var(--font-display); }
+.view-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); margin-bottom: var(--space-6); }
+.view-grid .k { font: 600 12px/18px var(--font-sans); color: var(--muted); }
+.view-grid .v { font: 500 14px/20px var(--font-sans); color: var(--ink); margin-top: 2px; }
+.view-lines { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.view-lines .gg-table td { height: 48px; }
+.view-lines .gg-table th:first-child, .view-lines .gg-table td:first-child { padding-left: var(--space-4); }
+.view-total { display: flex; justify-content: flex-end; gap: var(--space-6); margin-top: var(--space-4); font: 500 14px/20px var(--font-sans); color: var(--ink-2); }
+.view-total b { color: var(--primary); font: 700 16px/20px var(--font-display); }
+.toast { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: calc(var(--z-modal) + 5); display: none; }
+.toast.show { display: inline-flex; box-shadow: var(--shadow-2); height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+/* The create form lives in a wide dialog over the list */
+.create-modal { max-width: 1240px; }
+.create-modal .gg-modal-body { max-height: none; flex: 1; padding-top: var(--space-6); }
+.create-modal .gg-modal-head .gg-hint { margin-top: 2px; }
+/* ---- create form (from the return form) ---- */
+/* Fabric swatches depict the cloth, not UI tokens. */
+.swatch { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid var(--border); display: block; flex: none; }
+.sw-poplin { background-color: #f3f1ea; background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0 1px, transparent 1px 3px); }
+.sw-denim { background-color: #2e4a74; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.16) 0 1.5px, transparent 1.5px 4px); }
+.sw-floral { background-color: #f6ead8; background-image: radial-gradient(circle at 30% 30%, #c2456b 0 4px, transparent 5px), radial-gradient(circle at 72% 64%, #d9a53b 0 3px, transparent 4px), radial-gradient(circle at 70% 22%, #3f7d5c 0 2.5px, transparent 3.5px), radial-gradient(circle at 26% 78%, #3f7d5c 0 2.5px, transparent 3.5px); }
+.sw-georgette { background-color: #1f2b4d; background-image: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 48%, transparent 66%); }
+.sw-linen { background-color: #d8cab0; background-image: repeating-linear-gradient(0deg, rgba(80,60,30,.12) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(80,60,30,.1) 0 1px, transparent 1px 5px); }
+.sw-jersey { background-color: #a7a9ad; background-image: radial-gradient(rgba(255,255,255,.35) 0.8px, transparent 1.2px), radial-gradient(rgba(0,0,0,.18) 0.8px, transparent 1.2px); background-size: 4px 4px, 5px 5px; background-position: 0 0, 2px 2px; }
+
+.po-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+.gg-hint, .gg-error { line-height: 18px; }
+.ref { display: flex; align-items: center; height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); font: 500 14px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); }
+.gg-control select.is-placeholder { color: var(--placeholder); }
+.gg-control select option { color: var(--ink); }
+
+.psearch { position: relative; margin-top: var(--space-6); }
+.psearch .gg-control { height: 48px; }
+.psearch .gg-control input { font-size: 15px; }
+.presults { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: var(--z-menu); max-height: 320px; overflow-y: auto; padding: 6px; background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-2); }
+.presult { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: 8px 10px; border: 0; background: none; border-radius: var(--radius-sm); text-align: left; cursor: pointer; font: 400 14px/20px var(--font-sans); color: var(--ink-2); }
+.presult:hover, .presult.on { background: var(--surface-hover); }
+.presult .n { color: var(--ink); font-weight: 600; }
+.presult .meta { margin-left: auto; display: flex; gap: var(--space-3); align-items: center; }
+.presult .added, .presult .cost { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.presults .none { padding: 12px 10px; color: var(--muted); }
+
+.lines-title { display: flex; align-items: baseline; gap: var(--space-3); margin: var(--space-8) 0 var(--space-3); }
+.lines-title h2 { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.lines { border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.lines.invalid { border-color: var(--danger); }
+.lines .gg-table th { border-top: 0; }
+.lines .gg-table th:first-child { border-top-left-radius: calc(var(--radius-lg) - 1px); }
+.lines .gg-table th:last-child { border-top-right-radius: calc(var(--radius-lg) - 1px); }
+.lines .gg-table td { height: 76px; }
+.lines .gg-table th, .lines .gg-table td { padding-left: 12px; padding-right: 12px; }
+.lines .gg-table th:first-child, .lines .gg-table td:first-child { padding-left: var(--space-5); }
+.lines .gg-table th:last-child, .lines .gg-table td:last-child { padding-right: var(--space-4); }
+.lines .gg-table tbody tr:last-child td { border-bottom: 0; }
+.lines .pcol { white-space: normal; min-width: 210px; max-width: 260px; }
+.pcell { display: flex; align-items: center; gap: var(--space-3); }
+.pcell .n { color: var(--ink); font-weight: 600; }
+.pcell .sub { display: flex; align-items: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+.pcell .code { height: 20px; padding: 0 6px; font-size: 11px; }
+.pcell .lot { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.edit-line { width: 24px !important; height: 24px !important; color: var(--primary); }
+.qty-wrap { display: inline-flex; align-items: center; gap: var(--space-2); }
+.qty-wrap .u { font: 500 13px/18px var(--font-sans); color: var(--muted); min-width: 22px; }
+.gg-stepper input { width: 64px; }
+.gg-stepper.invalid { border-color: var(--danger); }
+.money { color: var(--ink-2); }
+.money.strong { color: var(--ink); font-weight: 600; }
+.money .per { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.row-err { display: block; margin: 2px 0 0 auto; max-width: 150px; font: 500 12px/18px var(--font-sans); color: var(--danger-text); white-space: normal; }
+.pcell .sub { flex-wrap: nowrap; white-space: nowrap; }
+.empty-lines { padding: var(--space-12) var(--space-6); text-align: center; color: var(--muted); }
+.empty-lines .gg-icon { width: 28px; height: 28px; margin-bottom: var(--space-2); color: var(--border-input); }
+
+/* Totals */
+.optional { margin-left: 6px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.po-bottom { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: var(--space-8); margin-top: var(--space-6); align-items: start; }
+.po-inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+.po-inputs .span-3 { grid-column: 1 / -1; }
+.totals { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.totals .tr { display: flex; justify-content: space-between; align-items: center; height: 48px; padding: 0 var(--space-5); border-bottom: 1px solid var(--border); font: 400 14px/20px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.totals .tr span:last-child { color: var(--ink); }
+.totals .tr.grand { height: 60px; border-bottom: 0; background: var(--primary-soft); }
+.totals .tr.grand span { color: var(--primary) !important; font: 700 16px/20px var(--font-display); }
+.totals .tr.grand span:last-child { font-size: 20px; }
+.totals .minus { color: var(--danger-text) !important; }
+.form-alert { display: none; align-items: center; gap: var(--space-2); margin-right: auto; }
+.form-alert.show { display: inline-flex; }
+.gg-modal-body { max-height: calc(100vh - 220px); }
+.line-preview { display: flex; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--primary-soft); color: var(--primary); font: 500 13px/18px var(--font-sans); font-variant-numeric: tabular-nums; }
+.line-preview b { font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="gg gg-shell" id="shell" data-active="purchases.returns">
+
+  <aside class="gg-sidebar" id="sidebar" aria-label="เมนูหลัก">
+    <div class="gg-brand">
+      <div class="gg-brand-mark">L</div>
+      <div class="gg-brand-name">LTS <b>Solution</b></div>
+    </div>
+    <nav class="gg-nav" id="nav"></nav>
+  </aside>
+
+  <div class="gg-shell-main">
+    <header class="gg-topbar">
+      <button type="button" class="gg-btn gg-btn-ghost icon-only" id="toggleSidebar" aria-label="ย่อแถบเมนู"><span data-icon="panel-left"></span></button>
+      <nav class="gg-crumbs" aria-label="เส้นทางหน้า"><span>การซื้อ</span><span data-icon="chevron-right" data-size="sm"></span><span class="current" aria-current="page">คืนสินค้าให้ผู้จำหน่าย</span></nav>
+      <div class="gg-topbar-search">
+        <div class="gg-control">
+          <span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+          <input id="globalSearch" placeholder="ค้นหาผ้า รายการขาย ลูกค้า" aria-label="ค้นหาทั้งระบบ">
+          <span class="gg-kbd">/</span>
+        </div>
+      </div>
+      <div class="gg-topbar-end">
+        <button type="button" class="gg-btn gg-btn-gold gg-pos"><span data-icon="barcode"></span>POS</button>
+        <button type="button" class="gg-btn gg-btn-ghost icon-only" id="fullscreen" aria-label="เต็มหน้าจอ"><span data-icon="expand"></span></button>
+        <span class="gg-iconbtn-wrap"><button type="button" class="gg-btn gg-btn-ghost icon-only" aria-label="การแจ้งเตือน"><span data-icon="bell"></span></button></span>
+        <span class="gg-divider-v" aria-hidden="true"></span>
+        <div class="gg-menu-anchor" data-menu>
+          <button type="button" class="gg-user" aria-haspopup="menu" aria-expanded="false">
+            <span class="gg-avatar">A</span>
+            <span><div class="gg-user-name">แอดมิน</div></span>
+            <span data-icon="chevron-down" data-size="sm"></span>
+          </button>
+          <div class="gg-menu" role="menu" hidden>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="user" data-size="sm"></span>โปรไฟล์ของฉัน</button>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="settings" data-size="sm"></span>ตั้งค่า</button>
+            <div class="gg-menu-sep" role="separator"></div>
+            <button type="button" role="menuitem" class="gg-menu-item danger"><span data-icon="logout" data-size="sm"></span>ออกจากระบบ</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="gg-shell-content">
+
+
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">คืนสินค้าให้ผู้จำหน่าย</h1>
+          <p class="gg-pagehead-sub" id="summaryLine">ผ้าที่ส่งคืนผู้จำหน่ายทั้งหมด</p>
+        </div>
+      </div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div class="gg-row" style="flex:1">
+            <div style="width:340px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="search" placeholder="ค้นหาด้วยเลขที่อ้างอิง ผู้จำหน่าย หรือเหตุผล" aria-label="ค้นหารายการคืนสินค้า"></div></div>
+          </div>
+          <div class="gg-row">
+            <button type="button" class="gg-btn gg-btn-secondary" id="filterBtn" aria-expanded="false" aria-controls="filters"><span data-icon="filter"></span>ตัวกรอง</button>
+            <div class="gg-control range"><span class="gg-lead"><span data-icon="calendar" data-size="sm"></span></span>
+              <select id="range" aria-label="ช่วงวันที่" style="padding-left:8px"><option value="">ทุกช่วงเวลา</option><option value="today">วันนี้</option><option value="7">7 วันล่าสุด</option><option value="month">เดือนนี้</option><option value="custom">กำหนดเอง…</option></select>
+              <span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <div class="range-custom" id="rangeCustom">
+              <div class="gg-control"><input type="date" id="from" aria-label="ตั้งแต่วันที่"></div><span class="gg-hint">ถึง</span>
+              <div class="gg-control"><input type="date" id="to" aria-label="ถึงวันที่"></div>
+            </div>
+            <button type="button" class="gg-btn gg-btn-primary" id="createBtn"><span data-icon="plus"></span>สร้างรายการคืนสินค้า</button>
+          </div>
+        </div>
+        <div class="filters" id="filters">
+          <div class="gg-field"><label class="gg-label" for="fSupplier">ผู้จำหน่าย</label>
+            <div class="gg-control"><select id="fSupplier"><option value="">ทุกผู้จำหน่าย</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <div class="gg-field"><label class="gg-label" for="fStatus">สถานะ</label>
+            <div class="gg-control"><select id="fStatus"><option value="">ทุกสถานะ</option><option value="completed">ส่งคืนแล้ว</option><option value="pending">รอดำเนินการ</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <div class="gg-field"><label class="gg-label" for="fRefund">การรับเงินคืน</label>
+            <div class="gg-control"><select id="fRefund"><option value="">ทั้งหมด</option><option value="done">รับคืนครบแล้ว</option><option value="due">ยังค้างรับคืน</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <button type="button" class="gg-btn gg-btn-ghost" id="clearFilters">ล้างตัวกรอง</button>
+        </div>
+
+        <div class="gg-table-wrap rl-table">
+          <table class="gg-table">
+            <thead><tr>
+              <th class="sortable" data-sort="ref">เลขที่อ้างอิง<span class="gg-sort"></span></th>
+              <th class="sortable" data-sort="supplier">ผู้จำหน่าย<span class="gg-sort"></span></th>
+              <th>คลังสินค้า</th>
+              <th>สถานะ</th>
+              <th class="right sortable" data-sort="total">ยอดคืนสุทธิ<span class="gg-sort"></span></th>
+              <th class="right">รับคืนแล้ว</th>
+              <th class="right">ค้างรับคืน</th>
+              <th>วิธีรับคืน</th>
+              <th class="sortable" data-sort="created">วันที่สร้าง<span class="gg-sort"></span></th>
+              <th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+            <tfoot><tr><td class="label">รวม</td><td></td><td></td><td></td><td class="right gg-num" id="footTotal"></td><td class="right gg-num" id="footRefunded"></td><td class="right gg-num" id="footDue"></td><td colspan="3"></td></tr></tfoot>
+          </table>
+        </div>
+
+        <div class="gg-pager">
+          <div class="gg-pager-size">แถวต่อหน้า
+            <div class="gg-control"><select id="pageSize" aria-label="แถวต่อหน้า"><option>10</option><option>25</option><option>50</option><option>100</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <span class="gg-num" id="count" style="margin-left:8px"></span>
+          </div>
+          <nav class="gg-pager-pages" aria-label="เลขหน้า" id="pages"></nav>
+        </div>
+      </div>
+
+      <!-- View return -->
+      <div class="gg-scrim" id="viewModal" hidden>
+        <div class="gg-modal lg" role="dialog" aria-modal="true" aria-labelledby="viewTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="viewTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body" id="viewBody"></div>
+          <div class="gg-modal-foot">
+            <button type="button" class="gg-btn gg-btn-secondary" id="viewPdf"><span data-icon="download"></span>ดาวน์โหลด PDF</button>
+            <button type="button" class="gg-btn gg-btn-primary" id="viewEdit"><span data-icon="edit"></span>แก้ไขรายการคืนสินค้า</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm delete -->
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon"><span data-icon="trash"></span></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn gg-btn-danger" id="confirmDelete">ลบรายการคืนสินค้า</button></div>
+        </div>
+      </div>
+
+      <span class="toast gg-badge success" id="toast" role="status"><span class="gg-badge-dot"></span><span id="toastText"></span></span>
+
+      <!-- Create / edit purchase return (wide dialog) -->
+      <div class="gg-scrim" id="createModal" data-static="1" hidden>
+      <form class="gg-modal create-modal" id="poForm" novalidate role="dialog" aria-modal="true" aria-labelledby="createTitle">
+        <div class="gg-modal-head"><div><h2 class="gg-modal-title" id="createTitle">สร้างรายการคืนสินค้าให้ผู้จำหน่าย</h2><div class="gg-hint">ส่งผ้าคืนผู้จำหน่าย เช่น ผ้ามีตำหนิ สีไม่ตรงล็อต หรือส่งเกินจำนวน และตัดออกจากสต็อกเมื่อสถานะเป็น "ส่งคืนแล้ว"</div></div>
+          <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+        <div class="gg-modal-body">
+          <div class="po-head">
+            <div class="gg-field"><span class="gg-label">เลขที่อ้างอิง</span>
+              <div class="ref" id="docRef">PR_1007</div>
+              <div class="gg-hint">ระบบออกเลขให้อัตโนมัติ</div></div>
+            <div class="gg-field"><label class="gg-label" for="date">วันที่<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="date" type="date" required></div>
+              <div class="gg-hint" id="dateTh"></div></div>
+            <div class="gg-field"><label class="gg-label" for="warehouse">คลังสินค้า<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control disabled"><select id="warehouse" disabled><option selected>คลังสินค้าหลัก</option><option>หน้าร้านสำเพ็ง</option><option>ฝ่ายตัดผ้า</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+              <div class="gg-hint">ล็อกตามคลังสินค้าที่คุณดูแล</div></div>
+            <div class="gg-field"><label class="gg-label" for="supplier">ผู้จำหน่าย<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="supplier" required><option value="" disabled>เลือกผู้จำหน่าย</option><option selected>ทอผ้าริมน้ำ จำกัด</option><option>นอร์ทเกต นิตติ้ง จำกัด</option><option>ซันฟิลด์ เดนิม จำกัด</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+            <div class="gg-field" style="grid-column:span 2"><label class="gg-label" for="reason">เหตุผลการคืน<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="reason" required><option value="" disabled selected>เลือกเหตุผลการคืน</option><option>ผ้ามีตำหนิ / ทอเสีย</option><option>สีไม่ตรงล็อตหรือไม่ตรงตัวอย่าง</option><option>หน้ากว้างหรือน้ำหนักไม่ตรงสเปก</option><option>ส่งเกินจำนวนที่สั่ง</option><option>ส่งผิดรายการ</option><option>อื่น ๆ</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+            <div class="gg-field" style="grid-column:span 2"><label class="gg-label" for="poRef">อ้างอิงใบสั่งซื้อ<span class="optional">(ไม่บังคับ)</span></label>
+              <div class="gg-control"><select id="poRef"><option value="">ไม่อ้างอิงใบสั่งซื้อ</option><option>PU_1118 · 3 ก.พ. 2567 · ฿2,220.00</option><option>PU_1115 · 3 ก.พ. 2567 · ฿49,300.00</option><option>PU_1113 · 3 ก.พ. 2567 · ฿30,260.00</option><option>PU_1112 · 3 ก.พ. 2567 · ฿1,620.00</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+              <div class="gg-hint">ใบสั่งซื้อที่ได้รับแล้วจากผู้จำหน่ายรายนี้</div></div>
+          </div>
+
+          <div class="psearch" id="psearch">
+            <label class="gg-label" for="pq" style="display:block;margin-bottom:var(--space-2)">สินค้า</label>
+            <div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="pq" autocomplete="off" placeholder="ค้นหาผ้าด้วยรหัสหรือชื่อ แล้วกด Enter เพื่อเพิ่ม" role="combobox" aria-expanded="false" aria-controls="presults" aria-autocomplete="list"></div>
+            <div class="presults" id="presults" role="listbox" hidden></div>
+          </div>
+
+          <div class="lines-title"><h2>รายการสินค้า<span class="gg-req" aria-hidden="true">*</span></h2><span class="gg-hint" id="linesHint">คืนได้ไม่เกินจำนวนคงเหลือ กดไอคอนดินสอเพื่อแก้ต้นทุน ส่วนลด ภาษี และล็อตย้อม</span></div>
+          <div class="lines" id="lines">
+            <div class="gg-table-wrap">
+              <table class="gg-table">
+                <thead><tr>
+                  <th>สินค้า</th><th class="right">ต้นทุนสุทธิต่อหน่วย</th><th class="right">คงเหลือ</th><th>จำนวน</th>
+                  <th class="right">ส่วนลด</th><th class="right">ภาษี</th><th class="right">ยอดรวมย่อย</th><th class="gg-actions-cell right"><span class="gg-sr">ลบรายการ</span></th>
+                </tr></thead>
+                <tbody id="lineRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="po-bottom">
+            <div class="po-inputs">
+              <div class="gg-field"><label class="gg-label" for="orderTax">ภาษีมูลค่าเพิ่ม</label>
+                <div class="gg-control"><input id="orderTax" inputmode="decimal" value="7"><span class="gg-addon">%</span></div></div>
+              <div class="gg-field"><label class="gg-label" for="discount">ส่วนลดท้ายบิล</label>
+                <div class="gg-control"><input id="discount" inputmode="decimal" value="0.00"><span class="gg-addon">฿</span></div></div>
+              <div class="gg-field"><label class="gg-label" for="shipping">ค่าขนส่ง</label>
+                <div class="gg-control"><input id="shipping" inputmode="decimal" value="0.00"><span class="gg-addon">฿</span></div></div>
+              <div class="gg-field"><label class="gg-label" for="status">สถานะ<span class="gg-req" aria-hidden="true">*</span></label>
+                <div class="gg-control"><select id="status" required><option value="completed" selected>ส่งคืนแล้ว</option><option value="pending">รอดำเนินการ</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+                <div class="gg-hint" id="statusHint"></div></div>
+              <div class="gg-field span-3" style="grid-column:2 / -1"><label class="gg-label" for="payment">รับเงินคืนโดย</label>
+                <div class="gg-control"><select id="payment"><option selected>หักจากยอดค้างชำระ (ใบลดหนี้)</option><option>เงินสด</option><option>โอนผ่านธนาคาร</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+              <div class="gg-field span-3"><label class="gg-label" for="notes">หมายเหตุ</label>
+                <div class="gg-control textarea"><textarea id="notes" rows="3" placeholder="เช่น ผ้ามีรอยด่างตลอดม้วน ผู้จำหน่ายรับกลับวันจันทร์"></textarea></div></div>
+            </div>
+            <div class="totals" aria-live="polite">
+              <div class="tr"><span>มูลค่าสินค้าที่คืน</span><span id="tSub"></span></div>
+              <div class="tr"><span>ส่วนลดท้ายบิล</span><span id="tDisc"></span></div>
+              <div class="tr"><span id="tTaxLabel">ภาษีมูลค่าเพิ่ม</span><span id="tTax"></span></div>
+              <div class="tr"><span>ค่าขนส่ง</span><span id="tShip"></span></div>
+              <div class="tr grand"><span>ยอดคืนสุทธิ</span><span id="tGrand"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gg-modal-foot">
+          <span class="form-alert gg-badge danger" id="formAlert" role="alert"><span class="gg-badge-dot"></span><span id="formAlertText"></span></span>
+          <span class="form-alert gg-badge success" id="formOk" role="status"><span class="gg-badge-dot"></span><span id="formOkText"></span></span>
+          <button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button>
+          <button type="submit" class="gg-btn gg-btn-primary"><span data-icon="check"></span>บันทึก</button>
+        </div>
+      </form>
+      </div>
+
+      <!-- Edit line (Modal): cost, tax type, tax, discount type, discount, purchase unit -->
+      <div class="gg-scrim" id="lineModal" hidden>
+        <form class="gg-modal" style="max-width:480px" role="dialog" aria-modal="true" aria-labelledby="lineTitle" id="lineForm" novalidate>
+          <div class="gg-modal-head"><div><h2 class="gg-modal-title" id="lineTitle">แก้ไขรายการ</h2><div class="gg-hint" id="lineCode" style="margin-top:2px"></div></div>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-stack" style="gap:var(--space-5)">
+            <div class="gg-field"><label class="gg-label" for="lCost">ต้นทุนสินค้า<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="lCost" inputmode="decimal"><span class="gg-addon">฿</span></div><div class="gg-hint" id="lCostHint"></div></div>
+            <div class="gg-field"><label class="gg-label" for="lTaxType">ประเภทภาษี<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="lTaxType"><option value="exclusive">แยกภาษี (ต้นทุนยังไม่รวมภาษี)</option><option value="inclusive">รวมภาษี (ต้นทุนรวมภาษีแล้ว)</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+            <div class="gg-field"><label class="gg-label" for="lTax">ภาษีสินค้า</label>
+              <div class="gg-control"><input id="lTax" inputmode="decimal"><span class="gg-addon">%</span></div></div>
+            <div class="gg-field"><label class="gg-label" for="lDiscType">ประเภทส่วนลด<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="lDiscType"><option value="fixed">จำนวนคงที่ (บาท)</option><option value="percent">เปอร์เซ็นต์ (%)</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+            <div class="gg-field"><label class="gg-label" for="lDisc">ส่วนลด<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="lDisc" inputmode="decimal"><span class="gg-addon" id="lDiscUnit">฿</span></div><div class="gg-hint">ต่อหน่วยซื้อ</div></div>
+            <div class="gg-field" style="display:none"><label class="gg-label" for="lUnit">หน่วยซื้อ<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="lUnit"></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div><div class="gg-hint" id="lUnitHint"></div></div>
+            <div class="gg-field"><label class="gg-label" for="lLot">เลขล็อตย้อม<span class="optional">(ไม่บังคับ)</span></label>
+              <div class="gg-control"><input id="lLot" placeholder="เช่น LOT-2410-21"></div></div>
+            <div class="line-preview" id="linePreview" aria-live="polite"></div>
+          </div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="submit" class="gg-btn gg-btn-primary"><span data-icon="check"></span>บันทึก</button></div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="gg-shell-foot">
+      <span>© 2026 <a href="lts-dashboard.html">LTS Solution</a> สงวนลิขสิทธิ์</span>
+      <span>ค้าส่งผ้า · ระบบสินค้าคงคลังและ POS</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ===== LTS Solution shell: icon set and navigation copied from components/bundle.js ===== */
+(function () {
+  var ICONS = {
+    dashboard: ['M4 4h7v7H4z', 'M13 4h7v4h-7z', 'M13 10h7v10h-7z', 'M4 13h7v7H4z'],
+    box: ['M12 3l8 4.5v9L12 21l-8-4.5v-9z', 'M4 7.5l8 4.5 8-4.5', 'M12 12v9'],
+    adjust: ['M4 4h16v16H4z', 'M7.5 12h3.5', 'M9.25 10.25v3.5', 'M13.5 12h3'],
+    quote: ['M6 3h8l5 5v13H6z', 'M14 3v5h5', 'M9 13h7', 'M9 17h5'],
+    cart: ['M3 4h2.2l2.2 11h10.8l2-8H6.4', { c: [9, 19, 1.4] }, { c: [17, 19, 1.4] }],
+    receipt: ['M6 3h12v18l-3-2-3 2-3-2-3 2z', 'M9 8h6', 'M9 12h6', 'M9 16h3'],
+    transfer: ['M4 8h15', 'M15 4l4 4-4 4', 'M20 16H5', 'M9 12l-4 4 4 4'],
+    wallet: ['M4 7a2 2 0 0 1 2-2h11v4', 'M4 7v10a2 2 0 0 0 2 2h14V9H6a2 2 0 0 1-2-2z', 'M16 14h1'],
+    users: [{ c: [9, 8, 3.5] }, 'M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6', 'M15.5 5.2a3 3 0 0 1 0 5.6', 'M18 14.5c1.8.7 3 2.5 3 4.5'],
+    user: [{ c: [12, 8, 4] }, 'M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8'],
+    truck: ['M3 6h11v10H3z', 'M14 9h4l3 3v4h-7', { c: [7, 18, 1.8] }, { c: [17, 18, 1.8] }],
+    shield: ['M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z', 'M9 12l2 2 4-4'],
+    warehouse: ['M3 10l9-6 9 6v10H3z', 'M8 20v-6h8v6', 'M8 17h8'],
+    chart: ['M4 20h16', 'M7 16v-5', 'M12 16V7', 'M17 16v-8'],
+    coin: [{ c: [12, 12, 9] }, 'M14.8 9.4c-.5-.9-1.5-1.4-2.8-1.4-1.7 0-2.9.8-2.9 2s1.2 1.7 2.9 2 2.9.8 2.9 2-1.2 2-2.9 2c-1.3 0-2.4-.5-2.9-1.4', 'M12 6.5v11'],
+    globe: [{ c: [12, 12, 9] }, 'M3 12h18', 'M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3z'],
+    layout: ['M4 4h16v16H4z', 'M4 9h16', 'M10 9v11'],
+    settings: ['M4 6h9', 'M17 6h3', 'M4 12h3', 'M11 12h9', 'M4 18h11', 'M19 18h1', { c: [15, 6, 2] }, { c: [9, 12, 2] }, { c: [17, 18, 2] }],
+    tag: ['M3 12V4h8l9 9-8 8z', { c: [7.5, 8.5, 1.3] }],
+    barcode: ['M4 7V4h3', 'M17 4h3v3', 'M20 17v3h-3', 'M7 20H4v-3', 'M8 8v8', 'M11 8v8', 'M14 8v8', 'M16.5 8v8'],
+    ruler: ['M3 15l12-12 6 6-12 12z', 'M7 11l2 2', 'M10 8l2 2', 'M13 5l2 2'],
+    folder: ['M3 6h6l2 2h10v11H3z'],
+    search: [{ c: [11, 11, 7] }, 'M20 20l-4-4'],
+    plus: ['M12 5v14', 'M5 12h14'],
+    minus: ['M5 12h14'],
+    'chevron-right': ['M9 6l6 6-6 6'],
+    'chevron-left': ['M15 6l-6 6 6 6'],
+    'chevron-down': ['M6 9l6 6 6-6'],
+    'chevrons-left': ['M11 6l-6 6 6 6', 'M18 6l-6 6 6 6'],
+    'chevrons-right': ['M6 6l6 6-6 6', 'M13 6l6 6-6 6'],
+    menu: ['M4 7h16', 'M4 12h16', 'M4 17h16'],
+    'panel-left': ['M4 4h16v16H4z', 'M9 4v16', 'M15.5 10l-2 2 2 2'],
+    more: [{ c: [12, 5, 1.3] }, { c: [12, 12, 1.3] }, { c: [12, 19, 1.3] }],
+    edit: ['M4 20h4L19 9l-4-4L4 16z', 'M13 7l4 4'],
+    trash: ['M4 7h16', 'M9 7V4h6v3', 'M6 7l1 13h10l1-13', 'M10 11v6', 'M14 11v6'],
+    eye: [{ c: [12, 12, 3] }, 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'],
+    x: ['M6 6l12 12', 'M18 6L6 18'],
+    calendar: ['M4 6h16v14H4z', 'M4 10h16', 'M8 3v5', 'M16 3v5'],
+    filter: ['M4 5h16l-6 8v6l-4-2v-4z'],
+    download: ['M12 4v11', 'M7 10l5 5 5-5', 'M5 20h14'],
+    upload: ['M12 20V9', 'M7 14l5-5 5 5', 'M5 4h14'],
+    bell: ['M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z', 'M10 21h4'],
+    expand: ['M4 9V4h5', 'M20 9V4h-5', 'M4 15v5h5', 'M20 15v5h-5'],
+    'trend-up': ['M4 16l6-6 4 4 6-6', 'M15 8h5v5'],
+    'trend-down': ['M4 8l6 6 4-4 6 6', 'M15 16h5v-5'],
+    'return-left': ['M9 14l-5-5 5-5', 'M4 9h11a5 5 0 0 1 0 10h-3'],
+    'return-right': ['M15 14l5-5-5-5', 'M20 9H9a5 5 0 0 0 0 10h3'],
+    cash: ['M3 6h18v12H3z', { c: [12, 12, 2.5] }, 'M6.5 9.5v.01', 'M17.5 14.5v.01'],
+    alert: ['M12 4l9 16H3z', 'M12 10v4', 'M12 17v.5'],
+    check: ['M5 12l5 5 9-10'],
+    image: ['M4 5h16v14H4z', { c: [9, 10, 1.5] }, 'M4 17l5-5 4 4 2-2 5 5'],
+    logout: ['M15 4h4v16h-4', 'M10 8l-4 4 4 4', 'M6 12h10'],
+    sort: ['M8 9l4-4 4 4', 'M8 15l4 4 4-4'],
+    'sort-up': ['M8 14l4-4 4 4'],
+    'sort-down': ['M8 10l4 4 4-4'],
+    printer: ['M7 8V3h10v5', 'M5 8h14v8h-2', 'M7 16H5', 'M7 13h10v8H7z'],
+    copy: ['M8 8h12v12H8z', 'M16 8V4H4v12h4']
+  };
+  var NAV = [
+    { key: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { section: 'Inventory' },
+    { key: 'products', label: 'Products', icon: 'box', children: [
+      { key: 'products.list', label: 'Products' }, { key: 'products.categories', label: 'Product Categories' },
+      { key: 'products.units', label: 'Units' },
+      { key: 'products.base-units', label: 'Base Units' }, { key: 'products.barcode', label: 'Print Barcode' }] },
+    { key: 'adjustments', label: 'Adjustments', icon: 'adjust' },
+    { key: 'transfers', label: 'Transfers', icon: 'transfer' },
+    { key: 'warehouse', label: 'Warehouses', icon: 'warehouse' },
+    { section: 'Trading' },
+    { key: 'quotations', label: 'Quotations', icon: 'quote' },
+    { key: 'purchases', label: 'Purchases', icon: 'cart', children: [{ key: 'purchases.list', label: 'Purchases' }, { key: 'purchases.returns', label: 'Purchase Returns' }] },
+    { key: 'sales', label: 'Sales', icon: 'receipt', children: [{ key: 'sales.list', label: 'Sales' }, { key: 'sales.returns', label: 'Sales Returns' }, { key: 'sales.billing-notes', label: 'Billing Notes' }] },
+    { key: 'expenses', label: 'Expenses', icon: 'wallet', children: [{ key: 'expenses.list', label: 'Expenses' }, { key: 'expenses.categories', label: 'Expense Categories' }] },
+    { section: 'People' },
+    { key: 'people', label: 'People', icon: 'users', children: [{ key: 'people.suppliers', label: 'Suppliers' }, { key: 'people.customers', label: 'Customers' }, { key: 'people.users', label: 'Users' }] },
+    { key: 'roles', label: 'Roles & Permissions', icon: 'shield' },
+    { section: 'Insights & Setup' },
+    { key: 'reports', label: 'Reports', icon: 'chart' },
+    { key: 'currencies', label: 'Currencies', icon: 'coin' },
+    { key: 'languages', label: 'Languages', icon: 'globe' },
+    { key: 'templates', label: 'Templates', icon: 'layout', children: [{ key: 'templates.email', label: 'Email Templates' }, { key: 'templates.sms', label: 'SMS Templates' }] },
+    { key: 'settings', label: 'Settings', icon: 'settings' }
+  ];
+
+  /* Thai labels for the shared navigation (keys from the design system) */
+  var TH = {
+    'Inventory': 'สินค้าคงคลัง', 'Trading': 'ซื้อขาย', 'People': 'บุคคล', 'Insights & Setup': 'รายงานและการตั้งค่า',
+    'dashboard': 'แดชบอร์ด', 'products': 'สินค้า', 'products.list': 'สินค้าทั้งหมด', 'products.categories': 'หมวดหมู่สินค้า',
+    'products.units': 'หน่วยนับ', 'products.base-units': 'หน่วยพื้นฐาน', 'products.barcode': 'พิมพ์บาร์โค้ด',
+    'adjustments': 'ปรับปรุงสต็อก', 'transfers': 'โอนย้ายสินค้า', 'warehouse': 'คลังสินค้า', 'quotations': 'ใบเสนอราคา',
+    'purchases': 'การซื้อ', 'purchases.list': 'รายการซื้อ', 'purchases.returns': 'คืนสินค้าให้ผู้จำหน่าย',
+    'sales': 'การขาย', 'sales.list': 'รายการขาย', 'sales.returns': 'รับคืนสินค้า', 'sales.billing-notes': 'ใบวางบิล',
+    'expenses': 'ค่าใช้จ่าย', 'expenses.list': 'รายการค่าใช้จ่าย', 'expenses.categories': 'หมวดหมู่ค่าใช้จ่าย',
+    'people': 'บุคคล', 'people.suppliers': 'ผู้จำหน่าย', 'people.customers': 'ลูกค้า', 'people.users': 'ผู้ใช้งาน',
+    'roles': 'บทบาทและสิทธิ์', 'reports': 'รายงาน', 'currencies': 'สกุลเงิน', 'languages': 'ภาษา',
+    'templates': 'เทมเพลต', 'templates.email': 'เทมเพลตอีเมล', 'templates.sms': 'เทมเพลต SMS', 'settings': 'ตั้งค่า'
+  };
+  NAV.forEach(function (it) {
+    if (it.section) { it.section = TH[it.section] || it.section; return; }
+    it.label = TH[it.key] || it.label;
+    (it.children || []).forEach(function (c) { c.label = TH[c.key] || c.label; });
+  });
+  var PAGES = { 'dashboard': 'lts-dashboard.html', 'products.list': 'lts-products.html', 'products.create': 'lts-create-product.html', 'products.categories': 'lts-categories.html', 'adjustments': 'lts-adjustment.html', 'purchases.list': 'lts-purchases.html', 'purchases.returns': 'lts-purchase-return.html', 'sales.list': 'lts-sales.html', 'sales.returns': 'lts-sales-returns.html', 'sales.billing-notes': 'lts-billing-notes.html', 'transfers': 'lts-transfers.html', 'expenses.list': 'lts-expenses.html', 'expenses.categories': 'lts-expense-categories.html', 'people.suppliers': 'lts-suppliers.html', 'people.customers': 'lts-customers.html', 'people.users': 'lts-users.html', 'roles': 'lts-roles.html', 'warehouse': 'lts-warehouses.html', 'reports': 'lts-reports.html' };
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function icon(name, size, cls) {
+    var svg = document.createElementNS(SVGNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    svg.setAttribute('class', ['gg-icon', size === 'sm' ? 'sm' : '', size === 'lg' ? 'lg' : '', cls || ''].join(' ').trim());
+    (ICONS[name] || ICONS.box).forEach(function (p) {
+      var el;
+      if (typeof p === 'string') { el = document.createElementNS(SVGNS, 'path'); el.setAttribute('d', p); }
+      else { el = document.createElementNS(SVGNS, 'circle'); el.setAttribute('cx', p.c[0]); el.setAttribute('cy', p.c[1]); el.setAttribute('r', p.c[2]); }
+      svg.appendChild(el);
+    });
+    return svg;
+  }
+  function hydrateIcons(root) {
+    (root || document).querySelectorAll('[data-icon]').forEach(function (el) { el.replaceWith(icon(el.getAttribute('data-icon'), el.getAttribute('data-size'))); });
+  }
+
+  /* Sidebar */
+  var shell = document.getElementById('shell');
+  var ACTIVE = shell.getAttribute('data-active') || 'dashboard', open = {};
+  NAV.forEach(function (it) { if (it.children && it.children.some(function (c) { return c.key === ACTIVE; })) open[it.key] = true; });
+  var nav = document.getElementById('nav'), sidebar = document.getElementById('sidebar');
+  function go(key) { if (PAGES[key] && key !== ACTIVE) { location.href = PAGES[key]; return; } ACTIVE = key; renderNav(); }
+  function renderNav() {
+    var collapsed = sidebar.classList.contains('collapsed');
+    nav.innerHTML = '';
+    NAV.forEach(function (it) {
+      if (it.section) { var l = document.createElement('div'); l.className = 'gg-nav-label'; l.textContent = it.section; nav.appendChild(l); return; }
+      var childActive = it.children && it.children.some(function (c) { return c.key === ACTIVE; });
+      var b = document.createElement('button'); b.type = 'button';
+      b.className = 'gg-nav-item' + (it.key === ACTIVE ? ' active' : '') + (childActive ? ' child-active' : '') + (childActive && open[it.key] ? ' open-parent' : '');
+      if (it.key === ACTIVE) b.setAttribute('aria-current', 'page');
+      if (collapsed) b.title = it.label;
+      b.appendChild(icon(it.icon));
+      var t = document.createElement('span'); t.className = 'gg-nav-text'; t.textContent = it.label; b.appendChild(t);
+      if (it.children) { b.setAttribute('aria-expanded', !!open[it.key]); b.appendChild(icon('chevron-right', 'sm', 'gg-chev')); }
+      b.addEventListener('click', function () {
+        if (it.children && !collapsed) { open[it.key] = !open[it.key]; renderNav(); }
+        else go(it.children ? it.children[0].key : it.key);
+      });
+      nav.appendChild(b);
+      if (it.children && open[it.key] && !collapsed) {
+        var sub = document.createElement('div'); sub.className = 'gg-subnav';
+        it.children.forEach(function (c) {
+          var cb = document.createElement('button'); cb.type = 'button';
+          cb.className = 'gg-nav-item' + (c.key === ACTIVE ? ' active' : '');
+          if (c.key === ACTIVE) cb.setAttribute('aria-current', 'page');
+          var ct = document.createElement('span'); ct.className = 'gg-nav-text'; ct.textContent = c.label; cb.appendChild(ct);
+          cb.addEventListener('click', function () { go(c.key); });
+          sub.appendChild(cb);
+        });
+        nav.appendChild(sub);
+      }
+    });
+  }
+  renderNav();
+  var toggle = document.getElementById('toggleSidebar');
+  toggle.addEventListener('click', function () {
+    var c = sidebar.classList.toggle('collapsed');
+    toggle.setAttribute('aria-label', c ? 'ขยายแถบเมนู' : 'ย่อแถบเมนู');
+    toggle.innerHTML = ''; toggle.appendChild(icon(c ? 'menu' : 'panel-left'));
+    renderNav();
+  });
+
+  /* Menus (ActionMenu pattern) */
+  function wireMenu(anchor) {
+    if (anchor.dataset.wired) return; anchor.dataset.wired = '1';
+    var btn = anchor.querySelector('button'), menu = anchor.querySelector('.gg-menu');
+    function close() { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation(); var wasHidden = menu.hidden;
+      document.querySelectorAll('.gg-menu').forEach(function (m) { m.hidden = true; });
+      menu.hidden = !wasHidden; btn.setAttribute('aria-expanded', String(wasHidden));
+    });
+    menu.addEventListener('click', close);
+    document.addEventListener('click', function (e) { if (!anchor.contains(e.target)) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  }
+  document.getElementById('fullscreen').addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  });
+  document.querySelectorAll('.gg-menu-item.danger').forEach(function (b) { if (b.textContent.trim() === 'ออกจากระบบ') b.addEventListener('click', function () { location.href = 'lts-login.html?out=1'; }); });
+  var posBtn = document.querySelector('.gg-pos'); if (posBtn) posBtn.addEventListener('click', function () { location.href = 'lts-pos.html'; });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); document.getElementById('globalSearch').focus(); }
+  });
+
+  /* Money in Thai baht: ฿71,800.00 */
+  function baht(n) { return '฿' + Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  /* Thai dates, Buddhist Era: 3 ก.พ. 2567 · 23:28 น. */
+  function thDate(d) { return new Date(d).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  function thTime(d) { return new Date(d).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.'; }
+  window.GG = { icon: icon, hydrateIcons: hydrateIcons, wireMenu: wireMenu, baht: baht, thDate: thDate, thTime: thTime };
+})();
+</script>
+<script>
+/* ===== Page script ===== */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SUPPLIERS = ['ทอผ้าริมน้ำ จำกัด', 'นอร์ทเกต นิตติ้ง จำกัด', 'ซันฟิลด์ เดนิม จำกัด'];
+  /* Returns: rawLines are the form's own line objects so a return can be reopened for editing */
+  function L(code, qty, cost, lot) { return { code: code, cost: cost, disc: 0, tax: 0, qty: qty, lot: lot || '', taxType: 'exclusive', discType: 'fixed', unit: '' }; }
+  var R = [
+    { ref: 'PR_1115', supplier: SUPPLIERS[0], status: 'pending', refunded: 0, method: 'หักจากยอดค้างชำระ (ใบลดหนี้)', created: '2026-10-04T02:06', reason: 'ผ้ามีตำหนิ / ทอเสีย', po: 'PU_1113 · 3 ก.พ. 2567 · ฿30,260.00', orderTax: 0, discount: 0, shipping: 0, notes: 'ผ้ามีรอยด่างตลอดม้วน', rawLines: [L('COT58A101001', 15, 74, 'LOT-2409-03')] },
+    { ref: 'PR_1114', supplier: SUPPLIERS[0], status: 'completed', refunded: 1110, method: 'เงินสด', created: '2026-10-03T23:58', reason: 'สีไม่ตรงล็อตหรือไม่ตรงตัวอย่าง', po: 'PU_1115 · 3 ก.พ. 2567 · ฿49,300.00', orderTax: 0, discount: 0, shipping: 0, notes: '', rawLines: [L('LIN54C120003', 5, 222, 'LOT-2406-09')] },
+    { ref: 'PR_1113', supplier: SUPPLIERS[0], status: 'completed', refunded: 493, method: 'หักจากยอดค้างชำระ (ใบลดหนี้)', created: '2026-10-03T23:47', reason: 'ส่งเกินจำนวนที่สั่ง', po: 'PU_1112 · 3 ก.พ. 2567 · ฿1,620.00', orderTax: 0, discount: 0, shipping: 0, notes: '', rawLines: [L('PLY58A410012', 17, 29, 'LOT-2407-15')] },
+    { ref: 'PR_1111', supplier: SUPPLIERS[0], status: 'completed', refunded: 890, method: 'เงินสด', created: '2026-10-03T23:30', reason: 'ผ้ามีตำหนิ / ทอเสีย', po: '', orderTax: 0, discount: 0, shipping: 0, notes: '', rawLines: [L('VIS44B305022', 10, 89, 'LOT-2410-07')] }
+  ];
+  var STATUS = { completed: ['success', 'ส่งคืนแล้ว'], pending: ['warning', 'รอดำเนินการ'] };
+  function badge(t) { return '<span class="gg-badge ' + t[0] + '"><span class="gg-badge-dot" aria-hidden="true"></span>' + t[1] + '</span>'; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function find(ref) { return R.filter(function (r) { return r.ref === ref; })[0]; }
+  function due(r) { return Math.max(0, r.total - r.refunded); }
+
+  SUPPLIERS.forEach(function (s) { var o = document.createElement('option'); o.textContent = s; $('fSupplier').appendChild(o); });
+  var state = { q: '', supplier: '', status: '', refund: '', range: '', from: '', to: '', sort: null, page: 1, size: 10 };
+  function newest() { return R.reduce(function (m, r) { return r.created > m ? r.created : m; }, '').slice(0, 10); }
+  function inRange(r) {
+    var d = r.created.slice(0, 10), n = newest();
+    if (state.range === 'today') return d === n;
+    if (state.range === '7') { var a = new Date(n); a.setDate(a.getDate() - 6); return new Date(d) >= a; }
+    if (state.range === 'month') return d.slice(0, 7) === n.slice(0, 7);
+    if (state.range === 'custom') return (!state.from || d >= state.from) && (!state.to || d <= state.to);
+    return true;
+  }
+  function filtered() {
+    var q = state.q.toLowerCase();
+    var list = R.filter(function (r) {
+      return (!q || (r.ref + ' ' + r.supplier + ' ' + r.reason).toLowerCase().indexOf(q) >= 0) && (!state.supplier || r.supplier === state.supplier) &&
+        (!state.status || r.status === state.status) && (!state.refund || (state.refund === 'due' ? due(r) > 0 : due(r) === 0)) && inRange(r);
+    });
+    if (state.sort) {
+      var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+      list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y, 'th') : x - y) * dir; });
+    }
+    return list;
+  }
+
+  function render() {
+    var list = filtered(), total = list.length, pages = Math.max(1, Math.ceil(total / state.size));
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * state.size, rows = list.slice(start, start + state.size), body = $('rows');
+    body.innerHTML = rows.length ? rows.map(function (r, i) {
+      var d = due(r);
+      return '<tr>' +
+        '<td><span class="gg-badge neutral mono">' + r.ref + '</span></td>' +
+        '<td class="primary">' + esc(r.supplier) + '<div class="gg-hint" style="font-weight:500">' + esc(r.reason) + '</div></td>' +
+        '<td>คลังสินค้าหลัก</td>' +
+        '<td>' + badge(STATUS[r.status]) + '</td>' +
+        '<td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(r.total) + '</td>' +
+        '<td class="right">' + GG.baht(r.refunded) + '</td>' +
+        '<td class="right"' + (d ? ' style="color:var(--danger-text);font-weight:600"' : '') + '>' + GG.baht(d) + '</td>' +
+        '<td><span class="gg-badge info">' + esc(r.method.replace(' (ใบลดหนี้)', '')) + '</span></td>' +
+        '<td class="created">' + GG.thDate(r.created) + '<span>' + GG.thTime(r.created) + '</span></td>' +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu>' +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + r.ref + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+          '<div class="gg-menu' + (i >= rows.length - 2 && rows.length > 4 ? ' up' : '') + '" role="menu" hidden>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-view="' + r.ref + '"><span data-icon="eye" data-size="sm"></span>ดูรายการคืนสินค้า</button>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-pdf="' + r.ref + '"><span data-icon="download" data-size="sm"></span>ดาวน์โหลด PDF</button>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-edit="' + r.ref + '"><span data-icon="edit" data-size="sm"></span>แก้ไขรายการคืนสินค้า</button>' +
+            '<div class="gg-menu-sep" role="separator"></div>' +
+            '<button type="button" role="menuitem" class="gg-menu-item danger" data-delete="' + r.ref + '"><span data-icon="trash" data-size="sm"></span>ลบรายการคืนสินค้า</button>' +
+          '</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="10" class="gg-empty">ไม่พบรายการคืนสินค้าที่ตรงกับตัวกรอง</td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { openView(find(b.dataset.view)); }); });
+    body.querySelectorAll('[data-pdf]').forEach(function (b) { b.addEventListener('click', function () { printPdf(find(b.dataset.pdf)); }); });
+    body.querySelectorAll('[data-edit]').forEach(function (b) { b.addEventListener('click', function () { window.PRForm.open(find(b.dataset.edit)); }); });
+    body.querySelectorAll('[data-delete]').forEach(function (b) { b.addEventListener('click', function () { askDelete(find(b.dataset.delete)); }); });
+    GG.hydrateIcons(body);
+
+    function sum(f) { return list.reduce(function (s, r) { return s + f(r); }, 0); }
+    $('footTotal').textContent = GG.baht(sum(function (r) { return r.total; }));
+    $('footRefunded').textContent = GG.baht(sum(function (r) { return r.refunded; }));
+    var dsum = sum(due); $('footDue').textContent = GG.baht(dsum); $('footDue').style.color = dsum ? 'var(--danger-text)' : '';
+    $('summaryLine').textContent = 'ผ้าที่ส่งคืนผู้จำหน่าย ' + R.length + ' รายการ · มูลค่าคืนรวม ' + GG.baht(R.reduce(function (s, r) { return s + r.total; }, 0));
+    $('count').textContent = (total ? start + 1 : 0) + '–' + Math.min(total, start + state.size) + ' จาก ' + total;
+    var nav = $('pages'); nav.innerHTML = '';
+    function pb(label, iconName, page, disabled, active) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gg-page' + (active ? ' active' : ''); b.disabled = disabled;
+      if (iconName) { b.setAttribute('aria-label', label); b.appendChild(GG.icon(iconName, 'sm')); } else b.textContent = label;
+      if (active) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { state.page = page; render(); });
+      nav.appendChild(b);
+    }
+    pb('หน้าแรก', 'chevrons-left', 1, state.page <= 1); pb('หน้าก่อนหน้า', 'chevron-left', state.page - 1, state.page <= 1);
+    for (var k = 1; k <= pages; k++) pb(String(k), null, k, false, k === state.page);
+    pb('หน้าถัดไป', 'chevron-right', state.page + 1, state.page >= pages); pb('หน้าสุดท้าย', 'chevrons-right', pages, state.page >= pages);
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort && state.sort.key === th.dataset.sort;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var h = th.querySelector('.gg-sort'); h.innerHTML = ''; h.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+  }
+
+  /* Toolbar */
+  $('search').addEventListener('input', function (e) { state.q = e.target.value; state.page = 1; render(); });
+  $('pageSize').addEventListener('change', function (e) { state.size = +e.target.value; state.page = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) {
+    th.addEventListener('click', function () {
+      var k = th.dataset.sort;
+      state.sort = state.sort && state.sort.key === k ? (state.sort.dir === 'asc' ? { key: k, dir: 'desc' } : null) : { key: k, dir: 'asc' };
+      render();
+    });
+  });
+  $('filterBtn').addEventListener('click', function () { var o = $('filters').classList.toggle('open'); $('filterBtn').classList.toggle('on', o); $('filterBtn').setAttribute('aria-expanded', String(o)); });
+  [['fSupplier', 'supplier'], ['fStatus', 'status'], ['fRefund', 'refund']].forEach(function (x) { $(x[0]).addEventListener('change', function (e) { state[x[1]] = e.target.value; state.page = 1; render(); }); });
+  $('range').addEventListener('change', function (e) { state.range = e.target.value; $('rangeCustom').classList.toggle('open', state.range === 'custom'); state.page = 1; render(); });
+  ['from', 'to'].forEach(function (id) { $(id).addEventListener('change', function (e) { state[id] = e.target.value; state.page = 1; render(); }); });
+  $('clearFilters').addEventListener('click', function () {
+    ['q', 'supplier', 'status', 'refund', 'range', 'from', 'to'].forEach(function (k) { state[k] = ''; });
+    ['search', 'fSupplier', 'fStatus', 'fRefund', 'range', 'from', 'to'].forEach(function (id) { $(id).value = ''; });
+    $('rangeCustom').classList.remove('open'); render();
+  });
+  $('createBtn').addEventListener('click', function () { window.PRForm.open(null); });
+
+  /* Modals: backdrop closes small dialogs; the create dialog only closes from its buttons. Esc closes the top one. */
+  function closeModal(m) { m.hidden = true; }
+  document.querySelectorAll('.gg-scrim').forEach(function (m) {
+    m.addEventListener('mousedown', function (e) { if (e.target === m && !m.dataset.static) closeModal(m); });
+    m.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(m); }); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || (document.activeElement && document.activeElement.id === 'pq')) return;
+    var open = Array.prototype.filter.call(document.querySelectorAll('.gg-scrim'), function (m) { return !m.hidden; });
+    if (open.length) closeModal(open[open.length - 1]);
+  });
+  function toast(t) { $('toastText').textContent = t; $('toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(function () { $('toast').classList.remove('show'); }, 2600); }
+
+  var viewing = null;
+  function openView(r) {
+    viewing = r;
+    $('viewTitle').textContent = 'รายการคืนสินค้า ' + r.ref;
+    $('viewBody').innerHTML = '<div class="view-grid">' +
+      '<div><div class="k">ผู้จำหน่าย</div><div class="v">' + esc(r.supplier) + '</div></div>' +
+      '<div><div class="k">เหตุผลการคืน</div><div class="v">' + esc(r.reason) + '</div></div>' +
+      '<div><div class="k">วันที่</div><div class="v">' + GG.thDate(r.created) + ' ' + GG.thTime(r.created) + '</div></div>' +
+      '<div><div class="k">สถานะ</div><div class="v">' + badge(STATUS[r.status]) + '</div></div>' +
+      '<div><div class="k">อ้างอิงใบสั่งซื้อ</div><div class="v">' + (r.po ? esc(r.po.split(' · ')[0]) : '—') + '</div></div>' +
+      '<div><div class="k">รับคืนแล้ว</div><div class="v">' + GG.baht(r.refunded) + ' (' + esc(r.method) + ')</div></div></div>' +
+      '<div class="view-lines"><table class="gg-table compact"><thead><tr><th>สินค้า</th><th class="right">จำนวน</th><th class="right">ต้นทุนต่อหน่วย</th><th class="right">ยอดรวมย่อย</th></tr></thead><tbody>' +
+      r.lines.map(function (l) { return '<tr><td><span style="color:var(--ink);font-weight:600">' + esc(l[0]) + '</span> <span class="gg-badge neutral mono" style="height:20px;padding:0 6px;font-size:11px">' + l[1] + '</span></td><td class="right">' + Number(l[2]).toLocaleString('th-TH') + ' ' + l[3] + '</td><td class="right">' + GG.baht(l[4]) + '</td><td class="right">' + GG.baht(l[5]) + '</td></tr>'; }).join('') +
+      '</tbody></table></div><div class="view-total"><span>ค้างรับคืน ' + GG.baht(due(r)) + '</span><span>ยอดคืนสุทธิ <b>' + GG.baht(r.total) + '</b></span></div>';
+    $('viewModal').hidden = false;
+  }
+  $('viewPdf').addEventListener('click', function () { if (viewing) printPdf(viewing); });
+  $('viewEdit').addEventListener('click', function () { if (viewing) { closeModal($('viewModal')); window.PRForm.open(viewing); } });
+
+  function printPdf(r) {
+    var w = window.open('', '_blank');
+    if (!w) { toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ กรุณาอนุญาตป๊อปอัปเพื่อดาวน์โหลด PDF'); return; }
+    w.document.write('<!doctype html><html lang="th"><head><meta charset="utf-8"><title>' + r.ref + '</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600;700&display=swap"><style>' +
+      'body{font:14px/1.6 "IBM Plex Sans Thai",sans-serif;color:#141b2b;margin:40px}h1{font-size:22px;margin:0 0 4px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{padding:8px;border-bottom:1px solid #e2e5eb;text-align:left}th{font-size:12px;color:#5d6576}.r{text-align:right}.tot{font-weight:700;font-size:16px}' +
+      '</style></head><body><h1>LTS Solution · ใบคืนสินค้า ' + r.ref + '</h1><div>ผู้จำหน่าย: ' + esc(r.supplier) + ' · วันที่: ' + GG.thDate(r.created) + ' · เหตุผล: ' + esc(r.reason) + '</div>' +
+      '<table><tr><th>สินค้า</th><th class="r">จำนวน</th><th class="r">ต้นทุนต่อหน่วย</th><th class="r">ยอดรวมย่อย</th></tr>' +
+      r.lines.map(function (l) { return '<tr><td>' + esc(l[0]) + ' (' + l[1] + ')</td><td class="r">' + Number(l[2]).toLocaleString('th-TH') + ' ' + l[3] + '</td><td class="r">' + GG.baht(l[4]) + '</td><td class="r">' + GG.baht(l[5]) + '</td></tr>'; }).join('') +
+      '<tr><td colspan="3" class="r tot">ยอดคืนสุทธิ</td><td class="r tot">' + GG.baht(r.total) + '</td></tr></table></body></html>');
+    w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 400);
+  }
+
+  var pending = null;
+  function askDelete(r) {
+    pending = r;
+    $('confirmTitle').textContent = 'ลบรายการคืนสินค้า ' + r.ref + ' ใช่หรือไม่?';
+    $('confirmText').textContent = 'ระบบจะลบใบคืนสินค้ามูลค่า ' + GG.baht(r.total) + (r.status === 'completed' ? ' และนำผ้าที่ส่งคืนกลับเข้าสต็อก' : '') + ' การลบนี้ไม่สามารถย้อนกลับได้';
+    $('confirm').hidden = false;
+  }
+  $('confirmDelete').addEventListener('click', function () {
+    if (pending) { R.splice(R.indexOf(pending), 1); toast('ลบรายการคืนสินค้า ' + pending.ref + ' แล้ว'); }
+    pending = null; closeModal($('confirm')); render();
+  });
+
+  /* Called by the create form (PRForm) */
+  window.PRList = {
+    records: R,
+    nextRef: function () { return 'PR_' + (Math.max.apply(null, R.map(function (r) { return +r.ref.slice(3); }).concat([1110])) + 1); },
+    hydrate: function (r) {
+      /* view lines + total from rawLines, using the form's own calculator */
+      r.lines = r.rawLines.map(function (l) { return window.PRForm.describe(l); });
+      r.total = window.PRForm.totalOf(r);
+      return r;
+    },
+    save: function (rec, isEdit) {
+      var old = find(rec.ref);
+      if (old) Object.assign(old, rec); else R.unshift(rec);
+      state.page = 1; render();
+      toast((isEdit ? 'บันทึกการแก้ไข ' : 'สร้าง ') + rec.ref + ' แล้ว · ยอดคืน ' + GG.baht(rec.total));
+    },
+    render: render
+  };
+})();
+
+/* ===== Create / edit dialog ===== */
+
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SHORT = { meter: 'ม.', yard: 'หลา', kilogram: 'กก.', roll: 'ม้วน' }, UNIT = { meter: 'เมตร', yard: 'หลา', kilogram: 'กิโลกรัม', roll: 'ม้วน' };
+  /* Purchase units a fabric can be bought in, and how many base units (stock unit) one of them holds */
+  function unitsFor(p) { return ['yard']; }
+  function factor(p, u) { return u === p.unit || !u ? 1 : u === 'yard' ? 0.9144 : u === 'roll' ? p.roll : 1; }
+  var PRODUCTS = [
+    { code: 'COT58A101001', name: 'ผ้าคอตตอนป๊อปลิน 60s สีขาวออปติก', unit: 'yard', stock: 2680, alert: 330, cost: 57, roll: 110, swatch: 'poplin' },
+    { code: 'DEN58A201014', name: 'ผ้ายีนส์ยืด 10 ออนซ์ สีคราม', unit: 'yard', stock: 1290, alert: 220, cost: 128, roll: 110, swatch: 'denim' },
+    { code: 'VIS44B305022', name: 'ผ้าเรยอนพิมพ์ลายดอกไม้', unit: 'yard', stock: 700, alert: 165, cost: 87, roll: 110, swatch: 'floral' },
+    { code: 'PLY58A410012', name: 'ผ้าจอร์เจ็ตโพลีเอสเตอร์ สีกรมท่า', unit: 'yard', stock: 82, alert: 110, cost: 44, roll: 110, swatch: 'georgette' },
+    { code: 'LIN54C120003', name: 'ผ้าลินินผสมฝ้าย สีธรรมชาติ', unit: 'yard', stock: 0, alert: 90, cost: 192, roll: 110, swatch: 'linen' },
+    { code: 'KNT72A160008', name: 'ผ้ายืดซิงเกิลเจอร์ซีย์ 160 แกรม สีเทาท็อปดราย', unit: 'yard', stock: 350, alert: 60, cost: 95, roll: 90, swatch: 'jersey' }
+  ];
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function num(x) { return Number(x).toLocaleString('th-TH', { maximumFractionDigits: 2 }); }
+  function r2(x) { return Math.round(x * 100) / 100; }
+  function find(code) { return PRODUCTS.filter(function (p) { return p.code === code; })[0]; }
+  function stockBadge(p) {
+    var tone = p.stock <= 0 ? 'danger' : p.stock <= p.alert ? 'warning' : 'neutral';
+    return '<span class="gg-badge ' + tone + '">' + (tone !== 'neutral' ? '<span class="gg-badge-dot"></span>' : '') + num(p.stock) + ' ' + SHORT[p.unit] + '</span>';
+  }
+  function money(id) { var v = parseFloat(String($(id).value).replace(/,/g, '')); return isNaN(v) || v < 0 ? 0 : v; }
+
+  /* Date */
+  var t = new Date(), iso = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0');
+  $('date').value = iso;
+  function showDate() { $('dateTh').textContent = $('date').value ? GG.thDate($('date').value + 'T00:00') : ''; }
+  $('date').addEventListener('change', showDate); showDate();
+  $('supplier').addEventListener('change', function () { $('supplier').classList.toggle('is-placeholder', !$('supplier').value); fieldOk($('supplier')); });
+  function statusHint() { $('statusHint').textContent = { completed: 'ผ้าจะถูกตัดออกจากสต็อกทันทีเมื่อบันทึก', pending: 'ยังไม่ตัดสต็อก จนกว่าจะเปลี่ยนเป็น "ส่งคืนแล้ว"' }[$('status').value]; }
+  $('status').addEventListener('change', statusHint); statusHint();
+  $('reason').classList.add('is-placeholder'); $('reason').addEventListener('change', function () { $('reason').classList.toggle('is-placeholder', !$('reason').value); fieldOk($('reason')); });
+
+  /* Lines: {code, cost, disc (฿/unit), tax (%), qty, lot} */
+  var LINES = [
+    { code: 'PLY58A410012', cost: 45, disc: 0, tax: 0, qty: 12, lot: 'LOT-2407-15', taxType: 'exclusive', discType: 'fixed', unit: '' }
+  ];
+  var tried = false;
+  function calc(l) {
+    var cost = +l.cost || 0, q = +l.qty || 0, t = (+l.tax || 0) / 100;
+    var d = l.discType === 'percent' ? cost * (+l.disc || 0) / 100 : (+l.disc || 0);
+    var after = Math.max(0, cost - d), net, taxU;
+    if (l.taxType === 'inclusive') { net = after / (1 + t); taxU = after - net; } else { net = after; taxU = after * t; }
+    return { net: r2(net), taxU: r2(taxU), sub: r2((net + taxU) * q), discT: r2(d * q), taxT: r2(taxU * q) };
+  }
+
+  function lineError(l) { var p = find(l.code); if (!(+l.cost > 0)) return 'กรุณาระบุต้นทุนต่อหน่วย'; if (!(+l.qty > 0)) return 'กรุณากรอกจำนวนมากกว่า 0'; if (+l.qty * factor(p, l.unit) > p.stock) return 'คืนได้ไม่เกินคงเหลือ ' + num(p.stock) + ' ' + SHORT[p.unit] + (l.unit && l.unit !== p.unit ? ' (' + num(Math.floor(p.stock / factor(p, l.unit) * 100) / 100) + ' ' + SHORT[l.unit] + ')' : ''); return ''; }
+  function renderLines() {
+    var body = $('lineRows');
+    if (!LINES.length) body.innerHTML = '<tr><td colspan="8" class="empty-lines"><span data-icon="box"></span><div>ยังไม่มีสินค้า ค้นหาผ้าด้านบนเพื่อเพิ่มรายการ</div></td></tr>';
+    else body.innerHTML = LINES.map(function (l, i) {
+      var p = find(l.code), c = calc(l), err = tried || l.touched ? lineError(l) : '', lu = l.unit || p.unit, u = SHORT[lu];
+      return '<tr data-i="' + i + '">' +
+        '<td class="pcol"><div class="pcell"><span class="swatch sw-' + p.swatch + '" role="img" aria-label="ตัวอย่างผ้า"></span><div><div class="n">' + esc(p.name) + '</div>' +
+          '<div class="sub"><span class="gg-badge neutral mono code">' + p.code + '</span>' + (l.lot ? '<span class="lot">' + esc(l.lot) + '</span>' : '') +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only edit-line" data-edit aria-label="แก้ไขต้นทุน ส่วนลด ภาษี และล็อตของ ' + esc(p.name) + '"><span data-icon="edit" data-size="sm"></span></button></div></div></div></td>' +
+        '<td class="right money">' + GG.baht(c.net) + '<span class="per">ต่อ' + UNIT[lu] + (l.taxType === 'inclusive' ? ' · รวมภาษี' : '') + '</span></td>' +
+        '<td class="right">' + stockBadge(p) + '</td>' +
+        '<td><div class="qty-wrap"><div class="gg-stepper' + (err && (!(+l.qty > 0) || +l.qty * factor(p, l.unit) > p.stock) ? ' invalid' : '') + '">' +
+          '<button type="button" data-step="-1" aria-label="ลดจำนวน"><span data-icon="minus" data-size="sm"></span></button>' +
+          '<input data-f="qty" inputmode="decimal" value="' + l.qty + '" aria-label="จำนวนของ ' + esc(p.name) + '">' +
+          '<button type="button" data-step="1" aria-label="เพิ่มจำนวน"><span data-icon="plus" data-size="sm"></span></button></div><span class="u">' + u + '</span></div></td>' +
+        '<td class="right money">' + GG.baht(c.discT) + (l.discType === 'percent' && l.disc ? '<span class="per">' + num(l.disc) + '%</span>' : '') + '</td>' +
+        '<td class="right money">' + GG.baht(c.taxT) + (l.tax ? '<span class="per">' + num(l.tax) + '%' + (l.taxType === 'inclusive' ? ' รวมใน' : '') + '</span>' : '') + '</td>' +
+        '<td class="right money strong">' + GG.baht(c.sub) + (err ? '<span class="row-err" role="alert">' + err + '</span>' : '') + '</td>' +
+        '<td class="gg-actions-cell right"><button type="button" class="gg-btn gg-btn-ghost sm icon-only danger" data-remove aria-label="ลบรายการ ' + esc(p.name) + '"><span data-icon="trash" data-size="sm"></span></button></td></tr>';
+    }).join('');
+    GG.hydrateIcons(body);
+    renderTotals();
+  }
+  function renderTotals() {
+    var sub = r2(LINES.reduce(function (s, l) { return s + calc(l).sub; }, 0));
+    var disc = Math.min(money('discount'), sub), rate = money('orderTax'), tax = r2((sub - disc) * rate / 100), ship = money('shipping');
+    $('tSub').textContent = GG.baht(sub);
+    $('tDisc').textContent = disc ? '−' + GG.baht(disc) : GG.baht(0); $('tDisc').className = disc ? 'minus' : '';
+    $('tTaxLabel').textContent = 'ภาษีมูลค่าเพิ่ม ' + num(rate) + '%'; $('tTax').textContent = GG.baht(tax);
+    $('tShip').textContent = GG.baht(ship);
+    $('tGrand').textContent = GG.baht(r2(sub - disc + tax + ship));
+  }
+  ['orderTax', 'discount', 'shipping'].forEach(function (id) { $(id).addEventListener('input', renderTotals); });
+
+  $('lineRows').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr[data-i]'); if (!tr) return; var i = +tr.dataset.i, l = LINES[i];
+    var step = e.target.closest('[data-step]');
+    if (step) { l.qty = Math.max(0, r2((+l.qty || 0) + +step.dataset.step)); l.touched = true; renderLines(); return; }
+    if (e.target.closest('[data-remove]')) { LINES.splice(i, 1); renderLines(); $('pq').focus(); return; }
+    if (e.target.closest('[data-edit]')) openLine(i);
+  });
+  $('lineRows').addEventListener('change', function (e) {
+    var tr = e.target.closest('tr[data-i]'); if (!tr || e.target.dataset.f !== 'qty') return;
+    var v = e.target.value.trim().replace(/,/g, ''); var l = LINES[+tr.dataset.i]; l.qty = isNaN(+v) || v === '' ? '' : Math.max(0, +v); l.touched = true; renderLines();
+  });
+
+  /* Product search (same pattern as Adjustments) */
+  var results = $('presults'), q = $('pq'), active = 0, shown = [];
+  function openResults() {
+    var s = q.value.trim().toLowerCase();
+    shown = PRODUCTS.filter(function (p) { return !s || (p.name + ' ' + p.code).toLowerCase().indexOf(s) >= 0; });
+    active = 0;
+    results.innerHTML = shown.length ? shown.map(function (p, i) {
+      var inList = LINES.some(function (l) { return l.code === p.code; });
+      return '<button type="button" role="option" class="presult' + (i === 0 ? ' on' : '') + '" data-code="' + p.code + '"><span class="swatch sw-' + p.swatch + '" style="width:32px;height:32px"></span>' +
+        '<span><span class="n">' + esc(p.name) + '</span><br><span class="gg-badge neutral mono" style="height:20px;padding:0 6px;font-size:11px">' + p.code + '</span></span>' +
+        '<span class="meta">' + (inList ? '<span class="added">อยู่ในรายการแล้ว</span>' : '') + '<span class="cost">ต้นทุนล่าสุด ' + GG.baht(p.cost) + '/' + SHORT[p.unit] + '</span>' + stockBadge(p) + '</span></button>';
+    }).join('') : '<div class="none">ไม่พบผ้าที่ตรงกับ "' + esc(q.value) + '"</div>';
+    results.hidden = false; q.setAttribute('aria-expanded', 'true');
+  }
+  function closeResults() { results.hidden = true; q.setAttribute('aria-expanded', 'false'); }
+  function addProduct(code) {
+    var ex = LINES.filter(function (l) { return l.code === code; })[0];
+    if (ex) ex.qty = (+ex.qty || 0) + 1; else { if (find(code).stock <= 0) { q.value = ''; closeResults(); $('linesHint').textContent = find(code).name + ' ไม่มีสต็อกให้คืน'; $('linesHint').style.color = 'var(--danger-text)'; return; } LINES.push({ code: code, cost: find(code).cost, disc: 0, tax: 0, qty: 1, lot: '', taxType: 'exclusive', discType: 'fixed', unit: '' }); }
+    q.value = ''; closeResults(); $('lines').classList.remove('invalid'); renderLines();
+    var idx = LINES.findIndex(function (l) { return l.code === code; }), inp = document.querySelector('tr[data-i="' + idx + '"] [data-f="qty"]');
+    if (inp) { inp.focus(); inp.select(); }
+  }
+  q.addEventListener('focus', openResults); q.addEventListener('input', openResults);
+  q.addEventListener('keydown', function (e) {
+    var items = results.querySelectorAll('.presult');
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); if (!items.length) return;
+      items[active].classList.remove('on'); active = (active + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      items[active].classList.add('on'); items[active].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') { e.preventDefault(); if (shown[active]) addProduct(shown[active].code); }
+    else if (e.key === 'Escape') closeResults();
+  });
+  results.addEventListener('mousedown', function (e) { var b = e.target.closest('.presult'); if (b) { e.preventDefault(); addProduct(b.dataset.code); } });
+  document.addEventListener('mousedown', function (e) { if (!$('psearch').contains(e.target)) closeResults(); });
+
+  /* Field errors */
+  function fieldErr(el, msg) { var f = el.closest('.gg-field'); el.closest('.gg-control').classList.add('invalid'); el.setAttribute('aria-invalid', 'true'); var x = f.querySelector('.gg-error'); if (!x) { x = document.createElement('div'); x.className = 'gg-error'; f.appendChild(x); } x.textContent = msg; var h = f.querySelector('.gg-hint'); if (h) h.hidden = true; }
+  function fieldOk(el) { var f = el.closest('.gg-field'); el.closest('.gg-control').classList.remove('invalid'); el.removeAttribute('aria-invalid'); var x = f.querySelector('.gg-error'); if (x) x.remove(); var h = f.querySelector('.gg-hint'); if (h) h.hidden = false; }
+
+  /* Edit line modal */
+  var modal = $('lineModal'), editing = -1;
+  function draft() { return { cost: parseFloat($('lCost').value), tax: parseFloat($('lTax').value || 0), disc: parseFloat($('lDisc').value || 0), taxType: $('lTaxType').value, discType: $('lDiscType').value, qty: LINES[editing].qty }; }
+  function syncModal() {
+    var p = find(LINES[editing].code), u = $('lUnit').value, d = draft();
+    $('lDiscUnit').textContent = d.discType === 'percent' ? '%' : '฿';
+    $('lCostHint').textContent = 'ต่อ' + UNIT[u] + ' · ต้นทุนล่าสุด ' + GG.baht(p.cost * factor(p, u)) + '/' + SHORT[u];
+    $('lUnitHint').textContent = u === p.unit ? 'หน่วยเดียวกับสต็อก' : '1 ' + UNIT[u] + ' = ' + num(factor(p, u)) + ' ' + SHORT[p.unit] + ' ในสต็อก';
+    if (d.cost > 0) { var c = calc(d); $('linePreview').innerHTML = '<span>ต้นทุนสุทธิ <b>' + GG.baht(c.net) + '</b> · ภาษี <b>' + GG.baht(c.taxU) + '</b> ต่อ' + UNIT[u] + '</span><span>รวม <b>' + GG.baht(c.sub) + '</b></span>'; $('linePreview').hidden = false; }
+    else $('linePreview').hidden = true;
+  }
+  function openLine(i) {
+    editing = i; var l = LINES[i], p = find(l.code);
+    $('lineTitle').textContent = p.name; $('lineCode').textContent = p.code;
+    $('lUnit').innerHTML = unitsFor(p).map(function (u) { return '<option value="' + u + '">' + UNIT[u] + '</option>'; }).join('');
+    $('lUnit').value = l.unit || p.unit; $('lUnit').dataset.prev = $('lUnit').value;
+    $('lCost').value = l.cost; $('lTaxType').value = l.taxType || 'exclusive'; $('lTax').value = l.tax || 0;
+    $('lDiscType').value = l.discType || 'fixed'; $('lDisc').value = l.disc || 0; $('lLot').value = l.lot || '';
+    ['lCost', 'lDisc', 'lTax'].forEach(function (id) { fieldOk($(id)); });
+    syncModal(); modal.hidden = false; $('lCost').focus(); $('lCost').select();
+  }
+  /* Changing the purchase unit rescales the cost (e.g. ฿48/m becomes ฿4,800/roll) */
+  $('lUnit').addEventListener('change', function () {
+    var p = find(LINES[editing].code), from = $('lUnit').dataset.prev, to = $('lUnit').value, c = parseFloat($('lCost').value);
+    if (c > 0) $('lCost').value = r2(c / factor(p, from) * factor(p, to));
+    if ($('lDiscType').value === 'fixed' && parseFloat($('lDisc').value) > 0) $('lDisc').value = r2(parseFloat($('lDisc').value) / factor(p, from) * factor(p, to));
+    $('lUnit').dataset.prev = to; syncModal();
+  });
+  ['lCost', 'lTax', 'lDisc'].forEach(function (id) { $(id).addEventListener('input', function () { fieldOk($(id)); syncModal(); }); });
+  ['lTaxType', 'lDiscType'].forEach(function (id) { $(id).addEventListener('change', syncModal); });
+  function closeLine() { modal.hidden = true; }
+  modal.addEventListener('mousedown', function (e) { if (e.target === modal) closeLine(); });
+  modal.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', closeLine); });
+  $('lineForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = draft(), bad = false;
+    if (!(d.cost > 0)) { fieldErr($('lCost'), 'กรุณากรอกต้นทุนมากกว่า 0'); bad = true; }
+    if (isNaN(d.tax) || d.tax < 0 || d.tax > 100) { fieldErr($('lTax'), 'กรุณากรอก 0–100'); bad = true; }
+    if (isNaN(d.disc) || d.disc < 0) { fieldErr($('lDisc'), 'กรุณากรอกตัวเลขตั้งแต่ 0 ขึ้นไป'); bad = true; }
+    else if (d.discType === 'percent' && d.disc > 100) { fieldErr($('lDisc'), 'ส่วนลดเปอร์เซ็นต์ต้องไม่เกิน 100%'); bad = true; }
+    else if (d.discType === 'fixed' && d.cost > 0 && d.disc > d.cost) { fieldErr($('lDisc'), 'ส่วนลดต้องไม่เกินต้นทุนสินค้า'); bad = true; }
+    if (bad) return;
+    var p = find(LINES[editing].code), u = $('lUnit').value;
+    Object.assign(LINES[editing], { cost: d.cost, tax: d.tax, disc: d.disc, taxType: d.taxType, discType: d.discType, unit: u === p.unit ? '' : u, lot: $('lLot').value.trim().toUpperCase() });
+    closeLine(); renderLines();
+  });
+
+  /* Save */
+  $('poForm').addEventListener('submit', function (e) {
+    e.preventDefault(); tried = true; var bad = 0, first = null;
+    if (!$('date').value) { fieldErr($('date'), 'กรุณาเลือกวันที่'); bad++; first = first || $('date'); }
+    if (!$('supplier').value) { fieldErr($('supplier'), 'กรุณาเลือกผู้จำหน่าย'); bad++; first = first || $('supplier'); }
+    if (!$('reason').value) { fieldErr($('reason'), 'กรุณาเลือกเหตุผลการคืน'); bad++; first = first || $('reason'); }
+    ['orderTax', 'discount', 'shipping'].forEach(function (id) { var v = $(id).value.trim(); if (v && (isNaN(+v.replace(/,/g, '')) || +v.replace(/,/g, '') < 0)) { fieldErr($(id), 'กรุณากรอกตัวเลขตั้งแต่ 0 ขึ้นไป'); bad++; first = first || $(id); } else fieldOk($(id)); });
+    if (!LINES.length) { $('lines').classList.add('invalid'); $('linesHint').textContent = 'กรุณาเพิ่มสินค้าอย่างน้อย 1 รายการ'; $('linesHint').style.color = 'var(--danger-text)'; bad++; first = first || q; }
+    renderLines();
+    var lb = LINES.filter(lineError).length; bad += lb; if (lb && !first) first = document.querySelector('.gg-stepper.invalid input') || document.querySelector('[data-edit]');
+    $('formOk').classList.remove('show');
+    if (bad) { $('formAlertText').textContent = 'มี ' + bad + ' จุดที่ต้องแก้ไข'; $('formAlert').classList.add('show'); if (first) first.focus(); return; }
+    $('formAlert').classList.remove('show');
+    var now = new Date(), time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    var rec = { ref: $('docRef').textContent, supplier: $('supplier').value, status: $('status').value, method: $('payment').value,
+      reason: $('reason').value, po: $('poRef').value, orderTax: money('orderTax'), discount: money('discount'), shipping: money('shipping'), notes: $('notes').value,
+      created: $('date').value + 'T' + (editingRec ? editingRec.created.slice(11, 16) : time),
+      rawLines: LINES.map(function (l) { var c = Object.assign({}, l); delete c.touched; return c; }) };
+    window.PRList.hydrate(rec);
+    rec.refunded = rec.status === 'completed' ? rec.total : 0;
+    window.PRList.save(rec, !!editingRec);
+    $('createModal').hidden = true;
+  });
+
+  /* ---- Dialog API used by the list ---- */
+  var editingRec = null, HINT = $('linesHint').textContent;
+  function totalOf(lines, rate, discount, shipping) {
+    var sub = r2(lines.reduce(function (s, l) { return s + calc(l).sub; }, 0)), disc = Math.min(discount || 0, sub);
+    return r2(sub - disc + r2((sub - disc) * (rate || 0) / 100) + (shipping || 0));
+  }
+  function setSel(id, v) { var el = $(id); el.value = v; if (el.value !== v) el.selectedIndex = v === '' ? 0 : el.selectedIndex; el.classList.toggle('is-placeholder', !el.value); }
+  function openForm(rec) {
+    editingRec = rec || null;
+    $('createTitle').textContent = rec ? 'แก้ไขรายการคืนสินค้า ' + rec.ref : 'สร้างรายการคืนสินค้าให้ผู้จำหน่าย';
+    $('docRef').textContent = rec ? rec.ref : window.PRList.nextRef();
+    $('date').value = rec ? rec.created.slice(0, 10) : iso; showDate();
+    setSel('supplier', rec ? rec.supplier : $('supplier').options[1].value);
+    setSel('reason', rec ? rec.reason : ''); setSel('poRef', rec ? rec.po : '');
+    setSel('status', rec ? rec.status : 'completed'); statusHint();
+    setSel('payment', rec ? rec.method : $('payment').options[0].value);
+    $('orderTax').value = rec ? rec.orderTax : 7; $('discount').value = (rec ? rec.discount : 0).toFixed(2); $('shipping').value = (rec ? rec.shipping : 0).toFixed(2);
+    $('notes').value = rec ? rec.notes : ''; $('pq').value = '';
+    LINES = rec ? rec.rawLines.map(function (l) { return Object.assign({}, l); }) : [];
+    tried = false;
+    $('poForm').querySelectorAll('.gg-error').forEach(function (x) { x.remove(); });
+    $('poForm').querySelectorAll('.invalid').forEach(function (x) { x.classList.remove('invalid'); });
+    $('poForm').querySelectorAll('[aria-invalid]').forEach(function (x) { x.removeAttribute('aria-invalid'); });
+    $('poForm').querySelectorAll('.gg-hint[hidden]').forEach(function (x) { x.hidden = false; });
+    $('formAlert').classList.remove('show'); $('formOk').classList.remove('show');
+    $('linesHint').textContent = HINT; $('linesHint').style.color = '';
+    renderLines();
+    $('createModal').hidden = false;
+    $('createModal').querySelector('.gg-modal-body').scrollTop = 0;
+    (rec ? $('reason') : $('supplier')).focus();
+  }
+  window.PRForm = {
+    open: openForm,
+    describe: function (l) { var p = find(l.code), c = calc(l), u = l.unit || p.unit; return [p.name, p.code, +l.qty, SHORT[u], r2(c.net + c.taxU), c.sub]; },
+    totalOf: function (r) { return totalOf(r.rawLines, r.orderTax, r.discount, r.shipping); }
+  };
+  /* Sample returns get their totals from the same calculator, then the list draws */
+  window.PRList.records.forEach(window.PRList.hydrate);
+  window.PRList.render();
+
+  renderLines();
+})();
+/* wire every menu and draw every icon once the page content exists */
+document.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+GG.hydrateIcons(document);
+</script>
+</body>
+</html>

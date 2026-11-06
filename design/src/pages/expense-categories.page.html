@@ -1,0 +1,190 @@
+===CSS===
+.gg-table td { height: 60px; }
+.cat-table .gg-table th:first-child, .cat-table .gg-table td:first-child { padding-left: var(--space-6); }
+.cname { display: flex; align-items: center; gap: var(--space-3); color: var(--ink); font-weight: 600; }
+.cname .ic { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--radius-md); background: var(--primary-soft); color: var(--primary); flex: none; }
+.count-link { color: var(--primary); font-weight: 600; text-decoration: none; }
+.count-link:hover { text-decoration: underline; }
+.share { display: flex; align-items: center; gap: var(--space-3); justify-content: flex-end; }
+.share .bar { width: 120px; height: 6px; border-radius: var(--radius-pill); background: var(--surface-sunken); overflow: hidden; }
+.share .bar i { display: block; height: 100%; background: var(--primary); border-radius: inherit; }
+.share .pct { width: 44px; text-align: right; font: 500 13px/18px var(--font-sans); color: var(--muted); font-variant-numeric: tabular-nums; }
+.gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.gg-table tfoot .label { font: 700 15px/20px var(--font-display); }
+.toast { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: calc(var(--z-modal) + 5); display: none; }
+.toast.show { display: inline-flex; box-shadow: var(--shadow-2); height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+.toast.danger { background: var(--danger-soft); color: var(--danger-text); }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">หมวดหมู่ค่าใช้จ่าย</h1>
+          <p class="gg-pagehead-sub" id="summaryLine">จัดกลุ่มค่าใช้จ่ายเพื่อดูว่าเงินออกไปที่ไหน</p>
+        </div>
+      </div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div style="width:340px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+            <input id="search" placeholder="ค้นหาชื่อหมวดหมู่" aria-label="ค้นหาหมวดหมู่ค่าใช้จ่าย"></div></div>
+          <button type="button" class="gg-btn gg-btn-primary" id="newBtn"><span data-icon="plus"></span>สร้างหมวดหมู่ค่าใช้จ่าย</button>
+        </div>
+        <div class="gg-table-wrap cat-table">
+          <table class="gg-table">
+            <thead><tr>
+              <th class="sortable" data-sort="name">ชื่อหมวดหมู่<span class="gg-sort"></span></th>
+              <th class="right sortable" data-sort="count">จำนวนรายการ<span class="gg-sort"></span></th>
+              <th class="right sortable" data-sort="total">ยอดค่าใช้จ่ายรวม<span class="gg-sort"></span></th>
+              <th class="right">สัดส่วน</th>
+              <th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+            <tfoot><tr><td class="label">รวม</td><td class="right gg-num" id="footCount"></td><td class="right gg-num" id="footTotal"></td><td colspan="2"></td></tr></tfoot>
+          </table>
+        </div>
+        <div class="gg-pager">
+          <div class="gg-pager-size">แถวต่อหน้า
+            <div class="gg-control"><select id="pageSize" aria-label="แถวต่อหน้า"><option>10</option><option>25</option><option>50</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <span class="gg-num" id="count" style="margin-left:8px"></span>
+          </div>
+          <nav class="gg-pager-pages" aria-label="เลขหน้า" id="pages"></nav>
+        </div>
+      </div>
+
+      <!-- Create / edit category -->
+      <div class="gg-scrim" id="catModal" hidden>
+        <form class="gg-modal" style="max-width:460px" id="catForm" novalidate role="dialog" aria-modal="true" aria-labelledby="catTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="catTitle">สร้างหมวดหมู่ค่าใช้จ่าย</h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body">
+            <div class="gg-field"><label class="gg-label" for="cName">ชื่อหมวดหมู่<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="cName" maxlength="50" required placeholder="กรอกชื่อหมวดหมู่"></div>
+              <div class="gg-hint" id="cHint">เช่น ค่าซักรีดผ้าตัวอย่าง</div></div>
+          </div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="submit" class="gg-btn gg-btn-primary" id="cSave" disabled><span data-icon="check"></span>บันทึก</button></div>
+        </form>
+      </div>
+
+      <!-- Confirm delete -->
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon"><span data-icon="trash"></span></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close id="confirmCancel">ยกเลิก</button><button type="button" class="gg-btn gg-btn-danger" id="confirmDelete">ลบหมวดหมู่</button></div>
+        </div>
+      </div>
+
+      <span class="toast gg-badge success" id="toast" role="status"><span class="gg-badge-dot"></span><span id="toastText"></span></span>
+===JS===
+/*@include sales-data*/
+/*@include transfer-data*/
+/*@include expense-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc, C = D.ECATS, E = D.EXPENSES;
+  function stats(c) { var l = E.filter(function (e) { return e.category === c.id; }); c.count = l.length; c.total = l.reduce(function (a, e) { return a + e.amount; }, 0); return c; }
+  var state = { q: '', sort: { key: 'total', dir: 'desc' }, page: 1, size: 10 };
+  function render() {
+    C.forEach(stats);
+    var all = E.reduce(function (a, e) { return a + e.amount; }, 0), q = state.q.toLowerCase();
+    var list = C.filter(function (c) { return !q || c.name.toLowerCase().indexOf(q) >= 0; });
+    var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+    list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y, 'th') : x - y) * dir; });
+    var total = list.length, pages = Math.max(1, Math.ceil(total / state.size));
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * state.size, rows = list.slice(start, start + state.size), body = $('rows');
+    body.innerHTML = rows.length ? rows.map(function (c, i) {
+      var pct = all ? c.total / all * 100 : 0;
+      return '<tr><td><div class="cname"><span class="ic"><span data-icon="wallet" data-size="sm"></span></span>' + esc(c.name) + '</div></td>' +
+        '<td class="right">' + (c.count ? '<a class="count-link" href="lts-expenses.html?category=' + c.id + '">' + c.count + ' รายการ</a>' : '<span class="gg-hint">ยังไม่มี</span>') + '</td>' +
+        '<td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(c.total) + '</td>' +
+        '<td><div class="share"><span class="bar"><i style="width:' + pct.toFixed(1) + '%"></i></span><span class="pct">' + pct.toFixed(1) + '%</span></div></td>' +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu>' +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + esc(c.name) + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+          '<div class="gg-menu' + (i >= rows.length - 2 && rows.length > 4 ? ' up' : '') + '" role="menu" hidden>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-edit="' + c.id + '"><span data-icon="edit" data-size="sm"></span>แก้ไขชื่อหมวดหมู่</button>' +
+            '<div class="gg-menu-sep" role="separator"></div>' +
+            '<button type="button" role="menuitem" class="gg-menu-item danger" data-delete="' + c.id + '"><span data-icon="trash" data-size="sm"></span>ลบหมวดหมู่</button>' +
+          '</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="5" class="gg-empty">ไม่พบหมวดหมู่ที่ตรงกับ "' + esc(state.q) + '"</td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-edit]').forEach(function (b) { b.addEventListener('click', function () { openForm(D.ecat(b.dataset.edit)); }); });
+    body.querySelectorAll('[data-delete]').forEach(function (b) { b.addEventListener('click', function () { askDelete(D.ecat(b.dataset.delete)); }); });
+    GG.hydrateIcons(body);
+    $('footCount').textContent = list.reduce(function (a, c) { return a + c.count; }, 0) + ' รายการ';
+    $('footTotal').textContent = GG.baht(list.reduce(function (a, c) { return a + c.total; }, 0));
+    $('summaryLine').textContent = 'จัดกลุ่มค่าใช้จ่ายเพื่อดูว่าเงินออกไปที่ไหน · ' + C.length + ' หมวดหมู่';
+    $('count').textContent = (total ? start + 1 : 0) + '–' + Math.min(total, start + state.size) + ' จาก ' + total;
+    var nav = $('pages'); nav.innerHTML = '';
+    function pb(label, iconName, page, disabled, active) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gg-page' + (active ? ' active' : ''); b.disabled = disabled;
+      if (iconName) { b.setAttribute('aria-label', label); b.appendChild(GG.icon(iconName, 'sm')); } else b.textContent = label;
+      if (active) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { state.page = page; render(); });
+      nav.appendChild(b);
+    }
+    pb('หน้าแรก', 'chevrons-left', 1, state.page <= 1); pb('หน้าก่อนหน้า', 'chevron-left', state.page - 1, state.page <= 1);
+    for (var p = 1; p <= pages; p++) pb(String(p), null, p, false, p === state.page);
+    pb('หน้าถัดไป', 'chevron-right', state.page + 1, state.page >= pages); pb('หน้าสุดท้าย', 'chevrons-right', pages, state.page >= pages);
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort.key === th.dataset.sort;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var h = th.querySelector('.gg-sort'); h.innerHTML = ''; h.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+  }
+  $('search').addEventListener('input', function (e) { state.q = e.target.value; state.page = 1; render(); });
+  $('pageSize').addEventListener('change', function (e) { state.size = +e.target.value; state.page = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) { th.addEventListener('click', function () { var k = th.dataset.sort; state.sort = state.sort.key === k ? { key: k, dir: state.sort.dir === 'asc' ? 'desc' : 'asc' } : { key: k, dir: k === 'name' ? 'asc' : 'desc' }; render(); }); });
+
+  function closeModal(m) { m.hidden = true; }
+  document.querySelectorAll('.gg-scrim').forEach(function (m) {
+    m.addEventListener('mousedown', function (e) { if (e.target === m) closeModal(m); });
+    m.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(m); }); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key !== 'Escape') return; var open = [].filter.call(document.querySelectorAll('.gg-scrim'), function (m) { return !m.hidden; }); if (open.length) closeModal(open[open.length - 1]); });
+  function toast(t, bad) { $('toastText').textContent = t; $('toast').className = 'toast gg-badge show ' + (bad ? 'danger' : 'success'); clearTimeout(toast.t); toast.t = setTimeout(function () { $('toast').classList.remove('show'); }, 2800); }
+
+  /* Create / edit: name is required and must be unique (ignoring spaces and case) */
+  var editing = null;
+  function norm(s) { return s.replace(/\s+/g, ' ').trim().toLowerCase(); }
+  function nameProblem(show) {
+    var v = norm($('cName').value), msg = '';
+    if (!v) msg = 'กรุณากรอกชื่อหมวดหมู่';
+    else if (C.some(function (c) { return c !== editing && norm(c.name) === v; })) msg = 'มีหมวดหมู่ชื่อนี้อยู่แล้ว';
+    else if (editing && norm(editing.name) === v) msg = 'same';
+    var f = $('cName').closest('.gg-field'), x = f.querySelector('.gg-error'), real = msg && msg !== 'same' && (show || msg !== 'กรุณากรอกชื่อหมวดหมู่');
+    $('cName').closest('.gg-control').classList.toggle('invalid', !!real);
+    if (real) { if (!x) { x = document.createElement('div'); x.className = 'gg-error'; f.appendChild(x); } x.textContent = msg; $('cHint').hidden = true; }
+    else { if (x) x.remove(); $('cHint').hidden = false; }
+    $('cSave').disabled = !!msg;
+    return msg;
+  }
+  $('cName').addEventListener('input', function () { nameProblem(false); });
+  $('cName').addEventListener('blur', function () { nameProblem(true); });
+  function openForm(c) {
+    editing = c || null;
+    $('catTitle').textContent = c ? 'แก้ไขหมวดหมู่ค่าใช้จ่าย' : 'สร้างหมวดหมู่ค่าใช้จ่าย';
+    $('cName').value = c ? c.name : ''; $('cHint').textContent = c ? 'ค่าใช้จ่าย ' + c.count + ' รายการในหมวดนี้จะแสดงชื่อใหม่' : 'เช่น ค่าซักรีดผ้าตัวอย่าง';
+    nameProblem(false); $('catModal').hidden = false; $('cName').focus(); $('cName').select();
+  }
+  $('newBtn').addEventListener('click', function () { openForm(null); });
+  $('catForm').addEventListener('submit', function (e) {
+    e.preventDefault(); if (nameProblem(true)) return;
+    var name = $('cName').value.replace(/\s+/g, ' ').trim();
+    if (editing) { editing.name = name; toast('เปลี่ยนชื่อหมวดหมู่เป็น "' + name + '" แล้ว'); }
+    else { C.push({ id: 'K' + (Math.max.apply(null, C.map(function (c) { return +c.id.slice(1); })) + 1), name: name }); state.q = ''; $('search').value = ''; toast('สร้างหมวดหมู่ "' + name + '" แล้ว'); }
+    closeModal($('catModal')); render();
+  });
+
+  /* Delete: a category still used by expenses can't be removed */
+  var pending = null;
+  function askDelete(c) {
+    pending = c; var used = c.count > 0;
+    $('confirmTitle').textContent = used ? 'ลบ "' + c.name + '" ไม่ได้' : 'ลบหมวดหมู่ "' + c.name + '" ใช่หรือไม่?';
+    $('confirmText').innerHTML = used ? 'หมวดนี้มีค่าใช้จ่าย ' + c.count + ' รายการ (' + GG.baht(c.total) + ') ย้ายรายการเหล่านั้นไปหมวดอื่นก่อน แล้วจึงลบหมวดหมู่ <a href="lts-expenses.html?category=' + c.id + '" style="color:var(--primary);font-weight:600">ดูรายการ</a>' : 'การลบนี้ไม่สามารถย้อนกลับได้';
+    $('confirmDelete').hidden = used; $('confirmCancel').textContent = used ? 'ปิด' : 'ยกเลิก';
+    $('confirm').hidden = false;
+  }
+  $('confirmDelete').addEventListener('click', function () { if (pending) { C.splice(C.indexOf(pending), 1); toast('ลบหมวดหมู่ "' + pending.name + '" แล้ว'); } pending = null; closeModal($('confirm')); render(); });
+
+  render();
+})();

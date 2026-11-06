@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="th" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>เพิ่มผู้ใช้งาน · LTS Solution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Public+Sans:ital,wght@0,400..700;1,400&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+
+<style>
+/* ===== LTS Solution design tokens (generated from tokens.json) ===== */
+:root {
+  --canvas: #3f538c;
+  --on-canvas: #ffffff;
+  --on-canvas-muted: #d8d9d9;
+  --canvas-rule: #5b6da0;
+  --surface: #ffffff;
+  --surface-sunken: #f7f8fa;
+  --surface-hover: #eef1f7;
+  --border: #e2e5eb;
+  --border-input: #8a92a2;
+  --ink: #141b2b;
+  --ink-2: #3a4357;
+  --muted: #5d6576;
+  --placeholder: #6b7385;
+  --primary: #22407a;
+  --primary-hover: #1a3262;
+  --primary-soft: #e8edf7;
+  --on-primary: #ffffff;
+  --gold: #d9a53b;
+  --gold-hover: #c8932a;
+  --gold-soft: #fbf1dc;
+  --gold-text: #7f5a12;
+  --on-gold: #1f1605;
+  --teal: #0e6e6c;
+  --teal-soft: #e0f2f1;
+  --teal-text: #0b5856;
+  --rose: #a8365a;
+  --rose-soft: #fbe7ee;
+  --rose-text: #8c2b4a;
+  --success: #1b7a48;
+  --success-soft: #e3f3e8;
+  --success-text: #176239;
+  --warning: #c26a0a;
+  --warning-soft: #fdefd6;
+  --warning-text: #874604;
+  --danger: #c02a2a;
+  --danger-hover: #a11f22;
+  --danger-soft: #fce5e4;
+  --danger-text: #a11f22;
+  --info: #1f6fb2;
+  --info-soft: #e1eef9;
+  --info-text: #1a5a91;
+  --neutral-soft: #eceef2;
+  --neutral-text: #3a4357;
+  --sidebar-bg: #101b30;
+  --sidebar-raised: #1d2b47;
+  --sidebar-text: #c3cada;
+  --sidebar-muted: #8e98ae;
+  --sidebar-active: #ffffff;
+  --focus: #2e6be6;
+  --overlay: rgba(16, 27, 48, 0.55);
+  --shadow-1: {'light': '0 1px 2px rgba(16, 27, 48, 0.06), 0 0 0 1px rgba(16, 27, 48, 0.05)'};
+  --shadow-2: {'light': '0 6px 16px -4px rgba(16, 27, 48, 0.14), 0 0 0 1px rgba(16, 27, 48, 0.06)'};
+  --shadow-3: {'light': '0 24px 48px -12px rgba(16, 27, 48, 0.32)'};
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --sidebar-width: 264px;
+  --sidebar-collapsed: 76px;
+  --topbar-height: 64px;
+  --content-max: 1600px;
+  --control-height: 40px;
+  --row-height: 52px;
+  --z-sidebar: 20;
+  --z-menu: 40;
+  --z-modal: 60;
+  --font-display: "Bricolage Grotesque", "IBM Plex Sans Thai", "Public Sans", system-ui, sans-serif;
+  --font-sans: "Public Sans", "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ===== LTS Solution component styles (components/bundle.css) ===== */
+/* LTS Solution components — every value comes from tokens.json */
+.gg, .gg *, [class^="gg-"], [class*=" gg-"] { box-sizing: border-box; }
+body { margin: 0; background: var(--canvas); color: var(--ink-2); font-family: var(--font-sans); font-size: 14px; line-height: 20px; }
+.gg-num { font-variant-numeric: tabular-nums; }
+.gg-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.gg-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+.gg-stack > *, .gg-shell-content > * { min-width: 0; }
+.gg-pad { padding: var(--space-6); }
+.gg :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.gg-icon { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.gg-icon.sm { width: 16px; height: 16px; }
+.gg-icon.lg { width: 22px; height: 22px; }
+.gg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Button */
+.gg-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); border: 1px solid transparent; font: 600 14px/20px var(--font-sans); cursor: pointer; white-space: nowrap; transition: background-color .12s, border-color .12s, color .12s; }
+.gg-btn.sm { height: 32px; padding: 0 var(--space-3); font-size: 13px; }
+.gg-btn.lg { height: 48px; padding: 0 var(--space-6); font-size: 15px; }
+.gg-btn.icon-only { width: var(--control-height); padding: 0; }
+.gg-btn.sm.icon-only { width: 32px; }
+.gg-btn-primary { background: var(--primary); color: var(--on-primary); }
+.gg-btn-primary:hover { background: var(--primary-hover); }
+.gg-btn-secondary { background: var(--surface); color: var(--primary); border-color: var(--border-input); }
+.gg-btn-secondary:hover { background: var(--surface-hover); border-color: var(--primary); }
+.gg-btn-danger { background: var(--danger); color: var(--on-primary); }
+.gg-btn-danger:hover { background: var(--danger-hover); }
+.gg-btn-gold { background: var(--gold); color: var(--on-gold); }
+.gg-btn-gold:hover { background: var(--gold-hover); }
+.gg-btn-ghost { background: transparent; color: var(--ink-2); }
+.gg-btn-ghost:hover { background: var(--surface-hover); color: var(--ink); }
+.gg-btn[disabled], .gg-btn[aria-busy="true"] { cursor: not-allowed; opacity: .45; }
+.gg-btn-ghost.danger { color: var(--danger); }
+
+/* Badge */
+.gg-badge { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--radius-sm); font: 600 12px/16px var(--font-sans); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.gg-badge-dot { width: 6px; height: 6px; border-radius: var(--radius-pill); background: currentColor; }
+.gg-badge.success { background: var(--success-soft); color: var(--success-text); }
+.gg-badge.warning { background: var(--warning-soft); color: var(--warning-text); }
+.gg-badge.danger { background: var(--danger-soft); color: var(--danger-text); }
+.gg-badge.info { background: var(--info-soft); color: var(--info-text); }
+.gg-badge.neutral { background: var(--neutral-soft); color: var(--neutral-text); }
+.gg-badge.gold { background: var(--gold-soft); color: var(--gold-text); }
+.gg-badge.primary { background: var(--primary-soft); color: var(--primary); }
+.gg-badge.mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 500; letter-spacing: .02em; }
+
+/* Field + controls */
+.gg-field { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.gg-field.span-2 { grid-column: 1 / -1; }
+.gg-label { font: 600 13px/18px var(--font-sans); color: var(--ink); }
+.gg-req { color: var(--danger); margin-left: 2px; }
+.gg-hint { font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-error { font: 500 12px/16px var(--font-sans); color: var(--danger-text); }
+.gg-control { position: relative; display: flex; align-items: stretch; height: var(--control-height); background: var(--surface); border: 1px solid var(--border-input); border-radius: var(--radius-md); transition: border-color .12s, box-shadow .12s; }
+.gg-control:hover { border-color: var(--ink-2); }
+.gg-control:focus-within { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
+.gg-control input:focus-visible, .gg-control select:focus-visible, .gg-control textarea:focus-visible { outline: none; }
+.gg-control.invalid { border-color: var(--danger); }
+.gg-control.disabled { background: var(--surface-sunken); border-color: var(--border); }
+.gg-control.textarea { height: auto; }
+.gg-control input, .gg-control select, .gg-control textarea { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: 0 var(--space-4); font: 400 14px/20px var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; border-radius: var(--radius-md); }
+.gg-control textarea { padding: 10px var(--space-4); min-height: 96px; resize: vertical; }
+.gg-control select { appearance: none; padding-right: 40px; cursor: pointer; }
+.gg-control ::placeholder { color: var(--placeholder); opacity: 1; }
+.gg-control .gg-lead { display: flex; align-items: center; padding-left: var(--space-3); color: var(--muted); }
+.gg-control .gg-lead + input { padding-left: var(--space-2); }
+.gg-control .gg-caret { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.gg-addon { display: flex; align-items: center; padding: 0 var(--space-4); background: var(--surface-sunken); color: var(--muted); font: 600 13px/18px var(--font-sans); border-left: 1px solid var(--border); border-radius: 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0; }
+.gg-addon.btn { background: var(--primary); color: var(--on-primary); border-left: 0; cursor: pointer; border: 0; }
+.gg-stepper { display: inline-flex; height: 36px; border: 1px solid var(--border-input); border-radius: var(--radius-md); overflow: hidden; background: var(--surface); }
+.gg-stepper button { width: 36px; border: 0; background: var(--surface-sunken); color: var(--primary); cursor: pointer; display: grid; place-items: center; }
+.gg-stepper button:hover { background: var(--primary-soft); }
+.gg-stepper input { width: 52px; border: 0; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; font: 600 14px/20px var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; outline: 0; }
+
+/* Card + FormCard */
+.gg-card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); }
+.gg-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-6) 0; }
+.gg-card-title { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.gg-card-sub { margin: 2px 0 0; font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-card-body { padding: var(--space-5) var(--space-6) var(--space-6); }
+.gg-card-foot { display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border); }
+.gg-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+.gg-form-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gg-form-section { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-2); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.gg-form-section::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+/* StatCard */
+.gg-stat { position: relative; display: flex; align-items: center; gap: var(--space-4); min-height: 112px; padding: var(--space-5) var(--space-6); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); overflow: hidden; }
+.gg-stat-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-md); flex: none; }
+.gg-stat-body { min-width: 0; }
+.gg-stat-label { font: 600 13px/18px var(--font-sans); }
+.gg-stat-value { margin-top: 2px; font: 800 28px/32px var(--font-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gg-stat-delta { margin-top: 4px; font: 600 12px/16px var(--font-sans); }
+.gg-stat.strong { color: var(--on-primary); }
+.gg-stat.strong .gg-stat-icon { background: rgba(255, 255, 255, 0.14); }
+.gg-stat.strong .gg-stat-label, .gg-stat.strong .gg-stat-delta { opacity: .86; }
+.gg-stat.strong.navy { background: var(--primary); }
+.gg-stat.strong.teal { background: var(--teal); }
+.gg-stat.strong.rose { background: var(--rose); }
+.gg-stat.strong.gold { background: var(--gold); color: var(--on-gold); }
+.gg-stat.strong.gold .gg-stat-icon { background: rgba(31, 22, 5, 0.1); }
+.gg-stat.soft { background: var(--surface); }
+.gg-stat.soft .gg-stat-value { color: var(--ink); }
+.gg-stat.soft .gg-stat-label { color: var(--muted); }
+.gg-stat.soft.navy .gg-stat-icon { background: var(--primary-soft); color: var(--primary); }
+.gg-stat.soft.gold .gg-stat-icon { background: var(--gold-soft); color: var(--gold-text); }
+.gg-stat.soft.teal .gg-stat-icon { background: var(--teal-soft); color: var(--teal-text); }
+.gg-stat.soft.rose .gg-stat-icon { background: var(--rose-soft); color: var(--rose-text); }
+.gg-stat.soft .gg-stat-delta.up { color: var(--success-text); }
+.gg-stat.soft .gg-stat-delta.down { color: var(--danger-text); }
+.gg-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+
+/* DataTable */
+.gg-table-card { min-width: 0; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); }
+.gg-table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-5) var(--space-6); }
+.gg-table-wrap { overflow-x: auto; }
+.gg-table { width: 100%; border-collapse: separate; border-spacing: 0; font: 400 14px/20px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.gg-table th { position: sticky; top: 0; height: 44px; padding: 0 var(--space-4); background: var(--surface-sunken); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: left; font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.gg-table th:first-child, .gg-table td:first-child { padding-left: var(--space-6); }
+.gg-table th:last-child, .gg-table td:last-child { padding-right: var(--space-6); }
+.gg-table th.sortable { cursor: pointer; }
+.gg-table th.sortable:hover { color: var(--ink); }
+.gg-table th .gg-sort { display: inline-flex; vertical-align: -3px; margin-left: 4px; }
+.gg-table td { height: var(--row-height); padding: 0 var(--space-4); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.gg-table.compact td { height: 44px; }
+.gg-table .right { text-align: right; }
+.gg-table .center { text-align: center; }
+.gg-table td.primary { color: var(--ink); font-weight: 600; }
+.gg-table tbody tr { transition: background-color .08s; }
+.gg-table tbody tr:hover { background: var(--surface-hover); }
+.gg-table tbody tr.selected { background: var(--primary-soft); }
+.gg-table tfoot td { height: 52px; border-bottom: 0; background: var(--surface-sunken); color: var(--ink); font-weight: 700; }
+.gg-table .gg-check { width: 16px; height: 16px; accent-color: var(--primary); }
+.gg-thumb { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--surface-sunken); object-fit: cover; display: block; border: 1px solid var(--border); }
+.gg-empty { padding: var(--space-12) var(--space-6); text-align: center; color: var(--muted); }
+.gg-actions-cell { width: 56px; }
+.gg-menu-anchor { position: relative; display: inline-block; }
+.gg-menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: var(--z-menu); min-width: 184px; padding: 6px; background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-2); text-align: left; }
+.gg-menu.up { top: auto; bottom: calc(100% + 4px); }
+.gg-menu-item { display: flex; align-items: center; gap: 10px; width: 100%; height: 36px; padding: 0 10px; border: 0; background: none; border-radius: var(--radius-sm); font: 500 14px/20px var(--font-sans); color: var(--ink-2); cursor: pointer; text-align: left; }
+.gg-menu-item:hover { background: var(--surface-hover); color: var(--ink); }
+.gg-menu-item.danger { color: var(--danger-text); }
+.gg-menu-item.danger:hover { background: var(--danger-soft); }
+.gg-menu-sep { height: 1px; margin: 6px 4px; background: var(--border); }
+
+/* Pagination */
+.gg-pager { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-6); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.gg-pager-size { display: flex; align-items: center; gap: var(--space-2); }
+.gg-pager-size .gg-control { height: 32px; width: 76px; }
+.gg-pager-size select { padding: 0 28px 0 10px; font-size: 13px; }
+.gg-pager-pages { display: flex; align-items: center; gap: 4px; }
+.gg-page { min-width: 32px; height: 32px; padding: 0 8px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--ink-2); font: 600 13px/18px var(--font-sans); cursor: pointer; display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+.gg-page:hover { background: var(--surface-hover); }
+.gg-page.active { background: var(--primary); color: var(--on-primary); }
+.gg-page[disabled] { opacity: .4; cursor: default; background: transparent; }
+
+/* Modal */
+.gg-scrim { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-8); background: var(--overlay); }
+.gg-scrim.inline { position: relative; inset: auto; min-height: 100%; }
+.gg-modal { width: 100%; max-width: 560px; max-height: calc(100vh - 64px); display: flex; flex-direction: column; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-3); }
+.gg-modal.sm { max-width: 420px; }
+.gg-modal.lg { max-width: 800px; }
+.gg-modal-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--border); }
+.gg-modal-title { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.gg-modal-body { padding: var(--space-6); overflow-y: auto; }
+.gg-modal-foot { display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border); }
+.gg-modal-confirm { display: flex; gap: var(--space-4); }
+.gg-modal-confirm .gg-stat-icon { background: var(--danger-soft); color: var(--danger); }
+
+/* Sidebar */
+.gg-sidebar { position: sticky; top: 0; z-index: var(--z-sidebar); height: 100vh; width: var(--sidebar-width); flex: none; display: flex; flex-direction: column; background: var(--sidebar-bg); color: var(--sidebar-text); transition: width .18s ease; }
+.gg-sidebar.static { position: relative; height: auto; min-height: 100%; }
+.gg-sidebar.collapsed { width: var(--sidebar-collapsed); }
+.gg-sidebar :focus-visible { outline-color: var(--gold); }
+.gg-brand { display: flex; align-items: center; gap: var(--space-3); height: var(--topbar-height); padding: 0 var(--space-5); border-bottom: 1px solid var(--sidebar-raised); flex: none; }
+.gg-brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--gold); color: var(--on-gold); font: 800 17px/1 var(--font-display); flex: none; }
+.gg-brand-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.gg-brand-name { font: 700 18px/24px var(--font-display); color: var(--sidebar-active); white-space: nowrap; letter-spacing: -0.01em; }
+.gg-brand-name b { color: var(--gold); font-weight: 700; }
+.gg-nav { flex: 1; overflow-y: auto; padding: var(--space-4) var(--space-3); scrollbar-width: thin; scrollbar-color: var(--sidebar-raised) transparent; }
+.gg-nav-label { padding: var(--space-4) var(--space-3) var(--space-2); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--sidebar-muted); white-space: nowrap; }
+.gg-nav-item { position: relative; display: flex; align-items: center; gap: var(--space-3); width: 100%; height: 40px; padding: 0 var(--space-3); margin-bottom: 2px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--sidebar-text); font: 500 14px/20px var(--font-sans); text-align: left; cursor: pointer; white-space: nowrap; text-decoration: none; }
+.gg-nav-item:hover { background: var(--sidebar-raised); color: var(--sidebar-active); }
+.gg-nav-item.active { background: var(--sidebar-raised); color: var(--sidebar-active); font-weight: 600; }
+.gg-nav-item.active::before { content: ""; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 4px; border-radius: 0 4px 4px 0; background: var(--gold); }
+.gg-nav-item.active .gg-icon { color: var(--gold); }
+.gg-nav-item.open-parent { color: var(--sidebar-active); }
+.gg-nav-item .gg-nav-text { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.gg-nav-item .gg-chev { color: var(--sidebar-muted); transition: transform .15s; }
+.gg-nav-item[aria-expanded="true"] .gg-chev { transform: rotate(90deg); }
+.gg-nav-count { min-width: 22px; height: 20px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--gold); color: var(--on-gold); font: 700 11px/20px var(--font-sans); text-align: center; }
+.gg-subnav { margin: 2px 0 6px; padding-left: 30px; position: relative; }
+.gg-subnav::before { content: ""; position: absolute; left: 20px; top: 4px; bottom: 4px; width: 1px; background: var(--sidebar-raised); }
+.gg-subnav .gg-nav-item { height: 36px; font-size: 13px; }
+.gg-subnav .gg-nav-item.active::before { left: -11px; top: 10px; bottom: 10px; width: 3px; border-radius: 3px; }
+.gg-sidebar.collapsed .gg-brand { justify-content: center; padding: 0; }
+.gg-sidebar.collapsed .gg-brand-name, .gg-sidebar.collapsed .gg-nav-text, .gg-sidebar.collapsed .gg-chev, .gg-sidebar.collapsed .gg-nav-count, .gg-sidebar.collapsed .gg-subnav, .gg-sidebar.collapsed .gg-nav-label { display: none; }
+.gg-sidebar.collapsed .gg-nav-item { justify-content: center; padding: 0; }
+.gg-sidebar.collapsed .gg-nav-item.child-active { background: var(--sidebar-raised); color: var(--sidebar-active); }
+.gg-sidebar.collapsed .gg-nav-item.child-active .gg-icon { color: var(--gold); }
+.gg-sidebar-foot { padding: var(--space-3); border-top: 1px solid var(--sidebar-raised); }
+
+/* TopBar */
+.gg-topbar { position: sticky; top: 0; z-index: var(--z-sidebar); display: flex; align-items: center; gap: var(--space-4); height: var(--topbar-height); padding: 0 var(--space-8) 0 var(--space-4); background: var(--surface); border-bottom: 1px solid var(--border); }
+.gg-topbar.static { position: relative; }
+.gg-crumbs { display: flex; align-items: center; gap: var(--space-2); font: 500 13px/18px var(--font-sans); color: var(--muted); white-space: nowrap; }
+.gg-crumbs .current { color: var(--ink); font-weight: 600; }
+.gg-topbar-search { flex: 1; max-width: 440px; margin-left: var(--space-4); }
+.gg-topbar-search .gg-control { height: 40px; background: var(--surface-sunken); border-color: var(--border); }
+.gg-kbd { align-self: center; margin-right: 10px; padding: 1px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); font: 600 11px/16px var(--font-sans); color: var(--muted); }
+.gg-topbar-end { margin-left: auto; display: flex; align-items: center; gap: var(--space-2); }
+.gg-pos { border-radius: var(--radius-pill); padding: 0 var(--space-5); }
+.gg-iconbtn-wrap { position: relative; }
+.gg-iconbtn-dot { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--danger); border: 2px solid var(--surface); }
+.gg-user { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 var(--space-2) 0 4px; margin-left: var(--space-2); border: 0; border-radius: var(--radius-pill); background: transparent; cursor: pointer; text-align: left; }
+.gg-user:hover { background: var(--surface-hover); }
+.gg-avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary); font: 700 14px/1 var(--font-display); flex: none; }
+.gg-user-name { font: 600 13px/18px var(--font-sans); color: var(--ink); }
+.gg-user-role { font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-divider-v { width: 1px; height: 28px; background: var(--border); margin: 0 var(--space-2); }
+
+/* PageHeader */
+.gg-pagehead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+.gg-pagehead-title { margin: 0; font: 700 26px/32px var(--font-display); letter-spacing: -0.01em; color: var(--on-canvas); }
+.gg-pagehead-sub { margin: 4px 0 0; font: 500 13px/18px var(--font-sans); color: var(--on-canvas-muted); }
+.gg-pagehead :focus-visible, .gg-shell-foot :focus-visible { outline-color: var(--on-canvas); }
+.gg-pagehead-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+/* AppShell */
+.gg-shell { display: flex; min-height: 100vh; background: var(--canvas); }
+.gg-shell.static { min-height: 0; height: 100%; }
+.gg-shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.gg-shell-content { flex: 1; width: 100%; min-width: 0; max-width: var(--content-max); padding: var(--space-8); }
+.gg-shell-foot { display: flex; justify-content: space-between; margin: 0 var(--space-8); padding: var(--space-5) 0; border-top: 1px solid var(--canvas-rule); font: 500 12px/16px var(--font-sans); color: var(--on-canvas-muted); max-width: calc(var(--content-max) - 64px); }
+.gg-shell-foot a { color: var(--on-canvas); font-weight: 600; text-decoration: none; }
+.gg-shell-foot a:hover { text-decoration: underline; }
+.gg-grid-2-1 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--space-6); }
+
+
+/* ===== Page composition ===== */
+html, body { min-width: 1440px; }
+.gg-topbar .gg-crumbs .gg-icon { width: 16px; height: 16px; }
+.gg-crumbs a { color: var(--muted); text-decoration: none; }
+.gg-crumbs a:hover { color: var(--primary); }
+a.gg-btn { text-decoration: none; }
+.gg-scrim[hidden], .gg-btn[hidden], [data-icon][hidden], .logo-pick [hidden] { display: none; }
+.pf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-8); }
+.pf-grid .full { grid-column: 1 / -1; }
+.gg-hint, .gg-error { line-height: 18px; }
+.gg-control select.is-placeholder { color: var(--placeholder); }
+.gg-control select option { color: var(--ink); }
+.gg-control.textarea textarea { min-height: 96px; }
+.auto-box { display: flex; align-items: center; gap: var(--space-2); height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px dashed var(--border-input); font: 600 14px/20px var(--font-sans); color: var(--ink); }
+.auto-box.found { border-style: solid; border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.optional { margin-left: 6px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.foot-note { margin-right: auto; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.form-ok { display: none; margin-right: auto; }
+.form-ok.show { display: inline-flex; }
+.eye { width: 36px; height: 36px; margin-right: 2px; border: 0; background: none; color: var(--muted); border-radius: var(--radius-sm); cursor: pointer; display: grid; place-items: center; flex: none; }
+.eye:hover { color: var(--primary); background: var(--surface-hover); }
+.meter { display: flex; gap: 4px; margin-top: 6px; }
+.meter i { flex: 1; height: 4px; border-radius: var(--radius-pill); background: var(--border); }
+.meter.s1 i:nth-child(-n+1) { background: var(--danger); }
+.meter.s2 i:nth-child(-n+2) { background: var(--warning); }
+.meter.s3 i:nth-child(-n+3) { background: var(--success); }
+.meter.s4 i { background: var(--success); }
+/* Photo */
+.photo { display: flex; align-items: center; gap: var(--space-5); }
+.photo-box { position: relative; width: 96px; height: 96px; flex: none; }
+.photo-img { width: 96px; height: 96px; border-radius: var(--radius-pill); background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; font: 700 30px/1 var(--font-display); overflow: hidden; border: 3px solid var(--surface); box-shadow: var(--shadow-1); }
+.photo-img img { width: 100%; height: 100%; object-fit: cover; }
+.photo-img .gg-icon { width: 36px; height: 36px; }
+.photo-edit { position: absolute; right: -2px; top: -2px; width: 30px; height: 30px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--surface); color: var(--primary); display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow-1); }
+.photo-edit:hover { background: var(--primary-soft); }
+.photo-meta { font: 500 13px/20px var(--font-sans); color: var(--muted); }
+.photo-meta button { margin-top: 6px; }
+.role-note { margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="gg gg-shell" id="shell" data-active="people.users">
+
+  <aside class="gg-sidebar" id="sidebar" aria-label="เมนูหลัก">
+    <div class="gg-brand">
+      <div class="gg-brand-mark">L</div>
+      <div class="gg-brand-name">LTS <b>Solution</b></div>
+    </div>
+    <nav class="gg-nav" id="nav"></nav>
+  </aside>
+
+  <div class="gg-shell-main">
+    <header class="gg-topbar">
+      <button type="button" class="gg-btn gg-btn-ghost icon-only" id="toggleSidebar" aria-label="ย่อแถบเมนู"><span data-icon="panel-left"></span></button>
+      <nav class="gg-crumbs" aria-label="เส้นทางหน้า"><span>บุคคล</span><span data-icon="chevron-right" data-size="sm"></span><a href="lts-users.html">ผู้ใช้งาน</a><span data-icon="chevron-right" data-size="sm"></span><span class="current" aria-current="page">เพิ่มผู้ใช้งาน</span></nav>
+      <div class="gg-topbar-search">
+        <div class="gg-control">
+          <span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+          <input id="globalSearch" placeholder="ค้นหาผ้า รายการขาย ลูกค้า" aria-label="ค้นหาทั้งระบบ">
+          <span class="gg-kbd">/</span>
+        </div>
+      </div>
+      <div class="gg-topbar-end">
+        <button type="button" class="gg-btn gg-btn-gold gg-pos"><span data-icon="barcode"></span>POS</button>
+        <button type="button" class="gg-btn gg-btn-ghost icon-only" id="fullscreen" aria-label="เต็มหน้าจอ"><span data-icon="expand"></span></button>
+        <span class="gg-iconbtn-wrap"><button type="button" class="gg-btn gg-btn-ghost icon-only" aria-label="การแจ้งเตือน"><span data-icon="bell"></span></button></span>
+        <span class="gg-divider-v" aria-hidden="true"></span>
+        <div class="gg-menu-anchor" data-menu>
+          <button type="button" class="gg-user" aria-haspopup="menu" aria-expanded="false">
+            <span class="gg-avatar">A</span>
+            <span><div class="gg-user-name">แอดมิน</div></span>
+            <span data-icon="chevron-down" data-size="sm"></span>
+          </button>
+          <div class="gg-menu" role="menu" hidden>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="user" data-size="sm"></span>โปรไฟล์ของฉัน</button>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="settings" data-size="sm"></span>ตั้งค่า</button>
+            <div class="gg-menu-sep" role="separator"></div>
+            <button type="button" role="menuitem" class="gg-menu-item danger"><span data-icon="logout" data-size="sm"></span>ออกจากระบบ</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="gg-shell-content">
+
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title" id="pageTitle"></h1>
+          <p class="gg-pagehead-sub" id="pageSub"></p>
+        </div>
+        <div class="gg-pagehead-actions">
+          <a class="gg-btn gg-btn-secondary" id="backBtn" href="#"><span data-icon="chevron-left"></span>ย้อนกลับ</a>
+        </div>
+      </div>
+
+      <form class="gg-card" id="pfForm" novalidate autocomplete="off">
+        <div class="gg-card-body" style="padding-top:var(--space-6);padding-bottom:var(--space-6)">
+          <div class="pf-grid" id="grid"></div>
+        </div>
+        <div class="gg-card-foot">
+          <span class="foot-note" id="footNote"></span>
+          <span class="form-ok gg-badge success" id="formOk" role="status"><span class="gg-badge-dot"></span><span id="formOkText"></span></span>
+          <a class="gg-btn gg-btn-secondary" id="cancelBtn" href="#">ยกเลิก</a>
+          <button type="submit" class="gg-btn gg-btn-primary" id="saveBtn" disabled><span data-icon="check"></span>บันทึก</button>
+        </div>
+      </form>
+    </main>
+
+    <footer class="gg-shell-foot">
+      <span>© 2026 <a href="lts-dashboard.html">LTS Solution</a> สงวนลิขสิทธิ์</span>
+      <span>ค้าส่งผ้า · ระบบสินค้าคงคลังและ POS</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ===== LTS Solution shell: icon set and navigation copied from components/bundle.js ===== */
+(function () {
+  var ICONS = {
+    dashboard: ['M4 4h7v7H4z', 'M13 4h7v4h-7z', 'M13 10h7v10h-7z', 'M4 13h7v7H4z'],
+    box: ['M12 3l8 4.5v9L12 21l-8-4.5v-9z', 'M4 7.5l8 4.5 8-4.5', 'M12 12v9'],
+    adjust: ['M4 4h16v16H4z', 'M7.5 12h3.5', 'M9.25 10.25v3.5', 'M13.5 12h3'],
+    quote: ['M6 3h8l5 5v13H6z', 'M14 3v5h5', 'M9 13h7', 'M9 17h5'],
+    cart: ['M3 4h2.2l2.2 11h10.8l2-8H6.4', { c: [9, 19, 1.4] }, { c: [17, 19, 1.4] }],
+    receipt: ['M6 3h12v18l-3-2-3 2-3-2-3 2z', 'M9 8h6', 'M9 12h6', 'M9 16h3'],
+    transfer: ['M4 8h15', 'M15 4l4 4-4 4', 'M20 16H5', 'M9 12l-4 4 4 4'],
+    wallet: ['M4 7a2 2 0 0 1 2-2h11v4', 'M4 7v10a2 2 0 0 0 2 2h14V9H6a2 2 0 0 1-2-2z', 'M16 14h1'],
+    users: [{ c: [9, 8, 3.5] }, 'M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6', 'M15.5 5.2a3 3 0 0 1 0 5.6', 'M18 14.5c1.8.7 3 2.5 3 4.5'],
+    user: [{ c: [12, 8, 4] }, 'M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8'],
+    truck: ['M3 6h11v10H3z', 'M14 9h4l3 3v4h-7', { c: [7, 18, 1.8] }, { c: [17, 18, 1.8] }],
+    shield: ['M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z', 'M9 12l2 2 4-4'],
+    warehouse: ['M3 10l9-6 9 6v10H3z', 'M8 20v-6h8v6', 'M8 17h8'],
+    chart: ['M4 20h16', 'M7 16v-5', 'M12 16V7', 'M17 16v-8'],
+    coin: [{ c: [12, 12, 9] }, 'M14.8 9.4c-.5-.9-1.5-1.4-2.8-1.4-1.7 0-2.9.8-2.9 2s1.2 1.7 2.9 2 2.9.8 2.9 2-1.2 2-2.9 2c-1.3 0-2.4-.5-2.9-1.4', 'M12 6.5v11'],
+    globe: [{ c: [12, 12, 9] }, 'M3 12h18', 'M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3z'],
+    layout: ['M4 4h16v16H4z', 'M4 9h16', 'M10 9v11'],
+    settings: ['M4 6h9', 'M17 6h3', 'M4 12h3', 'M11 12h9', 'M4 18h11', 'M19 18h1', { c: [15, 6, 2] }, { c: [9, 12, 2] }, { c: [17, 18, 2] }],
+    tag: ['M3 12V4h8l9 9-8 8z', { c: [7.5, 8.5, 1.3] }],
+    barcode: ['M4 7V4h3', 'M17 4h3v3', 'M20 17v3h-3', 'M7 20H4v-3', 'M8 8v8', 'M11 8v8', 'M14 8v8', 'M16.5 8v8'],
+    ruler: ['M3 15l12-12 6 6-12 12z', 'M7 11l2 2', 'M10 8l2 2', 'M13 5l2 2'],
+    folder: ['M3 6h6l2 2h10v11H3z'],
+    search: [{ c: [11, 11, 7] }, 'M20 20l-4-4'],
+    plus: ['M12 5v14', 'M5 12h14'],
+    minus: ['M5 12h14'],
+    'chevron-right': ['M9 6l6 6-6 6'],
+    'chevron-left': ['M15 6l-6 6 6 6'],
+    'chevron-down': ['M6 9l6 6 6-6'],
+    'chevrons-left': ['M11 6l-6 6 6 6', 'M18 6l-6 6 6 6'],
+    'chevrons-right': ['M6 6l6 6-6 6', 'M13 6l6 6-6 6'],
+    menu: ['M4 7h16', 'M4 12h16', 'M4 17h16'],
+    'panel-left': ['M4 4h16v16H4z', 'M9 4v16', 'M15.5 10l-2 2 2 2'],
+    more: [{ c: [12, 5, 1.3] }, { c: [12, 12, 1.3] }, { c: [12, 19, 1.3] }],
+    edit: ['M4 20h4L19 9l-4-4L4 16z', 'M13 7l4 4'],
+    trash: ['M4 7h16', 'M9 7V4h6v3', 'M6 7l1 13h10l1-13', 'M10 11v6', 'M14 11v6'],
+    eye: [{ c: [12, 12, 3] }, 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'],
+    x: ['M6 6l12 12', 'M18 6L6 18'],
+    calendar: ['M4 6h16v14H4z', 'M4 10h16', 'M8 3v5', 'M16 3v5'],
+    filter: ['M4 5h16l-6 8v6l-4-2v-4z'],
+    download: ['M12 4v11', 'M7 10l5 5 5-5', 'M5 20h14'],
+    upload: ['M12 20V9', 'M7 14l5-5 5 5', 'M5 4h14'],
+    bell: ['M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z', 'M10 21h4'],
+    expand: ['M4 9V4h5', 'M20 9V4h-5', 'M4 15v5h5', 'M20 15v5h-5'],
+    'trend-up': ['M4 16l6-6 4 4 6-6', 'M15 8h5v5'],
+    'trend-down': ['M4 8l6 6 4-4 6 6', 'M15 16h5v-5'],
+    'return-left': ['M9 14l-5-5 5-5', 'M4 9h11a5 5 0 0 1 0 10h-3'],
+    'return-right': ['M15 14l5-5-5-5', 'M20 9H9a5 5 0 0 0 0 10h3'],
+    cash: ['M3 6h18v12H3z', { c: [12, 12, 2.5] }, 'M6.5 9.5v.01', 'M17.5 14.5v.01'],
+    alert: ['M12 4l9 16H3z', 'M12 10v4', 'M12 17v.5'],
+    check: ['M5 12l5 5 9-10'],
+    image: ['M4 5h16v14H4z', { c: [9, 10, 1.5] }, 'M4 17l5-5 4 4 2-2 5 5'],
+    logout: ['M15 4h4v16h-4', 'M10 8l-4 4 4 4', 'M6 12h10'],
+    sort: ['M8 9l4-4 4 4', 'M8 15l4 4 4-4'],
+    'sort-up': ['M8 14l4-4 4 4'],
+    'sort-down': ['M8 10l4 4 4-4'],
+    printer: ['M7 8V3h10v5', 'M5 8h14v8h-2', 'M7 16H5', 'M7 13h10v8H7z'],
+    copy: ['M8 8h12v12H8z', 'M16 8V4H4v12h4']
+  };
+  var NAV = [
+    { key: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { section: 'Inventory' },
+    { key: 'products', label: 'Products', icon: 'box', children: [
+      { key: 'products.list', label: 'Products' }, { key: 'products.categories', label: 'Product Categories' },
+      { key: 'products.units', label: 'Units' },
+      { key: 'products.base-units', label: 'Base Units' }, { key: 'products.barcode', label: 'Print Barcode' }] },
+    { key: 'adjustments', label: 'Adjustments', icon: 'adjust' },
+    { key: 'transfers', label: 'Transfers', icon: 'transfer' },
+    { key: 'warehouse', label: 'Warehouses', icon: 'warehouse' },
+    { section: 'Trading' },
+    { key: 'quotations', label: 'Quotations', icon: 'quote' },
+    { key: 'purchases', label: 'Purchases', icon: 'cart', children: [{ key: 'purchases.list', label: 'Purchases' }, { key: 'purchases.returns', label: 'Purchase Returns' }] },
+    { key: 'sales', label: 'Sales', icon: 'receipt', children: [{ key: 'sales.list', label: 'Sales' }, { key: 'sales.returns', label: 'Sales Returns' }, { key: 'sales.billing-notes', label: 'Billing Notes' }] },
+    { key: 'expenses', label: 'Expenses', icon: 'wallet', children: [{ key: 'expenses.list', label: 'Expenses' }, { key: 'expenses.categories', label: 'Expense Categories' }] },
+    { section: 'People' },
+    { key: 'people', label: 'People', icon: 'users', children: [{ key: 'people.suppliers', label: 'Suppliers' }, { key: 'people.customers', label: 'Customers' }, { key: 'people.users', label: 'Users' }] },
+    { key: 'roles', label: 'Roles & Permissions', icon: 'shield' },
+    { section: 'Insights & Setup' },
+    { key: 'reports', label: 'Reports', icon: 'chart' },
+    { key: 'currencies', label: 'Currencies', icon: 'coin' },
+    { key: 'languages', label: 'Languages', icon: 'globe' },
+    { key: 'templates', label: 'Templates', icon: 'layout', children: [{ key: 'templates.email', label: 'Email Templates' }, { key: 'templates.sms', label: 'SMS Templates' }] },
+    { key: 'settings', label: 'Settings', icon: 'settings' }
+  ];
+
+  /* Thai labels for the shared navigation (keys from the design system) */
+  var TH = {
+    'Inventory': 'สินค้าคงคลัง', 'Trading': 'ซื้อขาย', 'People': 'บุคคล', 'Insights & Setup': 'รายงานและการตั้งค่า',
+    'dashboard': 'แดชบอร์ด', 'products': 'สินค้า', 'products.list': 'สินค้าทั้งหมด', 'products.categories': 'หมวดหมู่สินค้า',
+    'products.units': 'หน่วยนับ', 'products.base-units': 'หน่วยพื้นฐาน', 'products.barcode': 'พิมพ์บาร์โค้ด',
+    'adjustments': 'ปรับปรุงสต็อก', 'transfers': 'โอนย้ายสินค้า', 'warehouse': 'คลังสินค้า', 'quotations': 'ใบเสนอราคา',
+    'purchases': 'การซื้อ', 'purchases.list': 'รายการซื้อ', 'purchases.returns': 'คืนสินค้าให้ผู้จำหน่าย',
+    'sales': 'การขาย', 'sales.list': 'รายการขาย', 'sales.returns': 'รับคืนสินค้า', 'sales.billing-notes': 'ใบวางบิล',
+    'expenses': 'ค่าใช้จ่าย', 'expenses.list': 'รายการค่าใช้จ่าย', 'expenses.categories': 'หมวดหมู่ค่าใช้จ่าย',
+    'people': 'บุคคล', 'people.suppliers': 'ผู้จำหน่าย', 'people.customers': 'ลูกค้า', 'people.users': 'ผู้ใช้งาน',
+    'roles': 'บทบาทและสิทธิ์', 'reports': 'รายงาน', 'currencies': 'สกุลเงิน', 'languages': 'ภาษา',
+    'templates': 'เทมเพลต', 'templates.email': 'เทมเพลตอีเมล', 'templates.sms': 'เทมเพลต SMS', 'settings': 'ตั้งค่า'
+  };
+  NAV.forEach(function (it) {
+    if (it.section) { it.section = TH[it.section] || it.section; return; }
+    it.label = TH[it.key] || it.label;
+    (it.children || []).forEach(function (c) { c.label = TH[c.key] || c.label; });
+  });
+  var PAGES = { 'dashboard': 'lts-dashboard.html', 'products.list': 'lts-products.html', 'products.create': 'lts-create-product.html', 'products.categories': 'lts-categories.html', 'adjustments': 'lts-adjustment.html', 'purchases.list': 'lts-purchases.html', 'purchases.returns': 'lts-purchase-return.html', 'sales.list': 'lts-sales.html', 'sales.returns': 'lts-sales-returns.html', 'sales.billing-notes': 'lts-billing-notes.html', 'transfers': 'lts-transfers.html', 'expenses.list': 'lts-expenses.html', 'expenses.categories': 'lts-expense-categories.html', 'people.suppliers': 'lts-suppliers.html', 'people.customers': 'lts-customers.html', 'people.users': 'lts-users.html', 'roles': 'lts-roles.html', 'warehouse': 'lts-warehouses.html', 'reports': 'lts-reports.html' };
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function icon(name, size, cls) {
+    var svg = document.createElementNS(SVGNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    svg.setAttribute('class', ['gg-icon', size === 'sm' ? 'sm' : '', size === 'lg' ? 'lg' : '', cls || ''].join(' ').trim());
+    (ICONS[name] || ICONS.box).forEach(function (p) {
+      var el;
+      if (typeof p === 'string') { el = document.createElementNS(SVGNS, 'path'); el.setAttribute('d', p); }
+      else { el = document.createElementNS(SVGNS, 'circle'); el.setAttribute('cx', p.c[0]); el.setAttribute('cy', p.c[1]); el.setAttribute('r', p.c[2]); }
+      svg.appendChild(el);
+    });
+    return svg;
+  }
+  function hydrateIcons(root) {
+    (root || document).querySelectorAll('[data-icon]').forEach(function (el) { el.replaceWith(icon(el.getAttribute('data-icon'), el.getAttribute('data-size'))); });
+  }
+
+  /* Sidebar */
+  var shell = document.getElementById('shell');
+  var ACTIVE = shell.getAttribute('data-active') || 'dashboard', open = {};
+  NAV.forEach(function (it) { if (it.children && it.children.some(function (c) { return c.key === ACTIVE; })) open[it.key] = true; });
+  var nav = document.getElementById('nav'), sidebar = document.getElementById('sidebar');
+  function go(key) { if (PAGES[key] && key !== ACTIVE) { location.href = PAGES[key]; return; } ACTIVE = key; renderNav(); }
+  function renderNav() {
+    var collapsed = sidebar.classList.contains('collapsed');
+    nav.innerHTML = '';
+    NAV.forEach(function (it) {
+      if (it.section) { var l = document.createElement('div'); l.className = 'gg-nav-label'; l.textContent = it.section; nav.appendChild(l); return; }
+      var childActive = it.children && it.children.some(function (c) { return c.key === ACTIVE; });
+      var b = document.createElement('button'); b.type = 'button';
+      b.className = 'gg-nav-item' + (it.key === ACTIVE ? ' active' : '') + (childActive ? ' child-active' : '') + (childActive && open[it.key] ? ' open-parent' : '');
+      if (it.key === ACTIVE) b.setAttribute('aria-current', 'page');
+      if (collapsed) b.title = it.label;
+      b.appendChild(icon(it.icon));
+      var t = document.createElement('span'); t.className = 'gg-nav-text'; t.textContent = it.label; b.appendChild(t);
+      if (it.children) { b.setAttribute('aria-expanded', !!open[it.key]); b.appendChild(icon('chevron-right', 'sm', 'gg-chev')); }
+      b.addEventListener('click', function () {
+        if (it.children && !collapsed) { open[it.key] = !open[it.key]; renderNav(); }
+        else go(it.children ? it.children[0].key : it.key);
+      });
+      nav.appendChild(b);
+      if (it.children && open[it.key] && !collapsed) {
+        var sub = document.createElement('div'); sub.className = 'gg-subnav';
+        it.children.forEach(function (c) {
+          var cb = document.createElement('button'); cb.type = 'button';
+          cb.className = 'gg-nav-item' + (c.key === ACTIVE ? ' active' : '');
+          if (c.key === ACTIVE) cb.setAttribute('aria-current', 'page');
+          var ct = document.createElement('span'); ct.className = 'gg-nav-text'; ct.textContent = c.label; cb.appendChild(ct);
+          cb.addEventListener('click', function () { go(c.key); });
+          sub.appendChild(cb);
+        });
+        nav.appendChild(sub);
+      }
+    });
+  }
+  renderNav();
+  var toggle = document.getElementById('toggleSidebar');
+  toggle.addEventListener('click', function () {
+    var c = sidebar.classList.toggle('collapsed');
+    toggle.setAttribute('aria-label', c ? 'ขยายแถบเมนู' : 'ย่อแถบเมนู');
+    toggle.innerHTML = ''; toggle.appendChild(icon(c ? 'menu' : 'panel-left'));
+    renderNav();
+  });
+
+  /* Menus (ActionMenu pattern) */
+  function wireMenu(anchor) {
+    if (anchor.dataset.wired) return; anchor.dataset.wired = '1';
+    var btn = anchor.querySelector('button'), menu = anchor.querySelector('.gg-menu');
+    function close() { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation(); var wasHidden = menu.hidden;
+      document.querySelectorAll('.gg-menu').forEach(function (m) { m.hidden = true; });
+      menu.hidden = !wasHidden; btn.setAttribute('aria-expanded', String(wasHidden));
+    });
+    menu.addEventListener('click', close);
+    document.addEventListener('click', function (e) { if (!anchor.contains(e.target)) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  }
+  document.getElementById('fullscreen').addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  });
+  document.querySelectorAll('.gg-menu-item.danger').forEach(function (b) { if (b.textContent.trim() === 'ออกจากระบบ') b.addEventListener('click', function () { location.href = 'lts-login.html?out=1'; }); });
+  var posBtn = document.querySelector('.gg-pos'); if (posBtn) posBtn.addEventListener('click', function () { location.href = 'lts-pos.html'; });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); document.getElementById('globalSearch').focus(); }
+  });
+
+  /* Money in Thai baht: ฿71,800.00 */
+  function baht(n) { return '฿' + Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  /* Thai dates, Buddhist Era: 3 ก.พ. 2567 · 23:28 น. */
+  function thDate(d) { return new Date(d).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  function thTime(d) { return new Date(d).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.'; }
+  window.GG = { icon: icon, hydrateIcons: hydrateIcons, wireMenu: wireMenu, baht: baht, thDate: thDate, thTime: thTime };
+})();
+</script>
+<script>
+/* ===== Page script ===== */
+/* ===== LTS Solution · shared sample data for the Sales pages (sales, returns, billing notes) ===== */
+(function () {
+  function r2(x) { return Math.round(x * 100) / 100; }
+  var SHORT = { meter: 'ม.', yard: 'หลา', kilogram: 'กก.', roll: 'ม้วน' }, UNIT = { meter: 'เมตร', yard: 'หลา', kilogram: 'กิโลกรัม', roll: 'ม้วน' };
+  var PRODUCTS = [
+    { code: 'COT58A101001', name: 'ผ้าคอตตอนป๊อปลิน 60s สีขาวออปติก', unit: 'yard', price: 78, cost: 57, stock: 2680, alert: 330, roll: 110, swatch: 'poplin' },
+    { code: 'DEN58A201014', name: 'ผ้ายีนส์ยืด 10 ออนซ์ สีคราม', unit: 'yard', price: 165, cost: 128, stock: 1290, alert: 220, roll: 110, swatch: 'denim' },
+    { code: 'VIS44B305022', name: 'ผ้าเรยอนพิมพ์ลายดอกไม้', unit: 'yard', price: 110, cost: 87, stock: 700, alert: 165, roll: 110, swatch: 'floral' },
+    { code: 'PLY58A410012', name: 'ผ้าจอร์เจ็ตโพลีเอสเตอร์ สีกรมท่า', unit: 'yard', price: 60, cost: 44, stock: 82, alert: 110, roll: 110, swatch: 'georgette' },
+    { code: 'LIN54C120003', name: 'ผ้าลินินผสมฝ้าย สีธรรมชาติ', unit: 'yard', price: 238, cost: 192, stock: 0, alert: 90, roll: 110, swatch: 'linen' },
+    { code: 'KNT72A160008', name: 'ผ้ายืดซิงเกิลเจอร์ซีย์ 160 แกรม สีเทาท็อปดราย', unit: 'yard', price: 120, cost: 95, stock: 350, alert: 60, roll: 90, swatch: 'jersey' }
+  ];
+  var CUSTOMERS = [
+    { id: 'C1', name: 'ร้านผ้าสยามแฟชั่น', initials: 'สฟ', phone: '081-234-5678', email: 'order@siamfashion.example', address: '45/12 ถนนจักรวรรดิ แขวงจักรวรรดิ เขตสัมพันธวงศ์ กรุงเทพฯ 10100', terms: 30, city: 'กรุงเทพมหานคร' },
+    { id: 'C2', name: 'บริษัท ไทยการ์เมนท์ จำกัด', initials: 'ทก', phone: '02-456-7890', email: 'purchasing@thaigarment.example', address: '99 หมู่ 2 นิคมอุตสาหกรรมบางปู ต.แพรกษา อ.เมือง จ.สมุทรปราการ 10280', terms: 45, city: 'สมุทรปราการ' },
+    { id: 'C3', name: 'ห้องเสื้อมาลัย', initials: 'มล', phone: '089-765-4321', email: 'malai@malai-atelier.example', address: '12 ถนนนิมมานเหมินท์ ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200', terms: 15, city: 'เชียงใหม่' },
+    { id: 'C4', name: 'ลูกค้าหน้าร้าน', initials: 'หร', phone: '—', email: '—', address: 'ขายหน้าร้าน (ไม่ระบุที่อยู่)', terms: 0, city: 'กรุงเทพมหานคร' },
+    { id: 'C5', name: 'ร้านผ้าขอนแก่นพาณิชย์', initials: 'ขพ', phone: '043-221-554', email: 'sales@khonkaenfabric.example', address: '210 ถนนหน้าเมือง ต.ในเมือง อ.เมือง จ.ขอนแก่น 40000', terms: 30, city: 'ขอนแก่น' },
+    { id: 'C6', name: 'หาดใหญ่แฟบริค', initials: 'หฟ', phone: '074-355-120', email: 'order@hatyaifabric.example', address: '58 ถนนนิพัทธ์อุทิศ 3 อ.หาดใหญ่ จ.สงขลา 90110', terms: 30, city: 'สงขลา' }
+  ];
+  var COMPANY = { name: 'LTS Solution', email: 'contact@lts-solution.example', phone: '02-123-4567', address: '88 ถนนทรงวาด แขวงสัมพันธวงศ์ เขตสัมพันธวงศ์ กรุงเทพฯ 10100' };
+  var WAREHOUSE = 'คลังสินค้าหลัก';
+
+  /* Sales agents (match the Users page) and who looks after each customer */
+  var AGENTS = [{ id: 'U3', name: 'วนิดา ศรีสุข' }, { id: 'U5', name: 'กมลชนก แก้วใส' }, { id: 'U2', name: 'สมชาย ใจดี' }];
+  var AGENT_OF = { C1: 'U3', C2: 'U2', C3: 'U5', C4: 'U5', C5: 'U3', C6: 'U2' };
+  function agent(id) { return AGENTS.filter(function (a) { return a.id === id; })[0] || { id: id, name: '—' }; }
+
+  /* Region from a city or province name (Thai business regions) */
+  var REGION_LIST = ['ภาคกลาง', 'ภาคเหนือ', 'ภาคตะวันออกเฉียงเหนือ', 'ภาคตะวันออก', 'ภาคตะวันตก', 'ภาคใต้'];
+  var PROVINCES = {
+    /* การแบ่ง 6 ภาค: กรุงเทพฯ และปริมณฑลนับเป็นภาคกลาง */
+    'ภาคกลาง': 'กรุงเทพมหานคร กรุงเทพฯ กรุงเทพ นนทบุรี ปทุมธานี สมุทรปราการ สมุทรสาคร นครปฐม รังสิต ปากเกร็ด บางนา บางพลี มหาชัย พระนครศรีอยุธยา อยุธยา อ่างทอง ลพบุรี สิงห์บุรี ชัยนาท สระบุรี นครนายก สมุทรสงคราม สุพรรณบุรี สุโขทัย พิษณุโลก พิจิตร กำแพงเพชร เพชรบูรณ์ นครสวรรค์ อุทัยธานี',
+    'ภาคเหนือ': 'เชียงใหม่ เชียงราย ลำพูน ลำปาง แพร่ น่าน พะเยา แม่ฮ่องสอน อุตรดิตถ์',
+    'ภาคตะวันออกเฉียงเหนือ': 'กาฬสินธุ์ ขอนแก่น ชัยภูมิ นครพนม นครราชสีมา โคราช บึงกาฬ บุรีรัมย์ มหาสารคาม มุกดาหาร ยโสธร ร้อยเอ็ด เลย ศรีสะเกษ สกลนคร สุรินทร์ หนองคาย หนองบัวลำภู อุดรธานี อุบลราชธานี อำนาจเจริญ',
+    'ภาคตะวันออก': 'ชลบุรี ระยอง จันทบุรี ตราด ฉะเชิงเทรา ปราจีนบุรี สระแก้ว พัทยา ศรีราชา',
+    'ภาคตะวันตก': 'ตาก กาญจนบุรี ราชบุรี เพชรบุรี ประจวบคีรีขันธ์ หัวหิน',
+    'ภาคใต้': 'ชุมพร ระนอง สุราษฎร์ธานี พังงา ภูเก็ต กระบี่ นครศรีธรรมราช ตรัง พัทลุง สตูล สงขลา หาดใหญ่ ปัตตานี ยะลา นราธิวาส เกาะสมุย'
+  };
+  var PROVINCE_LIST = 'กรุงเทพมหานคร กระบี่ กาญจนบุรี กาฬสินธุ์ กำแพงเพชร ขอนแก่น จันทบุรี ฉะเชิงเทรา ชลบุรี ชัยนาท ชัยภูมิ ชุมพร เชียงราย เชียงใหม่ ตรัง ตราด ตาก นครนายก นครปฐม นครพนม นครราชสีมา นครศรีธรรมราช นครสวรรค์ นนทบุรี นราธิวาส น่าน บึงกาฬ บุรีรัมย์ ปทุมธานี ประจวบคีรีขันธ์ ปราจีนบุรี ปัตตานี พระนครศรีอยุธยา พะเยา พังงา พัทลุง พิจิตร พิษณุโลก เพชรบุรี เพชรบูรณ์ แพร่ ภูเก็ต มหาสารคาม มุกดาหาร แม่ฮ่องสอน ยโสธร ยะลา ร้อยเอ็ด ระนอง ระยอง ราชบุรี ลพบุรี ลำปาง ลำพูน เลย ศรีสะเกษ สกลนคร สงขลา สตูล สมุทรปราการ สมุทรสงคราม สมุทรสาคร สระแก้ว สระบุรี สิงห์บุรี สุโขทัย สุพรรณบุรี สุราษฎร์ธานี สุรินทร์ หนองคาย หนองบัวลำภู อ่างทอง อำนาจเจริญ อุดรธานี อุตรดิตถ์ อุทัยธานี อุบลราชธานี'.split(' ');
+  function regionOf(city, country) {
+    if (country && country !== 'ไทย' && country !== 'ประเทศไทย') return 'ต่างประเทศ';
+    var c = String(city || '').replace(/^(จังหวัด|จ\.|อำเภอ|อ\.|เขต)\s*/, '').replace(/\s+/g, '');
+    if (!c) return '';
+    for (var r in PROVINCES) { var names = PROVINCES[r].split(' '); for (var i = 0; i < names.length; i++) if (c === names[i] || c.indexOf(names[i]) >= 0 || (c.length >= 3 && names[i].indexOf(c) === 0)) return r; }
+    return '';
+  }
+
+  function L(code, qty) { var p = product(code); return { code: code, price: p.price, disc: 0, discType: 'fixed', tax: 0, taxType: 'exclusive', qty: qty, unit: '' }; }
+  /* [ref, date, customer, lines, payment: 'paid' | number paid | 0, status, method] */
+  var RAW = [
+    ['SA_11032', '2026-01-14T10:20', 'C1', [['COT58A101001', 150], ['VIS44B305022', 60]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11048', '2026-03-02T14:05', 'C1', [['DEN58A201014', 100]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11061', '2026-04-18T11:40', 'C1', [['COT58A101001', 200], ['PLY58A410012', 80]], 'paid', 'delivered', 'เงินสด'],
+    ['SA_11077', '2026-06-05T09:55', 'C1', [['VIS44B305022', 90], ['LIN54C120003', 25]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11086', '2026-07-11T15:30', 'C1', [['DEN58A201014', 60], ['COT58A101001', 120]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11094', '2026-08-02T10:10', 'C1', [['KNT72A160008', 40], ['VIS44B305022', 70]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11102', '2026-08-18T13:45', 'C1', [['COT58A101001', 180]], 'paid', 'delivered', 'เงินสด'],
+    ['SA_11109', '2026-08-30T11:00', 'C1', [['DEN58A201014', 80], ['PLY58A410012', 60]], 8000, 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11117', '2026-09-14T16:20', 'C1', [['VIS44B305022', 110]], 0, 'delivered', 'เครดิต'],
+    ['SA_11125', '2026-09-26T10:35', 'C1', [['COT58A101001', 100]], 0, 'delivered', 'เครดิต'],
+    ['SA_11131', '2026-10-03T14:50', 'C1', [['LIN54C120003', 40], ['COT58A101001', 40]], 10000, 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11138', '2026-10-12T09:15', 'C1', [['DEN58A201014', 85], ['KNT72A160008', 10]], 0, 'delivered', 'เครดิต'],
+    ['SA_11139', '2026-10-14T11:25', 'C2', [['KNT72A160008', 120]], 0, 'delivered', 'เครดิต'],
+    ['SA_11140', '2026-10-16T10:41', 'C3', [['VIS44B305022', 40]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11141', '2026-10-17T22:41', 'C4', [['COT58A101001', 30]], 'paid', 'delivered', 'เงินสด'],
+    ['SA_11142', '2026-10-19T22:37', 'C2', [['DEN58A201014', 200], ['COT58A101001', 150]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11143', '2026-10-20T22:38', 'C3', [['LIN54C120003', 15], ['PLY58A410012', 20]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11144', '2026-10-22T22:38', 'C4', [['PLY58A410012', 12]], 'paid', 'delivered', 'เงินสด'],
+    ['SA_11145', '2026-10-23T14:10', 'C2', [['KNT72A160008', 80]], 15000, 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11146', '2026-10-24T13:20', 'C3', [['VIS44B305022', 50], ['COT58A101001', 25]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11147', '2026-10-26T11:05', 'C4', [['DEN58A201014', 10]], 'paid', 'delivered', 'เงินสด'],
+    ['SA_11148', '2026-10-27T16:45', 'C2', [['COT58A101001', 300], ['VIS44B305022', 100]], 0, 'pending', 'เครดิต'],
+    ['SA_11149', '2026-10-29T01:02', 'C3', [['DEN58A201014', 30], ['LIN54C120003', 10], ['KNT72A160008', 5]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11150', '2026-10-30T10:30', 'C5', [['COT58A101001', 220], ['VIS44B305022', 80]], 0, 'delivered', 'เครดิต'],
+    ['SA_11151', '2026-10-31T14:05', 'C6', [['DEN58A201014', 120]], 'paid', 'delivered', 'โอนผ่านธนาคาร'],
+    ['SA_11152', '2026-11-02T11:15', 'C5', [['KNT72A160008', 90]], 5000, 'delivered', 'เครดิต'],
+    ['SA_11153', '2026-11-03T16:40', 'C6', [['PLY58A410012', 40], ['COT58A101001', 150]], 0, 'pending', 'เครดิต'],
+    ['SA_11154', '2026-11-04T10:05', 'C1', [['VIS44B305022', 60]], 0, 'delivered', 'เครดิต'],
+    ['SA_11155', '2026-11-05T09:20', 'C4', [['COT58A101001', 12]], 'paid', 'delivered', 'เงินสด']
+  ];
+  var SALES = RAW.map(function (r) {
+    var s = { ref: r[0], created: r[1], customer: r[2], lines: r[3].map(function (x) { return L(x[0], x[1]); }), orderTax: 7, discount: 0, shipping: 0, status: r[5], method: r[6], notes: '' };
+    var g = totals(s).grand, paid = r[4] === 'paid' ? g : r[4];
+    s.agent = AGENT_OF[s.customer] || 'U3';
+    s.terms = paid >= g ? 0 : (customer(s.customer).terms || 30);
+    s.payments = paid ? [{ date: r[1].slice(0, 10), amount: paid, method: r[6] === 'เครดิต' ? 'โอนผ่านธนาคาร' : r[6], note: paid >= g ? 'ชำระเต็มจำนวน' : 'ชำระบางส่วน' }] : [];
+    return s;
+  });
+  var RETURNS = [
+    ['SR_1116', '2026-10-28T13:21', 'SA_11147', [['DEN58A201014', 2]], 'pending', 0],
+    ['SR_1115', '2026-10-26T10:12', 'SA_11146', [['VIS44B305022', 5]], 'received', 0],
+    ['SR_1114', '2026-10-23T15:40', 'SA_11144', [['PLY58A410012', 2]], 'received', 'paid'],
+    ['SR_1113', '2026-10-21T09:30', 'SA_11143', [['LIN54C120003', 3]], 'received', 0],
+    ['SR_1112', '2026-10-20T22:41', 'SA_11142', [['DEN58A201014', 15], ['COT58A101001', 10]], 'received', 'paid'],
+    ['SR_1111', '2026-10-17T22:39', 'SA_11140', [['VIS44B305022', 4]], 'received', 0]
+  ].map(function (r) {
+    var sale = saleByRef(r[2]);
+    var rec = { ref: r[0], created: r[1], sale: r[2], customer: sale.customer, lines: r[3].map(function (x) { return L(x[0], x[1]); }), orderTax: 7, discount: 0, shipping: 0, status: r[4], notes: '' };
+    rec.refunded = r[5] === 'paid' ? totals(rec).grand : r[5];
+    return rec;
+  });
+  var BILLING = [
+    { ref: 'BN_1009', customer: 'C1', date: '2026-09-01', due: '2026-10-01', terms: 30, sales: ['SA_11094', 'SA_11102'], status: 'paid', note: '' },
+    { ref: 'BN_1010', customer: 'C2', date: '2026-10-25', due: '2026-12-09', terms: 45, sales: ['SA_11139', 'SA_11145'], status: 'issued', note: '' },
+    { ref: 'BN_1011', customer: 'C2', date: '2026-10-28', due: '2026-12-12', terms: 45, sales: ['SA_11148'], status: 'draft', note: 'รอยืนยันยอดกับฝ่ายจัดซื้อ' }
+  ];
+
+  /* ---- helpers ---- */
+  function product(code) { return PRODUCTS.filter(function (p) { return p.code === code; })[0]; }
+  function customer(id) { return CUSTOMERS.filter(function (c) { return c.id === id; })[0]; }
+  function saleByRef(ref) { return SALES.filter(function (s) { return s.ref === ref; })[0]; }
+  function factor(p, u) { return u === p.unit || !u ? 1 : u === 'yard' ? 0.9144 : u === 'roll' ? p.roll : 1; }
+  function calc(l) {
+    var price = +l.price || 0, q = +l.qty || 0, t = (+l.tax || 0) / 100;
+    var d = l.discType === 'percent' ? price * (+l.disc || 0) / 100 : (+l.disc || 0);
+    var after = Math.max(0, price - d), net, taxU;
+    if (l.taxType === 'inclusive') { net = after / (1 + t); taxU = after - net; } else { net = after; taxU = after * t; }
+    return { net: r2(net), taxU: r2(taxU), unitTotal: r2(net + taxU), sub: r2((net + taxU) * q), discT: r2(d * q), taxT: r2(taxU * q), d: r2(d) };
+  }
+  function totals(rec) {
+    var sub = r2(rec.lines.reduce(function (s, l) { return s + calc(l).sub; }, 0)), disc = Math.min(+rec.discount || 0, sub);
+    var tax = r2((sub - disc) * (+rec.orderTax || 0) / 100), ship = +rec.shipping || 0;
+    return { sub: sub, disc: disc, tax: tax, ship: ship, grand: r2(sub - disc + tax + ship) };
+  }
+  function paidOf(s) { return r2((s.payments || []).reduce(function (a, p) { return a + p.amount; }, 0)); }
+  function payState(total, paid) { return paid >= total - 0.005 ? 'paid' : paid > 0 ? 'partial' : 'unpaid'; }
+  /* A sale is "billed" while it sits on a billing note that is not cancelled or fully paid */
+  function billedOn(ref, exceptNote) { return BILLING.filter(function (b) { return b !== exceptNote && b.status !== 'cancelled' && b.status !== 'paid' && b.sales.indexOf(ref) >= 0; })[0]; }
+  function daysBetween(a, b) { return Math.round((new Date(b.slice(0, 10) + 'T00:00') - new Date(a.slice(0, 10) + 'T00:00')) / 86400000); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function num(x) { return Number(x).toLocaleString('th-TH', { maximumFractionDigits: 2 }); }
+  function today() { var t = new Date(); return t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0'); }
+  var STATUS = { delivered: ['success', 'ส่งมอบแล้ว'], pending: ['warning', 'รอดำเนินการ'], ordered: ['neutral', 'สั่งจองแล้ว'], received: ['info', 'รับคืนแล้ว'] };
+  var PAY = { paid: ['success', 'ชำระแล้ว'], partial: ['warning', 'ชำระบางส่วน'], unpaid: ['danger', 'ค้างชำระ'] };
+  function badge(t, dot) { return '<span class="gg-badge ' + t[0] + '">' + (dot === false ? '' : '<span class="gg-badge-dot" aria-hidden="true"></span>') + t[1] + '</span>'; }
+  function swatchCss() {
+    return '.swatch{width:40px;height:40px;border-radius:var(--radius-md);border:1px solid var(--border);display:block;flex:none}' +
+      '.sw-poplin{background-color:#f3f1ea;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.03) 0 1px,transparent 1px 3px)}' +
+      '.sw-denim{background-color:#2e4a74;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.16) 0 1.5px,transparent 1.5px 4px)}' +
+      '.sw-floral{background-color:#f6ead8;background-image:radial-gradient(circle at 30% 30%,#c2456b 0 4px,transparent 5px),radial-gradient(circle at 72% 64%,#d9a53b 0 3px,transparent 4px),radial-gradient(circle at 70% 22%,#3f7d5c 0 2.5px,transparent 3.5px),radial-gradient(circle at 26% 78%,#3f7d5c 0 2.5px,transparent 3.5px)}' +
+      '.sw-georgette{background-color:#1f2b4d;background-image:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.18) 48%,transparent 66%)}' +
+      '.sw-linen{background-color:#d8cab0;background-image:repeating-linear-gradient(0deg,rgba(80,60,30,.12) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,rgba(80,60,30,.1) 0 1px,transparent 1px 5px)}' +
+      '.sw-jersey{background-color:#a7a9ad;background-image:radial-gradient(rgba(255,255,255,.35) .8px,transparent 1.2px),radial-gradient(rgba(0,0,0,.18) .8px,transparent 1.2px);background-size:4px 4px,5px 5px;background-position:0 0,2px 2px}';
+  }
+  /* Print-ready page for "Download PDF" (browser Save as PDF) */
+  function printDoc(title, headHtml, rows, totalsRows) {
+    var w = window.open('', '_blank');
+    if (!w) return false;
+    w.document.write('<!doctype html><html lang="th"><head><meta charset="utf-8"><title>' + esc(title) + '</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600;700&display=swap"><style>' +
+      'body{font:14px/1.6 "IBM Plex Sans Thai",sans-serif;color:#141b2b;margin:40px}h1{font-size:22px;margin:0 0 6px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{padding:8px;border-bottom:1px solid #e2e5eb;text-align:left}th{font-size:12px;color:#5d6576}.r{text-align:right}.tot td{font-weight:700;font-size:16px;border-bottom:0}' +
+      '</style></head><body><h1>LTS Solution · ' + esc(title) + '</h1>' + headHtml + '<table>' + rows + totalsRows + '</table></body></html>');
+    w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 400);
+    return true;
+  }
+  (function () { var st = document.createElement('style'); st.textContent = swatchCss(); document.head.appendChild(st); })();
+  window.LTS = { PRODUCTS: PRODUCTS, CUSTOMERS: CUSTOMERS, COMPANY: COMPANY, WAREHOUSE: WAREHOUSE, SALES: SALES, RETURNS: RETURNS, BILLING: BILLING, SHORT: SHORT, UNIT: UNIT,
+    product: product, customer: customer, saleByRef: saleByRef, factor: factor, calc: calc, totals: totals, paidOf: paidOf, payState: payState, billedOn: billedOn,
+    daysBetween: daysBetween, esc: esc, num: num, r2: r2, today: today, STATUS: STATUS, PAY: PAY, AGENTS: AGENTS, agent: agent, REGION_LIST: REGION_LIST, regionOf: regionOf, PROVINCE_LIST: PROVINCE_LIST, dueDate: function (s) { var d = new Date(s.created.slice(0, 10) + 'T00:00'); d.setDate(d.getDate() + (s.terms || 0)); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }, badge: badge, swatchCss: swatchCss, printDoc: printDoc, L: L };
+})();
+
+/* ===== LTS Solution · suppliers, customers and users (needs sales-data) ===== */
+(function () {
+  var D = window.LTS;
+  var SUPPLIERS = [
+    { id: 'S1', name: 'ทอผ้าริมน้ำ จำกัด', email: 'sales@rimnamweaving.example', phone: '034-412-889', country: 'ไทย', city: 'นครปฐม', address: '120 หมู่ 4 ต.ไร่ขิง อ.สามพราน', taxId: '0735561002345', created: '2024-02-02T06:16', purchases: 4, spent: 182450 },
+    { id: 'S2', name: 'นอร์ทเกต นิตติ้ง จำกัด', email: 'order@northgateknit.example', phone: '02-813-2240', country: 'ไทย', city: 'สมุทรปราการ', address: '55/8 ถ.เทพารักษ์ ต.บางพลีใหญ่', taxId: '0115559004121', created: '2024-03-11T10:20', purchases: 2, spent: 96800 },
+    { id: 'S3', name: 'ซันฟิลด์ เดนิม จำกัด', email: 'denim@sunfield.example', phone: '02-907-5511', country: 'ไทย', city: 'ปทุมธานี', address: '9 ถ.พหลโยธิน ต.คลองหนึ่ง อ.คลองหลวง', taxId: '0135560007781', created: '2024-05-27T14:02', purchases: 3, spent: 214000 },
+    { id: 'S4', name: 'Shaoxing Keqiao Textile Co., Ltd.', email: 'export@kqtextile.example', phone: '+86 575 8412 3366', country: 'จีน', city: 'เซ่าซิง', address: 'China Textile City, Keqiao District, Zhejiang', taxId: '', created: '2025-01-15T09:41', purchases: 1, spent: 365000 },
+    { id: 'S5', name: 'ไหมไทยโคราช', email: 'silk@korat-thaisilk.example', phone: '044-271-330', country: 'ไทย', city: 'นครราชสีมา', address: '88 ถ.มิตรภาพ ต.ในเมือง อ.เมือง', taxId: '', created: '2026-08-03T16:55', purchases: 0, spent: 0 }
+  ];
+  var EXTRA = {
+    C1: { country: 'ไทย', city: 'กรุงเทพฯ', dob: '', created: '2025-11-04T11:52' },
+    C2: { country: 'ไทย', city: 'สมุทรปราการ', dob: '', created: '2025-12-20T09:30' },
+    C3: { country: 'ไทย', city: 'เชียงใหม่', dob: '1984-06-12', created: '2026-02-08T15:18', email: 'malai@malai-atelier.example' },
+    C4: { country: 'ไทย', city: 'กรุงเทพฯ', dob: '', created: '2025-10-01T08:00', walkIn: true, email: 'pos@lts-solution.example', phone: '02-123-4567' },
+    C5: { country: 'ไทย', city: 'ขอนแก่น', dob: '', created: '2026-09-12T10:00' },
+    C6: { country: 'ไทย', city: 'สงขลา', dob: '', created: '2026-09-28T13:30' }
+  };
+  D.CUSTOMERS.forEach(function (c) { Object.assign(c, EXTRA[c.id] || {}); c.region = D.regionOf(c.city, c.country); });
+  /* Permission catalogue, grouped the way the sidebar is */
+  var PERM_GROUPS = [
+    { name: 'สินค้าคงคลัง', perms: [['dashboard', 'แดชบอร์ด'], ['products', 'สินค้า'], ['product-categories', 'หมวดหมู่สินค้า'], ['units', 'หน่วยสินค้า'], ['adjustments', 'ปรับปรุงสต็อก'], ['transfers', 'โอนย้ายสินค้า'], ['warehouses', 'คลังสินค้า']] },
+    { name: 'ซื้อขาย', perms: [['pos', 'หน้าจอ POS'], ['quotations', 'ใบเสนอราคา'], ['purchases', 'การซื้อ'], ['purchase-returns', 'คืนสินค้าให้ผู้จำหน่าย'], ['sales', 'การขาย'], ['sale-returns', 'รับคืนสินค้า'], ['billing-notes', 'ใบวางบิล'], ['expenses', 'ค่าใช้จ่าย'], ['expense-categories', 'หมวดหมู่ค่าใช้จ่าย']] },
+    { name: 'บุคคล', perms: [['suppliers', 'ผู้จำหน่าย'], ['customers', 'ลูกค้า'], ['users', 'ผู้ใช้งาน'], ['roles', 'บทบาทและสิทธิ์']] },
+    { name: 'รายงานและการตั้งค่า', perms: [['reports', 'รายงาน'], ['currencies', 'สกุลเงิน'], ['languages', 'ภาษา'], ['settings', 'ตั้งค่าระบบ'], ['email-templates', 'เทมเพลตอีเมล'], ['sms-templates', 'เทมเพลต SMS'], ['sms-apis', 'การเชื่อมต่อ SMS']] }
+  ];
+  var ALL_PERMS = [].concat.apply([], PERM_GROUPS.map(function (g) { return g.perms.map(function (p) { return p[0]; }); }));
+  var ROLES = [
+    { id: 'admin', name: 'ผู้ดูแลระบบ', tone: 'navy', system: true, created: '2025-10-01T08:00', desc: 'เข้าถึงทุกเมนู รวมถึงตั้งค่าและบทบาท', perms: ALL_PERMS.slice() },
+    { id: 'manager', name: 'ผู้จัดการ', tone: 'info', created: '2025-10-02T10:15', desc: 'ดูรายงาน อนุมัติการซื้อ ขาย และโอนย้าย', perms: ALL_PERMS.filter(function (p) { return ['roles', 'settings', 'sms-apis', 'languages', 'currencies'].indexOf(p) < 0; }) },
+    { id: 'sales', name: 'พนักงานขาย', tone: 'success', created: '2026-01-10T09:40', desc: 'ใช้ POS สร้างรายการขาย ใบรับคืน และใบวางบิล', perms: ['dashboard', 'products', 'pos', 'quotations', 'sales', 'sale-returns', 'billing-notes', 'customers'] },
+    { id: 'stock', name: 'พนักงานคลังสินค้า', tone: 'warning', created: '2026-03-01T14:05', desc: 'จัดการสินค้า ปรับปรุงสต็อก และโอนย้ายสินค้า', perms: ['dashboard', 'products', 'product-categories', 'units', 'adjustments', 'transfers', 'warehouses', 'purchases', 'purchase-returns', 'suppliers'] }
+  ];
+  D.PERM_GROUPS = PERM_GROUPS; D.ALL_PERMS = ALL_PERMS;
+
+  var USERS = [
+    { id: 'U1', first: 'แอดมิน', last: 'ระบบ', email: 'admin@lts-solution.example', phone: '081-000-1111', role: 'admin', created: '2025-10-01T08:00', self: true, last_login: '2026-10-30T15:58' },
+    { id: 'U2', first: 'สมชาย', last: 'ใจดี', email: 'somchai@lts-solution.example', phone: '089-555-1234', role: 'manager', created: '2025-10-03T19:27', last_login: '2026-10-30T09:12' },
+    { id: 'U3', first: 'วนิดา', last: 'ศรีสุข', email: 'wanida@lts-solution.example', phone: '086-223-4410', role: 'sales', created: '2026-01-15T10:05', last_login: '2026-10-29T17:40' },
+    { id: 'U4', first: 'ประเสริฐ', last: 'ทองมา', email: 'prasert@lts-solution.example', phone: '092-781-6650', role: 'stock', created: '2026-03-02T13:44', last_login: '2026-10-28T08:15' },
+    { id: 'U5', first: 'กมลชนก', last: 'แก้วใส', email: 'kamon@lts-solution.example', phone: '095-114-7720', role: 'sales', created: '2026-09-21T11:30', last_login: '' }
+  ];
+  function initials(name) { var p = String(name).replace(/^(บริษัท|ห้างหุ้นส่วน|ร้าน)\s*/, '').trim().split(/\s+/); return (ch(p[0]) + (p[1] ? ch(p[1]) : ch((p[0] || '').replace(/^[\u0E40-\u0E44]/, '').slice(1)))).toUpperCase(); }
+  /* first letter for an avatar, skipping Thai leading vowels (เ แ โ ใ ไ) */
+  function ch(s) { return String(s || '').replace(/^[\u0E40-\u0E44]/, '').charAt(0); }
+  D.ch = ch;
+  D.SUPPLIERS = SUPPLIERS; D.ROLES = ROLES; D.USERS = USERS; D.initials = initials;
+  D.role = function (id) { return ROLES.filter(function (r) { return r.id === id; })[0]; };
+  /* customer sales stats from the shared sales sample */
+  D.custStats = function (c) {
+    var s = D.SALES.filter(function (x) { return x.customer === c.id; }), g = s.reduce(function (a, x) { return a + D.totals(x).grand; }, 0), p = s.reduce(function (a, x) { return a + D.paidOf(x); }, 0);
+    return { count: s.length, total: D.r2(g), due: D.r2(g - p) };
+  };
+})();
+
+/* ===== LTS Solution · shared sample data for Transfers (needs sales-data for products & maths) ===== */
+(function () {
+  var D = window.LTS;
+  var WAREHOUSES = [
+    { id: 'W1', name: 'คลังสินค้าหลัก', area: 'สัมพันธวงศ์', email: 'main.wh@lts-solution.example', phone: '02-123-4567', country: 'ไทย', city: 'กรุงเทพฯ', zip: '10100', created: '2025-10-01T08:00' },
+    { id: 'W2', name: 'คลังบางนา', area: 'บางนา-ตราด กม.12', email: 'bangna.wh@lts-solution.example', phone: '02-750-1188', country: 'ไทย', city: 'สมุทรปราการ', zip: '10540', created: '2026-02-14T11:52' },
+    { id: 'W3', name: 'หน้าร้านพาหุรัด', area: 'ถนนพาหุรัด', email: 'pahurat@lts-solution.example', phone: '02-221-0099', country: 'ไทย', city: 'กรุงเทพฯ', zip: '10200', created: '2026-04-20T09:30' }
+  ];
+  /* on-hand stock per warehouse, in each fabric's stock unit */
+  var STOCK = {
+    'COT58A101001': { W1: 2680, W2: 1200, W3: 180 },
+    'DEN58A201014': { W1: 1290, W2: 600, W3: 95 },
+    'VIS44B305022': { W1: 700, W2: 300, W3: 120 },
+    'PLY58A410012': { W1: 82, W2: 420, W3: 40 },
+    'LIN54C120003': { W1: 0, W2: 160, W3: 12 },
+    'KNT72A160008': { W1: 350, W2: 75, W3: 0 }
+  };
+  function L(code, qty) { var p = D.product(code); return { code: code, price: p.cost, disc: 0, discType: 'fixed', tax: 0, taxType: 'exclusive', qty: qty, unit: '', lot: '' }; }
+  /* [ref, created, from, to, lines, status, shipping, note] */
+  var TRANSFERS = [
+    ['TR_1124', '2026-10-29T20:08', 'W2', 'W1', [['LIN54C120003', 100]], 'sent', 350, 'เติมสต็อกลินินที่คลังหลักหมด'],
+    ['TR_1123', '2026-10-28T20:06', 'W1', 'W3', [['COT58A101001', 60], ['VIS44B305022', 40]], 'completed', 120, ''],
+    ['TR_1122', '2026-10-24T00:12', 'W2', 'W1', [['PLY58A410012', 200]], 'completed', 300, ''],
+    ['TR_1121', '2026-10-23T11:59', 'W1', 'W3', [['DEN58A201014', 40], ['KNT72A160008', 15]], 'completed', 120, ''],
+    ['TR_1120', '2026-10-30T09:15', 'W1', 'W2', [['COT58A101001', 500]], 'pending', 0, 'รอรถขนส่งรอบบ่าย'],
+    ['TR_1119', '2026-10-15T11:05', 'W2', 'W3', [['VIS44B305022', 50]], 'completed', 250, ''],
+    ['TR_1118', '2026-10-12T14:43', 'W3', 'W1', [['COT58A101001', 20]], 'completed', 80, 'คืนผ้าหน้าร้านที่ขายไม่หมด'],
+    ['TR_1117', '2026-10-10T12:46', 'W1', 'W2', [['DEN58A201014', 300]], 'completed', 400, ''],
+    ['TR_1116', '2026-10-09T19:25', 'W2', 'W1', [['KNT72A160008', 50], ['PLY58A410012', 100]], 'completed', 300, ''],
+    ['TR_1115', '2026-10-05T12:30', 'W3', 'W1', [['VIS44B305022', 10]], 'completed', 80, ''],
+    ['TR_1114', '2026-09-28T10:10', 'W1', 'W3', [['COT58A101001', 80], ['DEN58A201014', 30]], 'completed', 120, ''],
+    ['TR_1113', '2026-09-20T16:40', 'W1', 'W2', [['LIN54C120003', 150]], 'completed', 350, '']
+  ].map(function (r) { return { ref: r[0], created: r[1], from: r[2], to: r[3], lines: r[4].map(function (x) { return L(x[0], x[1]); }), orderTax: 0, discount: 0, shipping: r[6], status: r[5], notes: r[7] }; });
+  var TSTATUS = { completed: ['success', 'โอนสำเร็จ'], sent: ['info', 'ระหว่างขนส่ง'], pending: ['warning', 'รอดำเนินการ'] };
+  function wh(id) { return WAREHOUSES.filter(function (w) { return w.id === id; })[0]; }
+  function transfer(ref) { return TRANSFERS.filter(function (t) { return t.ref === ref; })[0]; }
+  function stockAt(code, w) { return (STOCK[code] || {})[w] || 0; }
+  function nextRef() { return 'TR_' + (Math.max.apply(null, TRANSFERS.map(function (t) { return +t.ref.slice(3); })) + 1); }
+  D.WAREHOUSES = WAREHOUSES; D.STOCK = STOCK; D.TRANSFERS = TRANSFERS; D.TSTATUS = TSTATUS;
+  D.wh = wh; D.transfer = transfer; D.stockAt = stockAt; D.nextTransfer = nextRef; D.TL = L;
+})();
+
+(function () {
+  var KIND = 'users';
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc;
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function phoneOk(v) { return /^[+0-9][0-9\s\-()]*$/.test(v) && v.replace(/\D/g, '').length >= 9; }
+  var COMMON = {
+    email: { id: 'email', label: 'อีเมล', type: 'email', req: true, ph: 'กรอกอีเมล' },
+    phone: { id: 'phone', label: 'เบอร์โทรศัพท์', type: 'tel', req: true, ph: 'เช่น 081-234-5678' },
+    country: { id: 'country', label: 'ประเทศ', req: true, ph: 'กรอกประเทศ', val: 'ไทย' },
+    city: { id: 'city', label: 'เมือง / จังหวัด', req: true, ph: 'กรอกเมืองหรือจังหวัด' }
+  };
+  var CFG = {
+    suppliers: { noun: 'ผู้จำหน่าย', list: D.SUPPLIERS, back: 'lts-suppliers.html', sub: 'ข้อมูลติดต่อโรงทอหรือผู้ค้าผ้า ใช้ในใบสั่งซื้อและใบคืนสินค้า',
+      fields: [{ id: 'name', label: 'ชื่อผู้จำหน่าย', req: true, ph: 'กรอกชื่อผู้จำหน่าย' }, COMMON.email, COMMON.phone, COMMON.country, COMMON.city,
+        { id: 'address', label: 'ที่อยู่', req: true, ph: 'กรอกที่อยู่' },
+        { id: 'taxId', label: 'เลขประจำตัวผู้เสียภาษี', ph: '13 หลัก', hint: 'ใช้ออกเอกสารภาษีซื้อ' }],
+      get: function (r) { return r; }, title: function (r) { return r.name; } },
+    customers: { noun: 'ลูกค้า', list: D.CUSTOMERS, back: 'lts-customers.html', sub: 'ข้อมูลติดต่อและเงื่อนไขเครดิตของลูกค้า ใช้ในการขายและใบวางบิล',
+      fields: [{ id: 'name', label: 'ชื่อลูกค้า', req: true, ph: 'กรอกชื่อลูกค้าหรือชื่อร้าน' }, COMMON.email, COMMON.phone,
+        { id: 'dob', label: 'วันเกิด', type: 'date', hint: 'ใช้ส่งโปรโมชันวันเกิด' }, COMMON.country,
+        { id: 'city', label: 'จังหวัด', type: 'select', req: true, ph: 'เลือกจังหวัด', options: D.PROVINCE_LIST.map(function (p) { return [p, p]; }).concat([['ต่างประเทศ', 'ต่างประเทศ (นอกประเทศไทย)']]) },
+        { id: 'region', label: 'ภูมิภาค', type: 'auto' },
+        { id: 'address', label: 'ที่อยู่', type: 'textarea', req: true, ph: 'กรอกที่อยู่สำหรับจัดส่งและออกใบกำกับภาษี' },
+        { id: 'terms', label: 'เครดิตเริ่มต้น', type: 'select', options: [['0', 'เงินสด / ชำระทันที'], ['7', 'เครดิต 7 วัน'], ['15', 'เครดิต 15 วัน'], ['30', 'เครดิต 30 วัน'], ['45', 'เครดิต 45 วัน'], ['60', 'เครดิต 60 วัน']], val: '0', hint: 'ใช้เป็นค่าเริ่มต้นตอนขายเชื่อ ปรับได้ในแต่ละบิลขาย' }],
+      get: function (r) { return Object.assign({}, r, { terms: String(r.terms || 0) }); }, title: function (r) { return r.name; } },
+    warehouses: { noun: 'คลังสินค้า', list: D.WAREHOUSES, back: 'lts-warehouses.html', sub: 'คลังหรือหน้าร้านที่เก็บผ้า ใช้ในการซื้อ ขาย และโอนย้ายสินค้า',
+      fields: [{ id: 'name', label: 'ชื่อคลังสินค้า', req: true, ph: 'เช่น คลังบางนา' }, COMMON.email, COMMON.phone, COMMON.country, COMMON.city,
+        { id: 'zip', label: 'รหัสไปรษณีย์', req: true, ph: 'กรอกรหัสไปรษณีย์', inputmode: 'numeric' },
+        { id: 'area', label: 'ที่ตั้ง / ย่าน', ph: 'เช่น ถนนพาหุรัด', hint: 'แสดงใต้ชื่อเมืองในรายการ', full: true }],
+      get: function (r) { return r; }, title: function (r) { return r.name; } },
+    users: { noun: 'ผู้ใช้งาน', list: D.USERS, back: 'lts-users.html', sub: 'สร้างบัญชีให้พนักงานเข้าใช้ระบบตามบทบาทที่กำหนด',
+      fields: [{ id: 'photo', label: 'รูปโปรไฟล์', type: 'photo', full: true }, { id: 'first', label: 'ชื่อ', req: true, ph: 'กรอกชื่อ' }, { id: 'last', label: 'นามสกุล', req: true, ph: 'กรอกนามสกุล' },
+        COMMON.email, COMMON.phone, { id: 'password', label: 'รหัสผ่าน', type: 'password', req: true, ph: 'อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข' }, { id: 'confirm', label: 'ยืนยันรหัสผ่าน', type: 'password', req: true, ph: 'กรอกรหัสผ่านอีกครั้ง' },
+        { id: 'role', label: 'บทบาท', type: 'select', req: true, ph: 'เลือกบทบาท', options: D.ROLES.map(function (r) { return [r.id, r.name]; }) }],
+      get: function (r) { return r; }, title: function (r) { return r.first + ' ' + r.last; } }
+  }, C = CFG[KIND];
+  var ROLE_NOTE = { admin: 'เข้าถึงทุกเมนู รวมถึงตั้งค่าและบทบาท', manager: 'ดูรายงาน อนุมัติการซื้อ ขาย และโอนย้าย', sales: 'ใช้ POS สร้างรายการขาย ใบรับคืน และใบวางบิล', stock: 'จัดการสินค้า ปรับปรุงสต็อก และโอนย้ายสินค้า' };
+
+  var editId = new URLSearchParams(location.search).get('edit'), ED = editId ? C.list.filter(function (r) { return r.id === editId; })[0] : null;
+  var nounTitle = (ED ? 'แก้ไข' : 'เพิ่ม') + C.noun;
+  $('pageTitle').textContent = ED ? nounTitle + ' ' + C.title(ED) : nounTitle;
+  $('pageSub').textContent = editId && !ED ? 'ไม่พบข้อมูลที่ต้องการแก้ไข จึงเพิ่มเป็นรายการใหม่' : C.sub;
+  $('backBtn').href = $('cancelBtn').href = C.back;
+  var cur = document.querySelector('.gg-crumbs .current'); if (cur && ED) cur.textContent = nounTitle;
+  if (ED) document.title = nounTitle + ' · LTS Solution';
+
+  /* Build fields */
+  $('grid').innerHTML = C.fields.map(function (f) {
+    var req = f.req && !(ED && f.type === 'password'), lab = '<label class="gg-label" for="' + f.id + '">' + f.label + (req ? '<span class="gg-req" aria-hidden="true">*</span>' : (f.type === 'photo' ? '' : '<span class="optional">(ไม่บังคับ)</span>')) + '</label>';
+    var ctl;
+    if (f.type === 'auto') return '<div class="gg-field"><span class="gg-label">' + f.label + '<span class="optional">(อัตโนมัติจากจังหวัด · การแบ่ง 6 ภาค)</span></span><div class="auto-box" id="' + f.id + '" aria-live="polite"></div><div class="gg-hint" id="' + f.id + 'Hint"></div></div>';
+    if (f.type === 'photo') return '<div class="gg-field full"><span class="gg-label">' + f.label + '</span><div class="photo"><div class="photo-box"><div class="photo-img" id="photoImg"></div>' +
+      '<label class="photo-edit" for="photoFile" title="เปลี่ยนรูป"><span data-icon="edit" data-size="sm"></span><span class="gg-sr">เปลี่ยนรูปโปรไฟล์</span></label></div>' +
+      '<div class="photo-meta">JPG หรือ PNG ไม่เกิน 1 MB<br>รูปสี่เหลี่ยมจัตุรัสจะแสดงผลได้ดีที่สุด<br><button type="button" class="gg-btn gg-btn-ghost sm" id="photoRemove" hidden>ลบรูป</button><div class="gg-error" id="photoErr" hidden></div></div></div>' +
+      '<input type="file" id="photoFile" accept="image/png,image/jpeg" hidden></div>';
+    if (f.type === 'textarea') ctl = '<div class="gg-control textarea"><textarea id="' + f.id + '" rows="4" placeholder="' + (f.ph || '') + '"></textarea></div>';
+    else if (f.type === 'select') ctl = '<div class="gg-control"><select id="' + f.id + '">' + (f.ph ? '<option value="" disabled selected>' + f.ph + '</option>' : '') + f.options.map(function (o) { return '<option value="' + o[0] + '">' + o[1] + '</option>'; }).join('') + '</select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>';
+    else ctl = '<div class="gg-control"><input id="' + f.id + '" type="' + (f.type || 'text') + '"' + (f.type === 'password' ? ' autocomplete="new-password"' : '') + ' placeholder="' + (f.ph || '') + '">' +
+      (f.type === 'password' ? '<button type="button" class="eye" data-eye="' + f.id + '" aria-label="แสดงรหัสผ่าน"><span data-icon="eye" data-size="sm"></span></button>' : '') + '</div>';
+    var hint = f.id === 'password' ? '<div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="gg-hint" id="passwordHint">' + (ED ? 'เว้นว่างไว้หากไม่ต้องการเปลี่ยนรหัสผ่าน' : 'อย่างน้อย 8 ตัว มีทั้งตัวอักษรและตัวเลข') + '</div>'
+      : f.id === 'role' ? '<div class="gg-hint role-note" id="roleHint">กำหนดเมนูที่ผู้ใช้เข้าถึงได้</div>' : f.hint ? '<div class="gg-hint">' + f.hint + '</div>' : '';
+    return '<div class="gg-field' + (f.full ? ' full' : '') + '">' + lab + ctl + hint + '</div>';
+  }).join('');
+  GG.hydrateIcons($('grid'));
+  var INPUTS = C.fields.filter(function (f) { return f.type !== 'photo' && f.type !== 'auto'; });
+
+  /* Prefill */
+  var src = ED ? C.get(ED) : null, photo = ED && ED.photo || '';
+  INPUTS.forEach(function (f) { var el = $(f.id); if (f.type === 'password') return; var v = src ? src[f.id] : f.val; if (v != null && v !== '') el.value = v; });
+
+  /* Photo */
+  function drawPhoto() {
+    if (!$('photoImg')) return;
+    var ini = D.ch(($('first') || {}).value) + D.ch(($('last') || {}).value);
+    $('photoImg').innerHTML = photo ? '<img src="' + photo + '" alt="รูปโปรไฟล์">' : ini ? esc(ini) : '';
+    if (!photo && !ini) $('photoImg').appendChild(GG.icon('user'));
+    $('photoRemove').hidden = !photo;
+  }
+  if ($('photoFile')) {
+    $('photoFile').addEventListener('change', function () {
+      var f = this.files[0], er = $('photoErr'); er.hidden = true; if (!f) return;
+      if (!/^image\/(png|jpeg)$/.test(f.type)) { er.textContent = 'รองรับเฉพาะไฟล์ JPG หรือ PNG'; er.hidden = false; return; }
+      if (f.size > 1024 * 1024) { er.textContent = 'ไฟล์ใหญ่เกิน 1 MB'; er.hidden = false; return; }
+      var fr = new FileReader(); fr.onload = function () { photo = fr.result; drawPhoto(); }; fr.readAsDataURL(f);
+    });
+    $('photoRemove').addEventListener('click', function () { photo = ''; $('photoFile').value = ''; drawPhoto(); });
+  }
+
+  /* Validation */
+  function val(id) { var el = $(id); return el ? el.value.trim() : ''; }
+  function strength(p) { var s = 0; if (p.length >= 8) s++; if (/[A-Za-z]/.test(p) && /\d/.test(p)) s++; if (p.length >= 12) s++; if (/[^A-Za-z0-9]/.test(p)) s++; return p ? Math.max(1, s) : 0; }
+  function problems() {
+    var p = {};
+    INPUTS.forEach(function (f) {
+      var v = val(f.id), req = f.req && !(ED && f.type === 'password' && !val('password'));
+      if (req && !v) { p[f.id] = f.type === 'select' ? 'กรุณาเลือก' + f.label : 'กรุณากรอก' + f.label; return; }
+      if (!v) return;
+      if (f.id === 'email') {
+        if (!EMAIL.test(v)) p.email = 'รูปแบบอีเมลไม่ถูกต้อง';
+        else if (C.list.some(function (r) { return r !== ED && String(r.email).toLowerCase() === v.toLowerCase(); })) p.email = 'อีเมลนี้มีอยู่แล้วใน' + C.noun;
+      }
+      if (f.id === 'phone' && !phoneOk(v)) p.phone = 'เบอร์โทรต้องมีตัวเลขอย่างน้อย 9 หลัก';
+      if (f.id === 'zip' && !/^\d{5}$/.test(v) && val('country') === 'ไทย') p.zip = 'รหัสไปรษณีย์ไทยต้องเป็นตัวเลข 5 หลัก';
+      if (f.id === 'zip' && val('country') !== 'ไทย' && !/^[A-Za-z0-9 -]{3,10}$/.test(v)) p.zip = 'รหัสไปรษณีย์ไม่ถูกต้อง';
+      if (f.id === 'name' && C.list.some(function (r) { return r !== ED && String(r.name).trim().toLowerCase() === v.toLowerCase(); })) p.name = 'มี' + C.noun + 'ชื่อนี้อยู่แล้ว';
+      if (f.id === 'dob' && v > D.today()) p.dob = 'วันเกิดต้องไม่เป็นวันในอนาคต';
+      if (f.id === 'taxId' && !/^\d{13}$/.test(v.replace(/[\s-]/g, ''))) p.taxId = 'เลขประจำตัวผู้เสียภาษีต้องมี 13 หลัก';
+      if (f.id === 'password' && (v.length < 8 || !/[A-Za-z]/.test(v) || !/\d/.test(v))) p.password = 'อย่างน้อย 8 ตัว และต้องมีทั้งตัวอักษรและตัวเลข';
+    });
+    if ($('confirm') && (val('password') || val('confirm')) && val('confirm') !== val('password')) p.confirm = val('confirm') ? 'รหัสผ่านไม่ตรงกัน' : 'กรุณายืนยันรหัสผ่าน';
+    return p;
+  }
+  var touched = {};
+  function setErr(el, msg) {
+    var f = el.closest('.gg-field'), x = f.querySelector('.gg-error:not(#photoErr)'), h = f.querySelector('.gg-hint');
+    el.closest('.gg-control').classList.toggle('invalid', !!msg); if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    if (msg) { if (!x) { x = document.createElement('div'); x.className = 'gg-error'; f.appendChild(x); } x.textContent = msg; if (h) h.hidden = true; }
+    else { if (x) x.remove(); if (h) h.hidden = false; }
+  }
+  function syncRegion() {
+    if (!$('region')) return;
+    var r = val('city') === 'ต่างประเทศ' ? 'ต่างประเทศ' : D.regionOf(val('city'), val('country'));
+    $('region').innerHTML = r ? '<span data-icon="globe" data-size="sm"></span>' + r : '<span style="color:var(--placeholder)">' + (val('city') ? 'ไม่พบจังหวัดนี้' : 'เลือกจังหวัดก่อน') + '</span>';
+    $('region').classList.toggle('found', !!r); GG.hydrateIcons($('region'));
+    $('regionHint').textContent = r ? (r === 'ต่างประเทศ' ? 'ลูกค้าต่างประเทศ' : 'จากจังหวัด ' + val('city') + ' · ใช้ในรายงานภูมิภาคขายดีบนแดชบอร์ด') : '';
+  }
+  function sync() {
+    syncRegion();
+    var p = problems(), n = Object.keys(p).length;
+    INPUTS.forEach(function (f) { if (touched[f.id]) setErr($(f.id), p[f.id] || ''); if (f.type === 'select') $(f.id).classList.toggle('is-placeholder', !$(f.id).value); });
+    if ($('meter')) $('meter').className = 'meter s' + strength(val('password'));
+    if ($('roleHint')) $('roleHint').textContent = ROLE_NOTE[val('role')] || 'กำหนดเมนูที่ผู้ใช้เข้าถึงได้';
+    if (ED && ED.self && $('role')) { $('role').disabled = true; $('roleHint').textContent = 'คุณไม่สามารถเปลี่ยนบทบาทของตัวเองได้'; }
+    drawPhoto();
+    $('saveBtn').disabled = n > 0;
+    $('footNote').textContent = n ? 'กรอกช่องที่มีเครื่องหมาย * ให้ถูกต้องเพื่อบันทึก (เหลือ ' + n + ' ช่อง)' : 'พร้อมบันทึก';
+  }
+  INPUTS.forEach(function (f) {
+    var el = $(f.id);
+    el.addEventListener('input', sync);
+    el.addEventListener('change', function () { touched[f.id] = true; sync(); });
+    el.addEventListener('blur', function () { if (el.value.trim() || f.req) touched[f.id] = true; if (f.id === 'password' && val('confirm')) touched.confirm = true; sync(); });
+  });
+  document.querySelectorAll('[data-eye]').forEach(function (b) {
+    b.addEventListener('click', function () { var i = $(b.dataset.eye), show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.setAttribute('aria-label', show ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'); b.style.color = show ? 'var(--primary)' : ''; });
+  });
+  if (ED) INPUTS.forEach(function (f) { if (f.type !== 'password') touched[f.id] = true; });
+  sync();
+
+  $('pfForm').addEventListener('submit', function (e) {
+    e.preventDefault(); INPUTS.forEach(function (f) { touched[f.id] = true; }); sync();
+    if ($('saveBtn').disabled) return;
+    var name = KIND === 'users' ? val('first') + ' ' + val('last') : val('name');
+    $('footNote').hidden = true; $('saveBtn').disabled = true;
+    $('formOkText').textContent = 'บันทึก "' + name + '" แล้ว กำลังกลับไปหน้ารายการ…'; $('formOk').classList.add('show');
+    setTimeout(function () { location.href = C.back + '?saved=' + encodeURIComponent(name); }, 1400);
+  });
+  var firstInput = $(INPUTS[0].id); if (firstInput) firstInput.focus();
+})();
+/* wire every menu and draw every icon once the page content exists */
+document.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+GG.hydrateIcons(document);
+</script>
+</body>
+</html>

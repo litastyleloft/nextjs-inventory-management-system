@@ -1,0 +1,234 @@
+===CSS===
+.dash { display: flex; flex-direction: column; gap: var(--space-6); }
+.dash-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--space-6); align-items: stretch; }
+.dash-row.even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.chart-box { position: relative; height: 300px; }
+.pie-box { position: relative; height: 230px; }
+.pie-center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; pointer-events: none; }
+.pie-center strong { display: block; font: 800 20px/26px var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.pie-center span { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.period { display: flex; align-items: center; gap: var(--space-3); }
+.period .gg-control { width: 180px; }
+.gg-stat-label { line-height: 20px; }
+#tiles .gg-stat-value, #tiles2 .gg-stat-value { font-size: 23px; line-height: 30px; overflow: visible; }
+#tiles .gg-stat, #tiles2 .gg-stat { padding: var(--space-5); gap: var(--space-3); }
+.gg-stat .formula { margin-top: 4px; font: 500 12px/16px var(--font-sans); opacity: .82; }
+.gg-stat.soft .formula { color: var(--muted); opacity: 1; }
+.gg-stat-value.neg { color: inherit; }
+.gg-stat.strong.loss { background: var(--rose); }
+.legend-list { display: grid; gap: 10px; margin-top: var(--space-4); }
+.legend-list .li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 56px; align-items: center; gap: 10px; font: 500 13px/18px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.legend-list .li i { width: 12px; height: 12px; border-radius: 3px; }
+.legend-list .li b { color: var(--ink); font-weight: 600; }
+.legend-list .li .p { text-align: right; color: var(--muted); }
+.regions { display: grid; gap: 14px; }
+.reg { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+.reg .rk { display: grid; place-items: center; width: 26px; height: 26px; border-radius: var(--radius-pill); background: var(--surface-sunken); font: 700 12px/1 var(--font-display); color: var(--ink-2); }
+.reg .rk.top { background: var(--gold); color: var(--on-gold); }
+.reg .nm { font: 600 14px/20px var(--font-sans); color: var(--ink); }
+.reg .sub { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.reg .bar { height: 8px; margin-top: 6px; border-radius: var(--radius-pill); background: var(--surface-sunken); overflow: hidden; }
+.reg .bar i { display: block; height: 100%; border-radius: inherit; background: var(--primary); }
+.reg .amt { text-align: right; font: 700 15px/20px var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.reg .amt span { display: block; font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.agent { display: flex; align-items: center; gap: var(--space-3); }
+.agent .gg-avatar { width: 34px; height: 34px; font-size: 12px; }
+.agent .nm { color: var(--ink); font-weight: 600; }
+.margin { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.margin .bar { width: 70px; height: 6px; border-radius: var(--radius-pill); background: var(--surface-sunken); overflow: hidden; }
+.margin .bar i { display: block; height: 100%; background: var(--success); }
+.gg-card.flush .gg-card-body { padding: var(--space-2) 0 0; }
+.gg-card.flush .gg-table th { border-top: 1px solid var(--border); }
+.gg-card.flush .gg-table tbody tr:last-child td { border-bottom: 0; }
+.gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.pos { color: var(--success-text); font-weight: 600; }
+.neg { color: var(--danger-text); font-weight: 600; }
+.gg-table td { height: 56px; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">แดชบอร์ด</h1>
+          <p class="gg-pagehead-sub" id="headSub"></p>
+        </div>
+        <div class="gg-pagehead-actions period">
+          <div class="gg-control"><span class="gg-lead"><span data-icon="calendar" data-size="sm"></span></span>
+            <select id="period" aria-label="ช่วงเวลา" style="padding-left:8px"><option value="month">เดือนนี้</option><option value="30">30 วันล่าสุด</option><option value="year" selected>ปีนี้</option><option value="all">ทั้งหมด</option></select>
+            <span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+        </div>
+      </div>
+
+      <div class="dash">
+        <!-- Profit -->
+        <div class="gg-stat-grid" id="tiles"></div>
+        <div class="gg-stat-grid" id="tiles2"></div>
+
+        <!-- Trend + category -->
+        <div class="dash-row">
+          <section class="gg-card">
+            <div class="gg-card-head"><div><h2 class="gg-card-title">ยอดขาย ยอดซื้อ และกำไรสุทธิรายเดือน</h2><p class="gg-card-sub">ปี 2569 · กำไรสุทธิ = ยอดขาย − ยอดซื้อ − ค่าใช้จ่าย</p></div></div>
+            <div class="gg-card-body"><div class="chart-box"><canvas id="trendChart" role="img" aria-label="กราฟยอดขาย ยอดซื้อ และกำไรสุทธิรายเดือน ปี 2569"></canvas></div></div>
+          </section>
+          <section class="gg-card">
+            <div class="gg-card-head"><div><h2 class="gg-card-title">หมวดหมู่สินค้าขายดี</h2><p class="gg-card-sub" id="catSub"></p></div></div>
+            <div class="gg-card-body">
+              <div class="pie-box"><canvas id="catChart" role="img" aria-label="สัดส่วนยอดขายตามหมวดหมู่สินค้า"></canvas><div class="pie-center"><div><strong id="catTop"></strong><span>หมวดอันดับ 1</span></div></div></div>
+              <div class="legend-list" id="catLegend"></div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Agents + regions -->
+        <div class="dash-row">
+          <section class="gg-card flush">
+            <div class="gg-card-head"><div><h2 class="gg-card-title">ยอดขายและกำไรขั้นต้นตามพนักงานขาย</h2><p class="gg-card-sub">อัตรากำไรขั้นต้น = (ราคาขาย − ราคาซื้อ) ÷ ราคาขาย · ราคาซื้อเฉลี่ยต่อหลาจากหน้ารายการซื้อ</p></div></div>
+            <div class="gg-card-body">
+              <div class="gg-table-wrap"><table class="gg-table">
+                <thead><tr><th>พนักงานขาย</th><th class="right">ยอดขายรวม</th><th class="right">กำไรขั้นต้น</th><th class="right">อัตรากำไรขั้นต้น</th></tr></thead>
+                <tbody id="agentRows"></tbody>
+                <tfoot><tr id="agentFoot"></tr></tfoot>
+              </table></div>
+              <div class="chart-box" style="height:200px;margin:var(--space-4) var(--space-6) var(--space-6)"><canvas id="agentChart" role="img" aria-label="กราฟยอดขายและกำไรขั้นต้นตามพนักงานขาย"></canvas></div>
+            </div>
+          </section>
+          <section class="gg-card">
+            <div class="gg-card-head"><div><h2 class="gg-card-title">ภูมิภาคขายดี</h2><p class="gg-card-sub" id="regSub"></p></div>
+              <a class="gg-btn gg-btn-ghost sm" href="lts-customers.html">ดูลูกค้า<span data-icon="chevron-right" data-size="sm"></span></a></div>
+            <div class="gg-card-body"><div class="regions" id="regions"></div></div>
+          </section>
+        </div>
+
+        <!-- Recent sales -->
+        <div class="gg-table-card">
+          <div class="gg-table-toolbar"><div class="gg-row" style="flex:1"><h2 class="gg-card-title">รายการขายล่าสุด</h2></div>
+            <a class="gg-btn gg-btn-ghost" href="lts-sales.html">ดูรายการขายทั้งหมด<span data-icon="chevron-right" data-size="sm"></span></a></div>
+          <div class="gg-table-wrap">
+            <table class="gg-table">
+              <thead><tr><th>เลขที่อ้างอิง</th><th>ลูกค้า</th><th>ภูมิภาค</th><th>พนักงานขาย</th><th>สถานะ</th><th class="right">ยอดรวมสุทธิ</th><th class="right">ค้างชำระ</th><th>การชำระเงิน</th></tr></thead>
+              <tbody id="recentSales"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Stock alert -->
+        <div class="gg-table-card">
+          <div class="gg-table-toolbar">
+            <div class="gg-row" style="flex:1"><h2 class="gg-card-title">แจ้งเตือนสต็อก</h2><span id="alertBadge"></span></div>
+            <div class="gg-row"><a class="gg-btn gg-btn-ghost" href="lts-products.html">ดูสินค้าทั้งหมด<span data-icon="chevron-right" data-size="sm"></span></a></div>
+          </div>
+          <div class="gg-table-wrap">
+            <table class="gg-table">
+              <thead><tr><th>รหัส</th><th>สินค้า</th><th>คลังสินค้า</th><th class="right">คงเหลือ</th><th class="right">จุดแจ้งเตือน</th></tr></thead>
+              <tbody id="alertRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+===JS===
+/*@include sales-data*/
+/*@include transfer-data*/
+/*@include expense-data*/
+/*@include people-data*/
+/*@include purchase-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc, r2 = D.r2, TODAY = D.today();
+  var css = getComputedStyle(document.documentElement), tok = function (n) { return css.getPropertyValue(n).trim(); };
+  var COLORS = [tok('--primary'), tok('--gold'), tok('--teal'), tok('--rose'), tok('--info') || '#2f6fb3', tok('--muted')];
+  function addDays(iso, n) { var d = new Date(iso + 'T00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function inPeriod(iso) {
+    var d = iso.slice(0, 10), p = $('period').value;
+    if (p === 'all') return true;
+    if (p === 'month') return d.slice(0, 7) === TODAY.slice(0, 7);
+    if (p === 'year') return d.slice(0, 4) === TODAY.slice(0, 4) && d <= TODAY;
+    return d >= addDays(TODAY, -29) && d <= TODAY;
+  }
+  var PLABEL = { month: 'เดือนนี้', '30': '30 วันล่าสุด', year: 'ปีนี้', all: 'ทั้งหมด' };
+  function exVat(s) { var t = D.totals(s); return r2(t.sub - t.disc); }
+  /* Purchase price per yard: weighted average of received purchase lines (prices are entered on the purchase page); product cost only if never purchased */
+  var BUY = {}; (D.PURCHASES || []).forEach(function (pu) { if (pu.status !== 'received') return; pu.lines.forEach(function (l) { var b = BUY[l.code] = BUY[l.code] || { q: 0, v: 0 }; b.q += +l.qty; b.v += l.qty * l.cost; }); });
+  function buyPrice(code) { var b = BUY[code]; return b && b.q ? b.v / b.q : D.product(code).cost; }
+  /* Selling price = line price per yard after line discount, before VAT; purchase price = buyPrice × yards */
+  function sellValue(s) { return r2(s.lines.reduce(function (a, l) { return a + D.calc(l).net * +l.qty; }, 0)); }
+  function buyValue(s) { return r2(s.lines.reduce(function (a, l) { return a + buyPrice(l.code) * +l.qty; }, 0)); }
+  function cogs(s) { return r2(s.lines.reduce(function (a, l) { var p = D.product(l.code); return a + +l.qty * D.factor(p, l.unit || p.unit) * p.cost; }, 0)); }
+  function money(v) { return (v < 0 ? '−' : '') + GG.baht(Math.abs(v)); }
+
+  var charts = {};
+  function chart(id, cfg) { if (typeof Chart === 'undefined') return; if (charts[id]) { charts[id].data = cfg.data; charts[id].update(); return; } charts[id] = new Chart($(id), cfg); }
+  var ink = tok('--ink-2'), grid = tok('--border'), FONT = { family: 'IBM Plex Sans Thai' };
+  var kTick = function (v) { return (v < 0 ? '−฿' : '฿') + (Math.abs(v) >= 1000 ? (Math.abs(v) / 1000).toLocaleString('th-TH') + 'K' : Math.abs(v)); };
+
+  function render() {
+    var S = D.SALES.filter(function (s) { return inPeriod(s.created); }), P = D.PURCHASES.filter(function (p) { return inPeriod(p.created); }), E = D.EXPENSES.filter(function (e) { return inPeriod(e.created); });
+    var SR = D.RETURNS.filter(function (r) { return inPeriod(r.created); }), PR = D.PRETURNS.filter(function (r) { return inPeriod(r.created); });
+    var sales = r2(S.reduce(function (a, s) { return a + D.totals(s).grand; }, 0)), purchase = r2(P.reduce(function (a, p) { return a + p.total; }, 0)), exp = r2(E.reduce(function (a, e) { return a + e.amount; }, 0));
+    var gross = r2(sales - purchase), net = r2(sales - purchase - exp);
+    var due = r2(D.SALES.reduce(function (a, s) { return a + D.totals(s).grand - D.paidOf(s); }, 0));
+    $('headSub').textContent = 'ภาพรวม' + PLABEL[$('period').value] + ' · ' + S.length + ' บิลขาย · ' + P.length + ' ใบสั่งซื้อ · ' + E.length + ' รายการค่าใช้จ่าย';
+
+    function tile(cls, icon, label, value, formula) { return '<div class="gg-stat ' + cls + '"><div class="gg-stat-icon"><span data-icon="' + icon + '" data-size="lg"></span></div><div class="gg-stat-body"><div class="gg-stat-label">' + label + '</div><div class="gg-stat-value">' + value + '</div>' + (formula ? '<div class="formula">' + formula + '</div>' : '') + '</div></div>'; }
+    $('tiles').innerHTML =
+      tile('strong navy', 'receipt', 'ยอดขาย', GG.baht(sales), S.length + ' บิล') +
+      tile('strong gold', 'cart', 'ยอดซื้อ', GG.baht(purchase), P.length + ' ใบสั่งซื้อ') +
+      tile('strong ' + (gross < 0 ? 'loss' : 'teal'), 'trend-up', 'กำไรขั้นต้น', money(gross), 'ยอดขาย − ยอดซื้อ') +
+      tile('strong ' + (net < 0 ? 'loss' : 'teal'), 'chart', 'กำไรสุทธิ', money(net), 'ยอดขาย − ยอดซื้อ − ค่าใช้จ่าย');
+    $('tiles2').innerHTML =
+      tile('soft rose', 'wallet', 'ค่าใช้จ่าย', GG.baht(exp), E.length + ' รายการ') +
+      tile('soft navy', 'return-left', 'รับคืนสินค้า', GG.baht(SR.reduce(function (a, r) { return a + D.totals(r).grand; }, 0)), SR.length + ' ใบ') +
+      tile('soft gold', 'return-right', 'คืนสินค้าให้ผู้จำหน่าย', GG.baht(PR.reduce(function (a, r) { return a + r.total; }, 0)), PR.length + ' ใบ') +
+      tile('soft teal', 'cash', 'ยอดค้างรับจากลูกค้า', GG.baht(due), 'ทุกบิลที่ยังไม่ชำระครบ');
+    GG.hydrateIcons($('tiles')); GG.hydrateIcons($('tiles2'));
+
+    /* monthly trend (2569) */
+    var labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'], m = [];
+    for (var i = 1; i <= 12; i++) { var key = TODAY.slice(0, 4) + '-' + String(i).padStart(2, '0'), at = function (iso) { return iso.slice(0, 7) === key; };
+      var sv = D.SALES.filter(function (s) { return at(s.created); }).reduce(function (a, s) { return a + D.totals(s).grand; }, 0), pv = D.PURCHASES.filter(function (p) { return at(p.created); }).reduce(function (a, p) { return a + p.total; }, 0), ev = D.EXPENSES.filter(function (e) { return at(e.created); }).reduce(function (a, e) { return a + e.amount; }, 0);
+      m.push({ s: r2(sv), p: r2(pv), n: r2(sv - pv - ev) }); }
+    chart('trendChart', { data: { labels: labels, datasets: [
+      { type: 'bar', label: 'ยอดขาย', data: m.map(function (x) { return x.s; }), backgroundColor: tok('--primary'), borderRadius: 4, maxBarThickness: 20 },
+      { type: 'bar', label: 'ยอดซื้อ', data: m.map(function (x) { return x.p; }), backgroundColor: tok('--gold'), borderRadius: 4, maxBarThickness: 20 },
+      { type: 'line', label: 'กำไรสุทธิ', data: m.map(function (x) { return x.n; }), borderColor: tok('--rose'), backgroundColor: tok('--rose'), tension: .3, pointRadius: 3 }] },
+      options: { maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: ink, usePointStyle: true, font: FONT } }, tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + money(c.raw); } } } },
+        scales: { x: { grid: { display: false }, ticks: { color: ink } }, y: { grid: { color: grid }, ticks: { color: ink, callback: kTick } } } } });
+
+    /* top selling category */
+    var cat = {}; S.forEach(function (s) { s.lines.forEach(function (l) { var k = D.categoryOf(l.code); cat[k] = (cat[k] || 0) + D.calc(l).sub; }); });
+    var cl = Object.keys(cat).map(function (k) { return { k: k, v: r2(cat[k]) }; }).sort(function (a, b) { return b.v - a.v; }), ct = cl.reduce(function (a, x) { return a + x.v; }, 0);
+    $('catSub').textContent = 'ยอดขายตามหมวดหมู่ · ' + PLABEL[$('period').value];
+    $('catTop').textContent = cl.length ? cl[0].k : 'ยังไม่มียอดขาย';
+    $('catLegend').innerHTML = cl.map(function (x, i) { return '<div class="li"><i style="background:' + COLORS[i % COLORS.length] + '"></i><span>' + x.k + '</span><b>' + GG.baht(x.v) + '</b><span class="p">' + (ct ? (x.v / ct * 100).toFixed(1) : 0) + '%</span></div>'; }).join('') || '<div class="gg-empty">ยังไม่มียอดขายในช่วงนี้</div>';
+    chart('catChart', { type: 'doughnut', data: { labels: cl.map(function (x) { return x.k; }), datasets: [{ data: cl.map(function (x) { return x.v; }), backgroundColor: cl.map(function (x, i) { return COLORS[i % COLORS.length]; }), borderColor: tok('--surface'), borderWidth: 2 }] },
+      options: { maintainAspectRatio: false, animation: false, cutout: '68%', plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return c.label + ': ' + GG.baht(c.raw); } } } } } });
+
+    /* agents */
+    var A = D.AGENTS.map(function (a) { var l = S.filter(function (s) { return s.agent === a.id; }); var tot = r2(l.reduce(function (x, s) { return x + D.totals(s).grand; }, 0)), ex = r2(l.reduce(function (x, s) { return x + sellValue(s); }, 0)), cg = r2(l.reduce(function (x, s) { return x + buyValue(s); }, 0)); return { a: a, n: l.length, tot: tot, sell: ex, cost: cg, gp: r2(ex - cg), m: ex ? (ex - cg) / ex * 100 : 0 }; }).sort(function (x, y) { return y.tot - x.tot; });
+    $('agentRows').innerHTML = A.map(function (x) { var u = D.USERS.filter(function (u) { return u.id === x.a.id; })[0], ini = u ? D.ch(u.first) + D.ch(u.last) : x.a.name.slice(0, 2), role = u ? D.role(u.role).name : '';
+      return '<tr><td><div class="agent"><span class="gg-avatar">' + esc(ini) + '</span><div><div class="nm">' + esc(x.a.name) + '</div><div class="gg-hint">' + esc(role) + ' · ' + x.n + ' บิล</div></div></div></td><td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(x.tot) + '</td><td class="right ' + (x.gp < 0 ? 'neg' : 'pos') + '">' + money(x.gp) + '<div class="gg-hint">ขาย ' + GG.baht(x.sell) + '<br>ซื้อ ' + GG.baht(x.cost) + '</div></td><td><div class="margin"><span class="bar"><i style="width:' + Math.max(0, Math.min(100, x.m)).toFixed(0) + '%"></i></span><span class="gg-num">' + x.m.toFixed(1) + '%</span></div></td></tr>'; }).join('');
+    var tA = A.reduce(function (a, x) { a.n += x.n; a.tot += x.tot; a.sell += x.sell; a.cost += x.cost; a.gp += x.gp; return a; }, { n: 0, tot: 0, sell: 0, cost: 0, gp: 0 });
+    $('agentFoot').innerHTML = '<td>รวม ' + tA.n + ' บิล</td><td class="right gg-num">' + GG.baht(tA.tot) + '</td><td class="right gg-num ' + (tA.gp < 0 ? 'neg' : 'pos') + '">' + money(r2(tA.gp)) + '</td><td class="right gg-num">' + (tA.sell ? ((tA.sell - tA.cost) / tA.sell * 100).toFixed(1) : '0.0') + '%</td>';
+    chart('agentChart', { type: 'bar', data: { labels: A.map(function (x) { return x.a.name; }), datasets: [
+      { label: 'ยอดขายรวม', data: A.map(function (x) { return x.tot; }), backgroundColor: tok('--primary'), borderRadius: 4, maxBarThickness: 22 },
+      { label: 'กำไรขั้นต้น', data: A.map(function (x) { return x.gp; }), backgroundColor: tok('--teal'), borderRadius: 4, maxBarThickness: 22 }] },
+      options: { indexAxis: 'y', maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: ink, usePointStyle: true, font: FONT } }, tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + money(c.raw); } } } },
+        scales: { x: { grid: { color: grid }, ticks: { color: ink, callback: kTick } }, y: { grid: { display: false }, ticks: { color: ink, font: FONT } } } } });
+
+    /* regions */
+    var R = {}; S.forEach(function (s) { var c = D.customer(s.customer), k = c.region || 'ไม่ระบุภาค'; R[k] = R[k] || { v: 0, n: 0, c: {} }; R[k].v += D.totals(s).grand; R[k].n++; R[k].c[c.id] = 1; });
+    var rl = Object.keys(R).map(function (k) { return { k: k, v: r2(R[k].v), n: R[k].n, c: Object.keys(R[k].c).length }; }).sort(function (a, b) { return b.v - a.v; }), rt = rl.reduce(function (a, x) { return a + x.v; }, 0), rmax = rl.length ? rl[0].v : 1;
+    $('regSub').textContent = 'ยอดขายตามภูมิภาคของลูกค้า · ' + PLABEL[$('period').value];
+    $('regions').innerHTML = rl.length ? rl.map(function (x, i) { return '<div class="reg"><span class="rk' + (i === 0 ? ' top' : '') + '">' + (i + 1) + '</span><div><div class="nm">' + x.k + '</div><div class="sub">' + x.c + ' ลูกค้า · ' + x.n + ' บิล</div><div class="bar"><i style="width:' + (x.v / rmax * 100).toFixed(1) + '%"></i></div></div><div class="amt">' + GG.baht(x.v) + '<span>' + (rt ? (x.v / rt * 100).toFixed(1) : 0) + '%</span></div></div>'; }).join('') : '<div class="gg-empty">ยังไม่มียอดขายในช่วงนี้</div>';
+
+    /* recent sales */
+    $('recentSales').innerHTML = D.SALES.slice().sort(function (a, b) { return b.created.localeCompare(a.created); }).slice(0, 6).map(function (s) {
+      var c = D.customer(s.customer), t = D.totals(s), paid = D.paidOf(s);
+      return '<tr><td><a href="lts-sale-details.html?ref=' + s.ref + '" style="text-decoration:none"><span class="gg-badge neutral mono">' + s.ref + '</span></a></td><td class="primary">' + esc(c.name) + '</td><td>' + esc(c.region || '—') + '</td><td>' + esc(D.agent(s.agent).name) + '</td><td>' + D.badge(D.STATUS[s.status]) + '</td><td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(t.grand) + '</td><td class="right">' + GG.baht(t.grand - paid) + '</td><td>' + D.badge(D.PAY[D.payState(t.grand, paid)]) + '</td></tr>'; }).join('');
+    GG.hydrateIcons($('recentSales'));
+  }
+
+  /* stock alerts per warehouse */
+  var al = []; D.PRODUCTS.forEach(function (p) { D.WAREHOUSES.forEach(function (w) { var q = D.stockAt(p.code, w.id); if (w.id === 'W1' && q <= p.alert) al.push({ p: p, w: w, q: q }); }); });
+  $('alertBadge').innerHTML = al.length ? '<span class="gg-badge danger"><span class="gg-badge-dot"></span>' + al.length + ' รายการถึงจุดแจ้งเตือน</span>' : '<span class="gg-badge success">สต็อกปกติ</span>';
+  $('alertRows').innerHTML = al.map(function (x) { return '<tr><td><span class="gg-badge neutral mono">' + x.p.code + '</span></td><td class="primary">' + esc(x.p.name) + '</td><td>' + esc(x.w.name) + '</td><td class="right">' + (x.q <= 0 ? '<span class="gg-badge danger"><span class="gg-badge-dot"></span>สินค้าหมด</span>' : '<span class="gg-badge warning"><span class="gg-badge-dot"></span>' + D.num(x.q) + ' หลา</span>') + '</td><td class="right"><span class="gg-badge neutral">' + D.num(x.p.alert) + ' หลา</span></td></tr>'; }).join('') || '<tr><td colspan="5" class="gg-empty">ไม่มีสินค้าถึงจุดแจ้งเตือน</td></tr>';
+
+  $('period').addEventListener('change', render);
+  render();
+})();

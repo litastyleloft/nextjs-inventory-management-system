@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="th" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>{{TITLE}} · LTS Solution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Public+Sans:ital,wght@0,400..700;1,400&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+{{HEAD_EXTRA}}
+<style>
+/* ===== LTS Solution design tokens (generated from tokens.json) ===== */
+{{TOKENS}}
+
+/* ===== LTS Solution component styles (components/bundle.css) ===== */
+{{BUNDLE_CSS}}
+
+/* ===== Page composition ===== */
+html, body { min-width: 1440px; }
+.gg-topbar .gg-crumbs .gg-icon { width: 16px; height: 16px; }
+.gg-crumbs a { color: var(--muted); text-decoration: none; }
+.gg-crumbs a:hover { color: var(--primary); }
+a.gg-btn { text-decoration: none; }
+.gg-scrim[hidden], .gg-btn[hidden], [data-icon][hidden], .logo-pick [hidden] { display: none; }
+{{PAGE_CSS}}
+</style>
+</head>
+<body>
+<div class="gg gg-shell" id="shell" data-active="{{ACTIVE}}">
+
+  <aside class="gg-sidebar" id="sidebar" aria-label="เมนูหลัก">
+    <div class="gg-brand">
+      <div class="gg-brand-mark">L</div>
+      <div class="gg-brand-name">LTS <b>Solution</b></div>
+    </div>
+    <nav class="gg-nav" id="nav"></nav>
+  </aside>
+
+  <div class="gg-shell-main">
+    <header class="gg-topbar">
+      <button type="button" class="gg-btn gg-btn-ghost icon-only" id="toggleSidebar" aria-label="ย่อแถบเมนู"><span data-icon="panel-left"></span></button>
+      <nav class="gg-crumbs" aria-label="เส้นทางหน้า">{{CRUMBS}}</nav>
+      <div class="gg-topbar-search">
+        <div class="gg-control">
+          <span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+          <input id="globalSearch" placeholder="ค้นหาผ้า รายการขาย ลูกค้า" aria-label="ค้นหาทั้งระบบ">
+          <span class="gg-kbd">/</span>
+        </div>
+      </div>
+      <div class="gg-topbar-end">
+        <button type="button" class="gg-btn gg-btn-gold gg-pos"><span data-icon="barcode"></span>POS</button>
+        <button type="button" class="gg-btn gg-btn-ghost icon-only" id="fullscreen" aria-label="เต็มหน้าจอ"><span data-icon="expand"></span></button>
+        <span class="gg-iconbtn-wrap"><button type="button" class="gg-btn gg-btn-ghost icon-only" aria-label="การแจ้งเตือน"><span data-icon="bell"></span></button></span>
+        <span class="gg-divider-v" aria-hidden="true"></span>
+        <div class="gg-menu-anchor" data-menu>
+          <button type="button" class="gg-user" aria-haspopup="menu" aria-expanded="false">
+            <span class="gg-avatar">A</span>
+            <span><div class="gg-user-name">แอดมิน</div></span>
+            <span data-icon="chevron-down" data-size="sm"></span>
+          </button>
+          <div class="gg-menu" role="menu" hidden>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="user" data-size="sm"></span>โปรไฟล์ของฉัน</button>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="settings" data-size="sm"></span>ตั้งค่า</button>
+            <div class="gg-menu-sep" role="separator"></div>
+            <button type="button" role="menuitem" class="gg-menu-item danger"><span data-icon="logout" data-size="sm"></span>ออกจากระบบ</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="gg-shell-content">

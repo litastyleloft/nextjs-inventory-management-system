@@ -1,0 +1,172 @@
+===CSS===
+/* Sign-in stands alone: no admin chrome */
+.gg-sidebar, .gg-topbar, .gg-shell-foot { display: none !important; }
+.gg-shell { display: block; }
+.gg-shell-content { max-width: none !important; padding: 0 !important; }
+[hidden] { display: none !important; }
+.auth { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-8); padding: var(--space-12) var(--space-4); box-sizing: border-box; }
+.auth-brand { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); color: var(--on-canvas, var(--ink)); text-decoration: none; }
+.auth-brand .gg-brand-mark { width: 56px; height: 56px; font-size: 26px; border-radius: var(--radius-lg); box-shadow: var(--shadow-2); }
+.auth-brand .nm { font: 700 22px/28px var(--font-display); letter-spacing: -.01em; }
+.auth-brand .nm b { color: var(--gold); font-weight: 800; }
+.auth-brand .tag { font: 500 13px/18px var(--font-sans); color: var(--on-canvas-muted, var(--muted)); }
+.auth-card { width: 540px; padding: var(--space-10, 40px) var(--space-8); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-2); box-sizing: border-box; }
+.auth-card h1 { margin: 0 0 var(--space-2); text-align: center; font: 700 26px/32px var(--font-display); color: var(--ink); }
+.auth-card .lead { margin: 0 0 var(--space-6); text-align: center; font: 400 14px/20px var(--font-sans); color: var(--muted); }
+.auth-form { display: grid; gap: var(--space-5); }
+.label-row { display: flex; justify-content: space-between; align-items: baseline; }
+.link { border: 0; padding: 0; background: none; font: 600 13px/18px var(--font-sans); color: var(--primary); cursor: pointer; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+.link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
+.auth .gg-control { height: 48px; }
+.auth .gg-control input { font-size: 15px; }
+.eye { width: 40px; height: 40px; margin-right: 4px; border: 0; background: none; color: var(--muted); border-radius: var(--radius-sm); cursor: pointer; display: grid; place-items: center; flex: none; }
+.eye:hover { color: var(--primary); background: var(--surface-hover); }
+.eye.on { color: var(--primary); }
+.caps { display: flex; align-items: center; gap: 6px; font: 500 12px/18px var(--font-sans); color: var(--warning-text); }
+.remember { display: flex; align-items: center; gap: 10px; font: 500 14px/20px var(--font-sans); color: var(--ink-2); cursor: pointer; width: fit-content; }
+.remember input { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
+.submit { height: 50px; width: 100%; justify-content: center; font-size: 16px; }
+.submit .spin { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .submit .spin { animation-duration: 2s; } }
+.alert { display: flex; gap: var(--space-3); align-items: flex-start; padding: 12px var(--space-4); border-radius: var(--radius-md); font: 500 13px/20px var(--font-sans); }
+.alert .gg-icon { flex: none; margin-top: 1px; }
+.alert.danger { background: var(--danger-soft); color: var(--danger-text); }
+.alert.success { background: var(--success-soft); color: var(--success-text); }
+.alert.info { background: var(--info-soft); color: var(--info-text); }
+.demo { margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px dashed var(--border); font: 500 13px/20px var(--font-sans); color: var(--muted); text-align: center; }
+.demo code { padding: 2px 6px; border-radius: 4px; background: var(--surface-sunken); color: var(--ink); font: 600 12px/18px ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.demo button { margin-left: 4px; }
+.auth-foot { font: 500 12px/18px var(--font-sans); color: var(--on-canvas-muted, var(--muted)); text-align: center; }
+===CONTENT===
+      <div class="auth">
+        <div class="auth-brand">
+          <div class="gg-brand-mark" aria-hidden="true">L</div>
+          <div class="nm">LTS <b>Solution</b></div>
+          <div class="tag">ระบบค้าส่งผ้า · สินค้าคงคลังและ POS</div>
+        </div>
+
+        <!-- Sign in -->
+        <section class="auth-card" id="signin" aria-labelledby="signinTitle">
+          <h1 id="signinTitle">เข้าสู่ระบบ</h1>
+          <p class="lead">ใช้อีเมลและรหัสผ่านที่ผู้ดูแลระบบสร้างให้</p>
+          <form class="auth-form" id="form" novalidate>
+            <div class="alert info" id="outMsg" hidden role="status"><span data-icon="check" data-size="sm"></span><span>ออกจากระบบเรียบร้อยแล้ว</span></div>
+            <div class="alert danger" id="err" hidden role="alert"><span data-icon="alert" data-size="sm"></span><span id="errText"></span></div>
+            <div class="gg-field">
+              <label class="gg-label" for="email">อีเมล<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><span class="gg-lead"><span data-icon="user" data-size="sm"></span></span><input id="email" type="email" autocomplete="username" placeholder="กรอกอีเมล" required></div>
+            </div>
+            <div class="gg-field">
+              <div class="label-row"><label class="gg-label" for="password">รหัสผ่าน<span class="gg-req" aria-hidden="true">*</span></label><button type="button" class="link" id="toForgot">ลืมรหัสผ่าน?</button></div>
+              <div class="gg-control"><span class="gg-lead"><span data-icon="shield" data-size="sm"></span></span><input id="password" type="password" autocomplete="current-password" placeholder="กรอกรหัสผ่าน" required>
+                <button type="button" class="eye" id="eye" aria-label="แสดงรหัสผ่าน" aria-pressed="false"><span data-icon="eye" data-size="sm"></span></button></div>
+              <div class="caps" id="caps" hidden><span data-icon="alert" data-size="sm"></span>Caps Lock เปิดอยู่</div>
+            </div>
+            <label class="remember"><input type="checkbox" id="remember">จดจำอีเมลบนเครื่องนี้</label>
+            <button type="submit" class="gg-btn gg-btn-primary submit" id="submit"><span id="submitText">เข้าสู่ระบบ</span></button>
+          </form>
+          <div class="demo">บัญชีทดลอง: <code>admin@lts-solution.example</code> / <code>lts2026</code><button type="button" class="link" id="fillDemo">ใช้บัญชีนี้</button></div>
+        </section>
+
+        <!-- Forgot password -->
+        <section class="auth-card" id="forgot" hidden aria-labelledby="forgotTitle">
+          <h1 id="forgotTitle">ลืมรหัสผ่าน</h1>
+          <p class="lead">กรอกอีเมลที่ใช้เข้าสู่ระบบ เราจะส่งลิงก์ตั้งรหัสผ่านใหม่ให้</p>
+          <form class="auth-form" id="fForm" novalidate>
+            <div class="alert success" id="fOk" hidden role="status"><span data-icon="check" data-size="sm"></span><span id="fOkText"></span></div>
+            <div class="gg-field" id="fField">
+              <label class="gg-label" for="fEmail">อีเมล<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><span class="gg-lead"><span data-icon="user" data-size="sm"></span></span><input id="fEmail" type="email" autocomplete="username" placeholder="กรอกอีเมล" required></div>
+            </div>
+            <button type="submit" class="gg-btn gg-btn-primary submit" id="fSubmit">ส่งลิงก์ตั้งรหัสผ่านใหม่</button>
+            <button type="button" class="link" id="toSignin" style="justify-self:center"><span data-icon="chevron-left" data-size="sm" style="vertical-align:-3px"></span> กลับไปหน้าเข้าสู่ระบบ</button>
+          </form>
+        </section>
+
+        <div class="auth-foot">© 2026 LTS Solution สงวนลิขสิทธิ์</div>
+      </div>
+===JS===
+/*@include sales-data*/
+/*@include people-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS;
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/, DEMO_PASS = 'lts2026';
+  var KEY = 'lts-remember-email';
+  function store(get, v) { try { if (get) return localStorage.getItem(KEY); if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch (e) { return null; } }
+
+  if (new URLSearchParams(location.search).get('out')) $('outMsg').hidden = false;
+  var saved = store(true); if (saved) { $('email').value = saved; $('remember').checked = true; }
+
+  /* field errors */
+  function setErr(input, msg) {
+    var f = input.closest('.gg-field'), x = f.querySelector('.gg-error');
+    input.closest('.gg-control').classList.toggle('invalid', !!msg);
+    if (msg) { input.setAttribute('aria-invalid', 'true'); if (!x) { x = document.createElement('div'); x.className = 'gg-error'; x.id = input.id + 'Err'; f.appendChild(x); input.setAttribute('aria-describedby', x.id); } x.textContent = msg; }
+    else { input.removeAttribute('aria-invalid'); if (x) x.remove(); }
+  }
+  function emailMsg(v) { return !v ? 'กรุณากรอกอีเมล' : !EMAIL.test(v) ? 'รูปแบบอีเมลไม่ถูกต้อง' : ''; }
+  $('email').addEventListener('blur', function () { if ($('email').value.trim()) setErr($('email'), emailMsg($('email').value.trim())); });
+  $('email').addEventListener('input', function () { if ($('email').getAttribute('aria-invalid')) setErr($('email'), emailMsg($('email').value.trim())); $('err').hidden = true; });
+  $('password').addEventListener('input', function () { setErr($('password'), ''); $('err').hidden = true; });
+
+  /* show / hide password, caps lock */
+  $('eye').addEventListener('click', function () {
+    var show = $('password').type === 'password'; $('password').type = show ? 'text' : 'password';
+    $('eye').classList.toggle('on', show); $('eye').setAttribute('aria-pressed', String(show)); $('eye').setAttribute('aria-label', show ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน');
+    $('password').focus();
+  });
+  ['keydown', 'keyup'].forEach(function (ev) { $('password').addEventListener(ev, function (e) { if (e.getModifierState) $('caps').hidden = !e.getModifierState('CapsLock'); }); });
+  $('password').addEventListener('blur', function () { $('caps').hidden = true; });
+
+  /* sign in: demo accounts are the users list, password lts2026; 5 wrong tries lock the form for 30 seconds */
+  var fails = 0, lockUntil = 0, timer = null;
+  function lockTick() {
+    var left = Math.ceil((lockUntil - Date.now()) / 1000);
+    if (left <= 0) { clearInterval(timer); $('submit').disabled = false; $('submitText').textContent = 'เข้าสู่ระบบ'; $('err').hidden = true; fails = 0; return; }
+    $('submit').disabled = true; $('submitText').textContent = 'ลองใหม่ได้ใน ' + left + ' วินาที';
+  }
+  $('form').addEventListener('submit', function (e) {
+    e.preventDefault(); if (Date.now() < lockUntil) return;
+    var em = $('email').value.trim(), pw = $('password').value, m = emailMsg(em), bad = false;
+    setErr($('email'), m); if (m) bad = true;
+    setErr($('password'), pw ? '' : 'กรุณากรอกรหัสผ่าน'); if (!pw) bad = true;
+    if (bad) { (m ? $('email') : $('password')).focus(); return; }
+    $('submit').disabled = true; $('submitText').innerHTML = '<span class="spin" aria-hidden="true"></span>กำลังเข้าสู่ระบบ…';
+    setTimeout(function () {
+      var user = D.USERS.filter(function (u) { return u.email.toLowerCase() === em.toLowerCase(); })[0];
+      if (user && pw === DEMO_PASS) {
+        store(false, $('remember').checked ? em : '');
+        $('submitText').textContent = 'ยินดีต้อนรับ ' + user.first;
+        location.href = user.role === 'sales' ? 'lts-pos.html' : 'lts-dashboard.html';
+        return;
+      }
+      fails++;
+      $('submit').disabled = false; $('submitText').textContent = 'เข้าสู่ระบบ';
+      /* one message for wrong email or wrong password, so the form never reveals which accounts exist */
+      $('errText').textContent = fails >= 5 ? 'เข้าสู่ระบบไม่สำเร็จหลายครั้ง กรุณารอ 30 วินาทีแล้วลองใหม่' : 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' + (fails >= 3 ? ' (เหลืออีก ' + (5 - fails) + ' ครั้งก่อนถูกล็อกชั่วคราว)' : '');
+      $('err').hidden = false; $('outMsg').hidden = true;
+      $('password').value = ''; $('password').focus();
+      if (fails >= 5) { lockUntil = Date.now() + 30000; lockTick(); timer = setInterval(lockTick, 1000); }
+    }, 600);
+  });
+  $('fillDemo').addEventListener('click', function () { $('email').value = 'admin@lts-solution.example'; $('password').value = DEMO_PASS; setErr($('email'), ''); setErr($('password'), ''); $('submit').focus(); });
+
+  /* forgot password */
+  function show(which) {
+    $('signin').hidden = which !== 'signin'; $('forgot').hidden = which !== 'forgot';
+    if (which === 'forgot') { $('fEmail').value = $('email').value.trim(); $('fOk').hidden = true; $('fField').hidden = false; $('fSubmit').hidden = false; setErr($('fEmail'), ''); $('fEmail').focus(); }
+    else $('email').focus();
+  }
+  $('toForgot').addEventListener('click', function () { show('forgot'); });
+  $('toSignin').addEventListener('click', function () { show('signin'); });
+  $('fForm').addEventListener('submit', function (e) {
+    e.preventDefault(); var em = $('fEmail').value.trim(), m = emailMsg(em); setErr($('fEmail'), m); if (m) { $('fEmail').focus(); return; }
+    /* same answer whether or not the account exists */
+    $('fOkText').textContent = 'ถ้า ' + em + ' เป็นบัญชีในระบบ คุณจะได้รับอีเมลพร้อมลิงก์ตั้งรหัสผ่านใหม่ภายในไม่กี่นาที ลิงก์ใช้ได้ 30 นาที';
+    $('fOk').hidden = false; $('fField').hidden = true; $('fSubmit').hidden = true;
+  });
+
+  (saved ? $('password') : $('email')).focus();
+})();

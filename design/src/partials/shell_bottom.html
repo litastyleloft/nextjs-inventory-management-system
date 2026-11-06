@@ -1,0 +1,138 @@
+    </main>
+
+    <footer class="gg-shell-foot">
+      <span>© 2026 <a href="lts-dashboard.html">LTS Solution</a> สงวนลิขสิทธิ์</span>
+      <span>ค้าส่งผ้า · ระบบสินค้าคงคลังและ POS</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ===== LTS Solution shell: icon set and navigation copied from components/bundle.js ===== */
+(function () {
+  {{ICONS}}
+  {{NAV}}
+
+  /* Thai labels for the shared navigation (keys from the design system) */
+  var TH = {
+    'Inventory': 'สินค้าคงคลัง', 'Trading': 'ซื้อขาย', 'People': 'บุคคล', 'Insights & Setup': 'รายงานและการตั้งค่า',
+    'dashboard': 'แดชบอร์ด', 'products': 'สินค้า', 'products.list': 'สินค้าทั้งหมด', 'products.categories': 'หมวดหมู่สินค้า',
+    'products.units': 'หน่วยนับ', 'products.base-units': 'หน่วยพื้นฐาน', 'products.barcode': 'พิมพ์บาร์โค้ด',
+    'adjustments': 'ปรับปรุงสต็อก', 'transfers': 'โอนย้ายสินค้า', 'warehouse': 'คลังสินค้า', 'quotations': 'ใบเสนอราคา',
+    'purchases': 'การซื้อ', 'purchases.list': 'รายการซื้อ', 'purchases.returns': 'คืนสินค้าให้ผู้จำหน่าย',
+    'sales': 'การขาย', 'sales.list': 'รายการขาย', 'sales.returns': 'รับคืนสินค้า', 'sales.billing-notes': 'ใบวางบิล',
+    'expenses': 'ค่าใช้จ่าย', 'expenses.list': 'รายการค่าใช้จ่าย', 'expenses.categories': 'หมวดหมู่ค่าใช้จ่าย',
+    'people': 'บุคคล', 'people.suppliers': 'ผู้จำหน่าย', 'people.customers': 'ลูกค้า', 'people.users': 'ผู้ใช้งาน',
+    'roles': 'บทบาทและสิทธิ์', 'reports': 'รายงาน', 'currencies': 'สกุลเงิน', 'languages': 'ภาษา',
+    'templates': 'เทมเพลต', 'templates.email': 'เทมเพลตอีเมล', 'templates.sms': 'เทมเพลต SMS', 'settings': 'ตั้งค่า'
+  };
+  NAV.forEach(function (it) {
+    if (it.section) { it.section = TH[it.section] || it.section; return; }
+    it.label = TH[it.key] || it.label;
+    (it.children || []).forEach(function (c) { c.label = TH[c.key] || c.label; });
+  });
+  var PAGES = { 'dashboard': 'lts-dashboard.html', 'products.list': 'lts-products.html', 'products.create': 'lts-create-product.html', 'products.categories': 'lts-categories.html', 'adjustments': 'lts-adjustment.html', 'purchases.list': 'lts-purchases.html', 'purchases.returns': 'lts-purchase-return.html', 'sales.list': 'lts-sales.html', 'sales.returns': 'lts-sales-returns.html', 'sales.billing-notes': 'lts-billing-notes.html', 'transfers': 'lts-transfers.html', 'expenses.list': 'lts-expenses.html', 'expenses.categories': 'lts-expense-categories.html', 'people.suppliers': 'lts-suppliers.html', 'people.customers': 'lts-customers.html', 'people.users': 'lts-users.html', 'roles': 'lts-roles.html', 'warehouse': 'lts-warehouses.html', 'reports': 'lts-reports.html' };
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function icon(name, size, cls) {
+    var svg = document.createElementNS(SVGNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    svg.setAttribute('class', ['gg-icon', size === 'sm' ? 'sm' : '', size === 'lg' ? 'lg' : '', cls || ''].join(' ').trim());
+    (ICONS[name] || ICONS.box).forEach(function (p) {
+      var el;
+      if (typeof p === 'string') { el = document.createElementNS(SVGNS, 'path'); el.setAttribute('d', p); }
+      else { el = document.createElementNS(SVGNS, 'circle'); el.setAttribute('cx', p.c[0]); el.setAttribute('cy', p.c[1]); el.setAttribute('r', p.c[2]); }
+      svg.appendChild(el);
+    });
+    return svg;
+  }
+  function hydrateIcons(root) {
+    (root || document).querySelectorAll('[data-icon]').forEach(function (el) { el.replaceWith(icon(el.getAttribute('data-icon'), el.getAttribute('data-size'))); });
+  }
+
+  /* Sidebar */
+  var shell = document.getElementById('shell');
+  var ACTIVE = shell.getAttribute('data-active') || 'dashboard', open = {};
+  NAV.forEach(function (it) { if (it.children && it.children.some(function (c) { return c.key === ACTIVE; })) open[it.key] = true; });
+  var nav = document.getElementById('nav'), sidebar = document.getElementById('sidebar');
+  function go(key) { if (PAGES[key] && key !== ACTIVE) { location.href = PAGES[key]; return; } ACTIVE = key; renderNav(); }
+  function renderNav() {
+    var collapsed = sidebar.classList.contains('collapsed');
+    nav.innerHTML = '';
+    NAV.forEach(function (it) {
+      if (it.section) { var l = document.createElement('div'); l.className = 'gg-nav-label'; l.textContent = it.section; nav.appendChild(l); return; }
+      var childActive = it.children && it.children.some(function (c) { return c.key === ACTIVE; });
+      var b = document.createElement('button'); b.type = 'button';
+      b.className = 'gg-nav-item' + (it.key === ACTIVE ? ' active' : '') + (childActive ? ' child-active' : '') + (childActive && open[it.key] ? ' open-parent' : '');
+      if (it.key === ACTIVE) b.setAttribute('aria-current', 'page');
+      if (collapsed) b.title = it.label;
+      b.appendChild(icon(it.icon));
+      var t = document.createElement('span'); t.className = 'gg-nav-text'; t.textContent = it.label; b.appendChild(t);
+      if (it.children) { b.setAttribute('aria-expanded', !!open[it.key]); b.appendChild(icon('chevron-right', 'sm', 'gg-chev')); }
+      b.addEventListener('click', function () {
+        if (it.children && !collapsed) { open[it.key] = !open[it.key]; renderNav(); }
+        else go(it.children ? it.children[0].key : it.key);
+      });
+      nav.appendChild(b);
+      if (it.children && open[it.key] && !collapsed) {
+        var sub = document.createElement('div'); sub.className = 'gg-subnav';
+        it.children.forEach(function (c) {
+          var cb = document.createElement('button'); cb.type = 'button';
+          cb.className = 'gg-nav-item' + (c.key === ACTIVE ? ' active' : '');
+          if (c.key === ACTIVE) cb.setAttribute('aria-current', 'page');
+          var ct = document.createElement('span'); ct.className = 'gg-nav-text'; ct.textContent = c.label; cb.appendChild(ct);
+          cb.addEventListener('click', function () { go(c.key); });
+          sub.appendChild(cb);
+        });
+        nav.appendChild(sub);
+      }
+    });
+  }
+  renderNav();
+  var toggle = document.getElementById('toggleSidebar');
+  toggle.addEventListener('click', function () {
+    var c = sidebar.classList.toggle('collapsed');
+    toggle.setAttribute('aria-label', c ? 'ขยายแถบเมนู' : 'ย่อแถบเมนู');
+    toggle.innerHTML = ''; toggle.appendChild(icon(c ? 'menu' : 'panel-left'));
+    renderNav();
+  });
+
+  /* Menus (ActionMenu pattern) */
+  function wireMenu(anchor) {
+    if (anchor.dataset.wired) return; anchor.dataset.wired = '1';
+    var btn = anchor.querySelector('button'), menu = anchor.querySelector('.gg-menu');
+    function close() { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation(); var wasHidden = menu.hidden;
+      document.querySelectorAll('.gg-menu').forEach(function (m) { m.hidden = true; });
+      menu.hidden = !wasHidden; btn.setAttribute('aria-expanded', String(wasHidden));
+    });
+    menu.addEventListener('click', close);
+    document.addEventListener('click', function (e) { if (!anchor.contains(e.target)) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  }
+  document.getElementById('fullscreen').addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  });
+  document.querySelectorAll('.gg-menu-item.danger').forEach(function (b) { if (b.textContent.trim() === 'ออกจากระบบ') b.addEventListener('click', function () { location.href = 'lts-login.html?out=1'; }); });
+  var posBtn = document.querySelector('.gg-pos'); if (posBtn) posBtn.addEventListener('click', function () { location.href = 'lts-pos.html'; });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); document.getElementById('globalSearch').focus(); }
+  });
+
+  /* Money in Thai baht: ฿71,800.00 */
+  function baht(n) { return '฿' + Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  /* Thai dates, Buddhist Era: 3 ก.พ. 2567 · 23:28 น. */
+  function thDate(d) { return new Date(d).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  function thTime(d) { return new Date(d).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.'; }
+  window.GG = { icon: icon, hydrateIcons: hydrateIcons, wireMenu: wireMenu, baht: baht, thDate: thDate, thTime: thTime };
+})();
+</script>
+<script>
+/* ===== Page script ===== */
+{{PAGE_JS}}
+/* wire every menu and draw every icon once the page content exists */
+document.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+GG.hydrateIcons(document);
+</script>
+</body>
+</html>

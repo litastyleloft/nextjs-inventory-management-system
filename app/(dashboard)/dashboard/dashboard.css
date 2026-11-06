@@ -1,0 +1,48 @@
+/* Page CSS from design/src/pages/dashboard.page.html (===CSS===), scoped under
+   .lts-dashboard so it cannot leak into other pages after client navigation.
+   #tiles / #tiles2 became the .tiles class. */
+.lts-dashboard .dash { display: flex; flex-direction: column; gap: var(--space-6); }
+.lts-dashboard .dash-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--space-6); align-items: stretch; }
+.lts-dashboard .dash-row.even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.lts-dashboard .chart-box { position: relative; height: 300px; }
+.lts-dashboard .pie-box { position: relative; height: 230px; }
+.lts-dashboard .pie-center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; pointer-events: none; }
+.lts-dashboard .pie-center strong { display: block; font: 800 20px/26px var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.lts-dashboard .pie-center span { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.lts-dashboard .period { display: flex; align-items: center; gap: var(--space-3); }
+.lts-dashboard .period .gg-control { width: 180px; }
+.lts-dashboard .gg-stat-label { line-height: 20px; }
+.lts-dashboard .tiles .gg-stat-value { font-size: 23px; line-height: 30px; overflow: visible; }
+.lts-dashboard .tiles .gg-stat { padding: var(--space-5); gap: var(--space-3); }
+.lts-dashboard .gg-stat .formula { margin-top: 4px; font: 500 12px/16px var(--font-sans); opacity: .82; }
+.lts-dashboard .gg-stat.soft .formula { color: var(--muted); opacity: 1; }
+.lts-dashboard .gg-stat-value.neg { color: inherit; }
+.lts-dashboard .gg-stat.strong.loss { background: var(--rose); }
+.lts-dashboard .legend-list { display: grid; gap: 10px; margin-top: var(--space-4); }
+.lts-dashboard .legend-list .li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 56px; align-items: center; gap: 10px; font: 500 13px/18px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.lts-dashboard .legend-list .li i { width: 12px; height: 12px; border-radius: 3px; }
+.lts-dashboard .legend-list .li b { color: var(--ink); font-weight: 600; }
+.lts-dashboard .legend-list .li .p { text-align: right; color: var(--muted); }
+.lts-dashboard .regions { display: grid; gap: 14px; }
+.lts-dashboard .reg { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+.lts-dashboard .reg .rk { display: grid; place-items: center; width: 26px; height: 26px; border-radius: var(--radius-pill); background: var(--surface-sunken); font: 700 12px/1 var(--font-display); color: var(--ink-2); }
+.lts-dashboard .reg .rk.top { background: var(--gold); color: var(--on-gold); }
+.lts-dashboard .reg .nm { font: 600 14px/20px var(--font-sans); color: var(--ink); }
+.lts-dashboard .reg .sub { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.lts-dashboard .reg .bar { height: 8px; margin-top: 6px; border-radius: var(--radius-pill); background: var(--surface-sunken); overflow: hidden; }
+.lts-dashboard .reg .bar i { display: block; height: 100%; border-radius: inherit; background: var(--primary); }
+.lts-dashboard .reg .amt { text-align: right; font: 700 15px/20px var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.lts-dashboard .reg .amt span { display: block; font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.lts-dashboard .agent { display: flex; align-items: center; gap: var(--space-3); }
+.lts-dashboard .agent .gg-avatar { width: 34px; height: 34px; font-size: 12px; }
+.lts-dashboard .agent .nm { color: var(--ink); font-weight: 600; }
+.lts-dashboard .margin { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.lts-dashboard .margin .bar { width: 70px; height: 6px; border-radius: var(--radius-pill); background: var(--surface-sunken); overflow: hidden; }
+.lts-dashboard .margin .bar i { display: block; height: 100%; background: var(--success); }
+.lts-dashboard .gg-card.flush .gg-card-body { padding: var(--space-2) 0 0; }
+.lts-dashboard .gg-card.flush .gg-table th { border-top: 1px solid var(--border); }
+.lts-dashboard .gg-card.flush .gg-table tbody tr:last-child td { border-bottom: 0; }
+.lts-dashboard .gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.lts-dashboard .pos { color: var(--success-text); font-weight: 600; }
+.lts-dashboard .neg { color: var(--danger-text); font-weight: 600; }
+.lts-dashboard .gg-table td { height: 56px; }

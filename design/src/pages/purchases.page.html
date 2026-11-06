@@ -1,0 +1,296 @@
+===CSS===
+.gg-table td { height: 60px; }
+.created { font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+.created span { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.filters { display: none; gap: var(--space-4); align-items: flex-end; padding: 0 var(--space-6) var(--space-5); }
+.filters.open { display: flex; }
+.filters .gg-field { width: 220px; }
+.gg-btn.on { background: var(--primary-soft); border-color: var(--primary); }
+.range { width: 210px; }
+.range-custom { display: none; align-items: center; gap: var(--space-2); }
+.range-custom.open { display: flex; }
+.range-custom .gg-control { width: 160px; }
+.gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.gg-table tfoot .label { font: 700 15px/20px var(--font-display); }
+.view-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); margin-bottom: var(--space-6); }
+.view-grid .k { font: 600 12px/18px var(--font-sans); color: var(--muted); }
+.view-grid .v { font: 500 14px/20px var(--font-sans); color: var(--ink); margin-top: 2px; }
+.view-lines { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.view-lines .gg-table td { height: 48px; }
+.view-lines .gg-table th:first-child, .view-lines .gg-table td:first-child { padding-left: var(--space-4); }
+.view-total { display: flex; justify-content: flex-end; gap: var(--space-6); margin-top: var(--space-4); font: 500 14px/20px var(--font-sans); color: var(--ink-2); }
+.view-total b { color: var(--primary); font: 700 16px/20px var(--font-display); }
+.toast { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: var(--z-modal); display: none; }
+.toast.show { display: inline-flex; box-shadow: var(--shadow-2); height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">รายการซื้อ</h1>
+          <p class="gg-pagehead-sub" id="summaryLine">ใบสั่งซื้อผ้าจากผู้จำหน่ายทั้งหมด</p>
+        </div>
+      </div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div class="gg-row" style="flex:1">
+            <div style="width:340px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="search" placeholder="ค้นหาด้วยเลขที่อ้างอิงหรือผู้จำหน่าย" aria-label="ค้นหารายการซื้อ"></div></div>
+          </div>
+          <div class="gg-row">
+            <button type="button" class="gg-btn gg-btn-secondary" id="filterBtn" aria-expanded="false" aria-controls="filters"><span data-icon="filter"></span>ตัวกรอง</button>
+            <div class="gg-control range"><span class="gg-lead"><span data-icon="calendar" data-size="sm"></span></span>
+              <select id="range" aria-label="ช่วงวันที่" style="padding-left:8px"><option value="">ทุกช่วงเวลา</option><option value="today">วันนี้</option><option value="7">7 วันล่าสุด</option><option value="month">เดือนนี้</option><option value="custom">กำหนดเอง…</option></select>
+              <span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <div class="range-custom" id="rangeCustom">
+              <div class="gg-control"><input type="date" id="from" aria-label="ตั้งแต่วันที่"></div><span class="gg-hint">ถึง</span>
+              <div class="gg-control"><input type="date" id="to" aria-label="ถึงวันที่"></div>
+            </div>
+            <a class="gg-btn gg-btn-primary" href="lts-create-purchase.html"><span data-icon="plus"></span>สร้างรายการซื้อ</a>
+          </div>
+        </div>
+        <div class="filters" id="filters">
+          <div class="gg-field"><label class="gg-label" for="fSupplier">ผู้จำหน่าย</label>
+            <div class="gg-control"><select id="fSupplier"><option value="">ทุกผู้จำหน่าย</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <div class="gg-field"><label class="gg-label" for="fStatus">สถานะ</label>
+            <div class="gg-control"><select id="fStatus"><option value="">ทุกสถานะ</option><option value="received">ได้รับแล้ว</option><option value="pending">รอดำเนินการ</option><option value="ordered">สั่งซื้อแล้ว</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <div class="gg-field"><label class="gg-label" for="fPay">การชำระเงิน</label>
+            <div class="gg-control"><select id="fPay"><option value="">ทุกสถานะการชำระ</option><option value="paid">ชำระแล้ว</option><option value="partial">ชำระบางส่วน</option><option value="unpaid">ค้างชำระ</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <button type="button" class="gg-btn gg-btn-ghost" id="clearFilters">ล้างตัวกรอง</button>
+        </div>
+
+        <div class="gg-table-wrap">
+          <table class="gg-table">
+            <thead><tr>
+              <th class="sortable" data-sort="ref">เลขที่อ้างอิง<span class="gg-sort"></span></th>
+              <th class="sortable" data-sort="supplier">ผู้จำหน่าย<span class="gg-sort"></span></th>
+              <th>คลังสินค้า</th>
+              <th>สถานะ</th>
+              <th class="right sortable" data-sort="total">ยอดรวมสุทธิ<span class="gg-sort"></span></th>
+              <th>การชำระเงิน</th>
+              <th>วิธีชำระ</th>
+              <th class="sortable" data-sort="created">วันที่สร้าง<span class="gg-sort"></span></th>
+              <th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+            <tfoot><tr><td class="label">รวม</td><td></td><td></td><td></td><td class="right gg-num" id="footTotal"></td><td colspan="4" class="gg-hint" id="footNote" style="font-weight:500"></td></tr></tfoot>
+          </table>
+        </div>
+
+        <div class="gg-pager">
+          <div class="gg-pager-size">แถวต่อหน้า
+            <div class="gg-control"><select id="pageSize" aria-label="แถวต่อหน้า"><option>10</option><option>25</option><option>50</option><option>100</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <span class="gg-num" id="count" style="margin-left:8px"></span>
+          </div>
+          <nav class="gg-pager-pages" aria-label="เลขหน้า" id="pages"></nav>
+        </div>
+      </div>
+
+      <!-- View purchase (Modal, lg) -->
+      <div class="gg-scrim" id="viewModal" hidden>
+        <div class="gg-modal lg" role="dialog" aria-modal="true" aria-labelledby="viewTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="viewTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body" id="viewBody"></div>
+          <div class="gg-modal-foot">
+            <button type="button" class="gg-btn gg-btn-secondary" id="viewPdf"><span data-icon="download"></span>ดาวน์โหลด PDF</button>
+            <a class="gg-btn gg-btn-primary" href="lts-create-purchase.html"><span data-icon="edit"></span>แก้ไขรายการซื้อ</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm delete -->
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon"><span data-icon="trash"></span></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn gg-btn-danger" id="confirmDelete">ลบรายการซื้อ</button></div>
+        </div>
+      </div>
+
+      <span class="toast gg-badge success" id="toast" role="status"><span class="gg-badge-dot"></span><span id="toastText"></span></span>
+===JS===
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SUPPLIERS = ['ทอผ้าริมน้ำ จำกัด', 'นอร์ทเกต นิตติ้ง จำกัด', 'ซันฟิลด์ เดนิม จำกัด'];
+  var VIS = 'ผ้าเรยอนพิมพ์ลายดอกไม้', COT = 'ผ้าคอตตอนป๊อปลิน 60s สีขาวออปติก', PLY = 'ผ้าจอร์เจ็ตโพลีเอสเตอร์ สีกรมท่า', DEN = 'ผ้ายีนส์ยืด 10 ออนซ์ สีคราม', KNT = 'ผ้ายืดซิงเกิลเจอร์ซีย์ 160 แกรม สีเทาท็อปดราย', LIN = 'ผ้าลินินผสมฝ้าย สีธรรมชาติ';
+  /* lines: [name, code, qty, unit, unit cost]; total = lines + shipping */
+  var P = [
+    { ref: 'PU_1119', supplier: SUPPLIERS[0], status: 'pending', paid: 0, method: 'เงินสด', created: '2026-10-04T00:25', shipping: 180, lines: [[VIS, 'VIS44B305022', 50, 'หลา', 95]] },
+    { ref: 'PU_1118', supplier: SUPPLIERS[0], status: 'received', paid: 2220, method: 'เงินสด', created: '2026-10-03T23:52', lines: [[COT, 'COT58A101001', 30, 'หลา', 62], [PLY, 'PLY58A410012', 7.5, 'หลา', 48]] },
+    { ref: 'PU_1117', supplier: SUPPLIERS[2], status: 'received', paid: 100000, method: 'เงินสด', created: '2026-10-03T23:40', lines: [[DEN, 'DEN58A201014', 1000, 'หลา', 162]] },
+    { ref: 'PU_1116', supplier: SUPPLIERS[1], status: 'received', paid: 45000, method: 'เงินสด', created: '2026-10-03T23:31', lines: [[KNT, 'KNT72A160008', 180, 'หลา', 250]] },
+    { ref: 'PU_1115', supplier: SUPPLIERS[0], status: 'received', paid: 49300, method: 'เงินสด', created: '2026-10-03T23:23', lines: [[LIN, 'LIN54C120003', 200, 'หลา', 210], [VIS, 'VIS44B305022', 73, 'หลา', 100]] },
+    { ref: 'PU_1114', supplier: SUPPLIERS[2], status: 'ordered', paid: 0, method: 'เงินสด', created: '2026-10-03T23:15', lines: [[DEN, 'DEN58A201014', 450, 'หลา', 143]] },
+    { ref: 'PU_1113', supplier: SUPPLIERS[0], status: 'received', paid: 30260, method: 'เงินสด', created: '2026-10-03T23:12', lines: [[COT, 'COT58A101001', 445, 'หลา', 68]] },
+    { ref: 'PU_1112', supplier: SUPPLIERS[0], status: 'received', paid: 1620, method: 'เงินสด', created: '2026-10-03T23:02', lines: [[PLY, 'PLY58A410012', 36, 'หลา', 45]] },
+    { ref: 'PU_1111', supplier: SUPPLIERS[1], status: 'received', paid: 95000, method: 'เงินสด', created: '2026-10-02T23:08', lines: [[KNT, 'KNT72A160008', 380, 'หลา', 250]] }
+  ];
+  P.forEach(function (p) { p.lines.forEach(function (l) { l[5] = Math.round(l[2] * l[4] * 100) / 100; }); p.total = p.lines.reduce(function (s, l) { return s + l[5]; }, 0) + (p.shipping || 0); });
+  var STATUS = { received: ['info', 'ได้รับแล้ว'], pending: ['warning', 'รอดำเนินการ'], ordered: ['neutral', 'สั่งซื้อแล้ว'] };
+  var PAY = { paid: ['success', 'ชำระแล้ว'], partial: ['warning', 'ชำระบางส่วน'], unpaid: ['danger', 'ค้างชำระ'] };
+  function payState(p) { return p.paid >= p.total ? 'paid' : p.paid > 0 ? 'partial' : 'unpaid'; }
+  function badge(t) { return '<span class="gg-badge ' + t[0] + '"><span class="gg-badge-dot" aria-hidden="true"></span>' + t[1] + '</span>'; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function find(ref) { return P.filter(function (p) { return p.ref === ref; })[0]; }
+
+  SUPPLIERS.forEach(function (s) { var o = document.createElement('option'); o.textContent = s; $('fSupplier').appendChild(o); });
+  var state = { q: '', supplier: '', status: '', pay: '', range: '', from: '', to: '', sort: null, page: 1, size: 10 };
+
+  /* Date range presets are relative to the newest purchase in this sample data */
+  var newest = P.reduce(function (m, p) { return p.created > m ? p.created : m; }, '').slice(0, 10);
+  function inRange(p) {
+    var d = p.created.slice(0, 10);
+    if (state.range === 'today') return d === newest;
+    if (state.range === '7') { var a = new Date(newest); a.setDate(a.getDate() - 6); return new Date(d) >= a; }
+    if (state.range === 'month') return d.slice(0, 7) === newest.slice(0, 7);
+    if (state.range === 'custom') return (!state.from || d >= state.from) && (!state.to || d <= state.to);
+    return true;
+  }
+  function filtered() {
+    var q = state.q.toLowerCase();
+    var list = P.filter(function (p) {
+      return (!q || (p.ref + ' ' + p.supplier).toLowerCase().indexOf(q) >= 0) && (!state.supplier || p.supplier === state.supplier) &&
+        (!state.status || p.status === state.status) && (!state.pay || payState(p) === state.pay) && inRange(p);
+    });
+    if (state.sort) {
+      var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+      list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y, 'th') : x - y) * dir; });
+    }
+    return list;
+  }
+
+  function render() {
+    var list = filtered(), total = list.length, pages = Math.max(1, Math.ceil(total / state.size));
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * state.size, rows = list.slice(start, start + state.size);
+    var body = $('rows');
+    body.innerHTML = rows.length ? rows.map(function (p, i) {
+      return '<tr>' +
+        '<td><span class="gg-badge neutral mono">' + p.ref + '</span></td>' +
+        '<td class="primary">' + esc(p.supplier) + '</td>' +
+        '<td>คลังสินค้าหลัก</td>' +
+        '<td>' + badge(STATUS[p.status]) + '</td>' +
+        '<td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(p.total) + '</td>' +
+        '<td>' + badge(PAY[payState(p)]) + '</td>' +
+        '<td><span class="gg-badge info">' + p.method + '</span></td>' +
+        '<td class="created">' + GG.thDate(p.created) + '<span>' + GG.thTime(p.created) + '</span></td>' +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu>' +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + p.ref + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+          '<div class="gg-menu' + (i >= rows.length - 2 && rows.length > 4 ? ' up' : '') + '" role="menu" hidden>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-view="' + p.ref + '"><span data-icon="eye" data-size="sm"></span>ดูรายการซื้อ</button>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-pdf="' + p.ref + '"><span data-icon="download" data-size="sm"></span>ดาวน์โหลด PDF</button>' +
+            '<a role="menuitem" class="gg-menu-item" href="lts-create-purchase.html" style="text-decoration:none"><span data-icon="edit" data-size="sm"></span>แก้ไขรายการซื้อ</a>' +
+            '<div class="gg-menu-sep" role="separator"></div>' +
+            '<button type="button" role="menuitem" class="gg-menu-item danger" data-delete="' + p.ref + '"><span data-icon="trash" data-size="sm"></span>ลบรายการซื้อ</button>' +
+          '</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="9" class="gg-empty">ไม่พบรายการซื้อที่ตรงกับตัวกรอง</td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { openView(find(b.dataset.view)); }); });
+    body.querySelectorAll('[data-pdf]').forEach(function (b) { b.addEventListener('click', function () { printPdf(find(b.dataset.pdf)); }); });
+    body.querySelectorAll('[data-delete]').forEach(function (b) { b.addEventListener('click', function () { askDelete(find(b.dataset.delete)); }); });
+    GG.hydrateIcons(body);
+
+    var sum = list.reduce(function (s, p) { return s + p.total; }, 0), due = list.reduce(function (s, p) { return s + (p.total - p.paid); }, 0);
+    $('footTotal').textContent = GG.baht(sum);
+    $('footNote').innerHTML = due ? 'ค้างชำระ <b style="color:var(--danger-text)">' + GG.baht(due) + '</b>' : '';
+    $('summaryLine').textContent = 'ใบสั่งซื้อผ้าจากผู้จำหน่าย ' + P.length + ' รายการ · ยอดซื้อรวม ' + GG.baht(P.reduce(function (s, p) { return s + p.total; }, 0));
+    $('count').textContent = (total ? start + 1 : 0) + '–' + Math.min(total, start + state.size) + ' จาก ' + total;
+    var nav = $('pages'); nav.innerHTML = '';
+    function pb(label, iconName, page, disabled, active) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gg-page' + (active ? ' active' : ''); b.disabled = disabled;
+      if (iconName) { b.setAttribute('aria-label', label); b.appendChild(GG.icon(iconName, 'sm')); } else b.textContent = label;
+      if (active) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { state.page = page; render(); });
+      nav.appendChild(b);
+    }
+    pb('หน้าแรก', 'chevrons-left', 1, state.page <= 1); pb('หน้าก่อนหน้า', 'chevron-left', state.page - 1, state.page <= 1);
+    for (var k = 1; k <= pages; k++) pb(String(k), null, k, false, k === state.page);
+    pb('หน้าถัดไป', 'chevron-right', state.page + 1, state.page >= pages); pb('หน้าสุดท้าย', 'chevrons-right', pages, state.page >= pages);
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort && state.sort.key === th.dataset.sort;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var h = th.querySelector('.gg-sort'); h.innerHTML = ''; h.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+  }
+
+  /* Toolbar */
+  $('search').addEventListener('input', function (e) { state.q = e.target.value; state.page = 1; render(); });
+  $('pageSize').addEventListener('change', function (e) { state.size = +e.target.value; state.page = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) {
+    th.addEventListener('click', function () {
+      var k = th.dataset.sort;
+      state.sort = state.sort && state.sort.key === k ? (state.sort.dir === 'asc' ? { key: k, dir: 'desc' } : null) : { key: k, dir: 'asc' };
+      render();
+    });
+  });
+  $('filterBtn').addEventListener('click', function () { var o = $('filters').classList.toggle('open'); $('filterBtn').classList.toggle('on', o); $('filterBtn').setAttribute('aria-expanded', String(o)); });
+  [['fSupplier', 'supplier'], ['fStatus', 'status'], ['fPay', 'pay']].forEach(function (x) { $(x[0]).addEventListener('change', function (e) { state[x[1]] = e.target.value; state.page = 1; render(); }); });
+  $('range').addEventListener('change', function (e) { state.range = e.target.value; $('rangeCustom').classList.toggle('open', state.range === 'custom'); state.page = 1; render(); });
+  ['from', 'to'].forEach(function (id) { $(id).addEventListener('change', function (e) { state[id] = e.target.value; state.page = 1; render(); }); });
+  $('clearFilters').addEventListener('click', function () {
+    ['q', 'supplier', 'status', 'pay', 'range', 'from', 'to'].forEach(function (k) { state[k] = ''; });
+    ['search', 'fSupplier', 'fStatus', 'fPay', 'range', 'from', 'to'].forEach(function (id) { $(id).value = ''; });
+    $('rangeCustom').classList.remove('open'); render();
+  });
+
+  /* Modals */
+  function openModal(m) { m.hidden = false; }
+  function closeModal(m) { m.hidden = true; }
+  document.querySelectorAll('.gg-scrim').forEach(function (m) {
+    m.addEventListener('mousedown', function (e) { if (e.target === m) closeModal(m); });
+    m.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(m); }); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('.gg-scrim').forEach(closeModal); });
+  function toast(t) { $('toastText').textContent = t; $('toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(function () { $('toast').classList.remove('show'); }, 2400); }
+
+  var viewing = null;
+  function linesTable(p) {
+    return '<div class="view-lines"><table class="gg-table compact"><thead><tr><th>สินค้า</th><th class="right">จำนวน</th><th class="right">ต้นทุนต่อหน่วย</th><th class="right">ยอดรวมย่อย</th></tr></thead><tbody>' +
+      p.lines.map(function (l) { return '<tr><td><span style="color:var(--ink);font-weight:600">' + esc(l[0]) + '</span>' + (l[1] ? ' <span class="gg-badge neutral mono" style="height:20px;padding:0 6px;font-size:11px">' + l[1] + '</span>' : '') + '</td><td class="right">' + Number(l[2]).toLocaleString('th-TH') + ' ' + l[3] + '</td><td class="right">' + GG.baht(l[4]) + '</td><td class="right">' + GG.baht(l[5]) + '</td></tr>'; }).join('') +
+      '</tbody></table></div>';
+  }
+  function openView(p) {
+    viewing = p;
+    $('viewTitle').textContent = 'รายการซื้อ ' + p.ref;
+    $('viewBody').innerHTML = '<div class="view-grid">' +
+      '<div><div class="k">ผู้จำหน่าย</div><div class="v">' + esc(p.supplier) + '</div></div>' +
+      '<div><div class="k">คลังสินค้า</div><div class="v">คลังสินค้าหลัก</div></div>' +
+      '<div><div class="k">วันที่</div><div class="v">' + GG.thDate(p.created) + ' ' + GG.thTime(p.created) + '</div></div>' +
+      '<div><div class="k">สถานะ</div><div class="v">' + badge(STATUS[p.status]) + '</div></div>' +
+      '<div><div class="k">การชำระเงิน</div><div class="v">' + badge(PAY[payState(p)]) + '</div></div>' +
+      '<div><div class="k">ชำระแล้ว</div><div class="v">' + GG.baht(p.paid) + ' (' + p.method + ')</div></div></div>' +
+      linesTable(p) + '<div class="view-total">' + (p.shipping ? '<span>ค่าขนส่ง ' + GG.baht(p.shipping) + '</span>' : '') + '<span>ค้างชำระ ' + GG.baht(p.total - p.paid) + '</span><span>ยอดรวมสุทธิ <b>' + GG.baht(p.total) + '</b></span></div>';
+    openModal($('viewModal'));
+  }
+  $('viewPdf').addEventListener('click', function () { if (viewing) printPdf(viewing); });
+
+  /* "Download PDF": a print-ready page for the browser's Save as PDF */
+  function printPdf(p) {
+    var w = window.open('', '_blank');
+    if (!w) { toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ กรุณาอนุญาตป๊อปอัปเพื่อดาวน์โหลด PDF'); return; }
+    var css = getComputedStyle(document.documentElement);
+    w.document.write('<!doctype html><html lang="th"><head><meta charset="utf-8"><title>' + p.ref + '</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600;700&display=swap"><style>' +
+      'body{font:14px/1.6 "IBM Plex Sans Thai",sans-serif;color:#141b2b;margin:40px}h1{font-size:22px;margin:0 0 4px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{padding:8px;border-bottom:1px solid #e2e5eb;text-align:left}th{font-size:12px;color:#5d6576}.r{text-align:right}.tot{font-weight:700;font-size:16px}' +
+      '</style></head><body><h1>LTS Solution · ใบสั่งซื้อ ' + p.ref + '</h1><div>ผู้จำหน่าย: ' + esc(p.supplier) + ' · วันที่: ' + GG.thDate(p.created) + ' · คลังสินค้าหลัก</div>' +
+      '<table><tr><th>สินค้า</th><th class="r">จำนวน</th><th class="r">ต้นทุนต่อหน่วย</th><th class="r">ยอดรวมย่อย</th></tr>' +
+      p.lines.map(function (l) { return '<tr><td>' + esc(l[0]) + (l[1] ? ' (' + l[1] + ')' : '') + '</td><td class="r">' + Number(l[2]).toLocaleString('th-TH') + ' ' + l[3] + '</td><td class="r">' + GG.baht(l[4]) + '</td><td class="r">' + GG.baht(l[5]) + '</td></tr>'; }).join('') +
+      (p.shipping ? '<tr><td colspan="3" class="r">ค่าขนส่ง</td><td class="r">' + GG.baht(p.shipping) + '</td></tr>' : '') + '<tr><td colspan="3" class="r tot">ยอดรวมสุทธิ</td><td class="r tot">' + GG.baht(p.total) + '</td></tr></table></body></html>');
+    w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 400);
+  }
+
+  var pending = null;
+  function askDelete(p) {
+    pending = p;
+    $('confirmTitle').textContent = 'ลบรายการซื้อ ' + p.ref + ' ใช่หรือไม่?';
+    $('confirmText').textContent = 'ระบบจะลบใบสั่งซื้อมูลค่า ' + GG.baht(p.total) + ' จาก ' + p.supplier +
+      (p.status === 'received' ? ' และตัดผ้าที่รับเข้าตามใบนี้ออกจากสต็อก' : '') + (p.paid ? ' รวมถึงการชำระเงิน ' + GG.baht(p.paid) : '') + ' การลบนี้ไม่สามารถย้อนกลับได้';
+    openModal($('confirm'));
+  }
+  $('confirmDelete').addEventListener('click', function () {
+    if (pending) { P.splice(P.indexOf(pending), 1); toast('ลบรายการซื้อ ' + pending.ref + ' แล้ว'); }
+    pending = null; closeModal($('confirm')); render();
+  });
+
+  render();
+})();

@@ -1,0 +1,344 @@
+===CSS===
+.gg-table td { height: 64px; }
+.pp-table .gg-table th, .pp-table .gg-table td { padding-left: 14px; padding-right: 14px; }
+.pp-table .gg-table th:first-child, .pp-table .gg-table td:first-child { padding-left: var(--space-6); }
+.who { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.who .gg-avatar { width: 38px; height: 38px; font-size: 13px; overflow: hidden; }
+.who .gg-avatar.alt { background: var(--gold-soft); color: var(--gold-text); }
+.who .gg-avatar.sup { background: var(--teal-soft); color: var(--teal-text); border-radius: var(--radius-md); }
+.who .n { display: block; color: var(--ink); font-weight: 600; white-space: normal; }
+.sub, .created span { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.created { font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+.money-strong { color: var(--ink); font-weight: 600; }
+.tag-you { margin-left: 6px; height: 20px; padding: 0 6px; font-size: 11px; vertical-align: 2px; }
+.toast { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: calc(var(--z-modal) + 5); display: none; }
+.toast.show { display: inline-flex; box-shadow: var(--shadow-2); height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+.wh-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin-bottom: var(--space-5); }
+.wh-card { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 12px var(--space-4); }
+.wh-card .k { font: 600 12px/18px var(--font-sans); color: var(--muted); }
+.wh-card .v { margin-top: 2px; font: 700 18px/24px var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.wh-lines { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.wh-lines .gg-table td { height: 52px; }
+.wh-lines .gg-table th:first-child, .wh-lines .gg-table td:first-child { padding-left: var(--space-4); }
+.wh-lines .pc { display: flex; align-items: center; gap: var(--space-3); }
+.wh-lines .swatch { width: 32px; height: 32px; }
+.region { display: flex; width: fit-content; margin-top: 4px; height: 20px; padding: 0 8px; align-items: center; border-radius: var(--radius-pill); background: var(--primary-soft); color: var(--primary); font: 600 11px/1 var(--font-sans); }
+.gg-badge.navy { background: var(--primary-soft); color: var(--primary); }
+/* Import */
+.drop { display: grid; place-items: center; gap: var(--space-2); padding: var(--space-8) var(--space-6); border: 1.5px dashed var(--border-input); border-radius: var(--radius-lg); background: var(--surface-sunken); text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+.drop:hover, .drop.over { border-color: var(--primary); background: var(--primary-soft); }
+.drop .gg-icon { width: 28px; height: 28px; color: var(--primary); }
+.drop b { color: var(--ink); font: 600 14px/20px var(--font-sans); }
+.drop span { font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.imp-help { display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-3); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.imp-help a { color: var(--primary); font-weight: 600; text-decoration: none; cursor: pointer; }
+.imp-sum { display: flex; gap: var(--space-2); margin: var(--space-5) 0 var(--space-3); }
+.imp-prev { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: auto; max-height: 280px; }
+.imp-prev .gg-table td { height: 44px; }
+.imp-prev .gg-table th:first-child, .imp-prev .gg-table td:first-child { padding-left: var(--space-4); }
+.imp-prev tr.bad td { background: var(--danger-soft); }
+.imp-prev .why { color: var(--danger-text); font-weight: 600; font-size: 12px; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title" id="pageTitle"></h1>
+          <p class="gg-pagehead-sub" id="summaryLine"></p>
+        </div>
+      </div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div style="width:340px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+            <input id="search" aria-label="ค้นหา"></div></div>
+          <div class="gg-row">
+            <button type="button" class="gg-btn gg-btn-secondary" id="importBtn" hidden><span data-icon="upload"></span><span id="importLabel"></span></button>
+            <a class="gg-btn gg-btn-primary" id="createBtn" href="#"><span data-icon="plus"></span><span id="createLabel"></span></a>
+          </div>
+        </div>
+        <div class="gg-table-wrap pp-table">
+          <table class="gg-table">
+            <thead><tr id="headRow"></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="gg-pager">
+          <div class="gg-pager-size">แถวต่อหน้า
+            <div class="gg-control"><select id="pageSize" aria-label="แถวต่อหน้า"><option>10</option><option>25</option><option>50</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <span class="gg-num" id="count" style="margin-left:8px"></span>
+          </div>
+          <nav class="gg-pager-pages" aria-label="เลขหน้า" id="pages"></nav>
+        </div>
+      </div>
+
+      <!-- Import CSV -->
+      <div class="gg-scrim" id="impModal" hidden>
+        <div class="gg-modal lg" role="dialog" aria-modal="true" aria-labelledby="impTitle">
+          <div class="gg-modal-head"><div><h2 class="gg-modal-title" id="impTitle"></h2><div class="gg-hint" style="margin-top:2px">อัปโหลดไฟล์ CSV (UTF-8) ตรวจสอบตัวอย่าง แล้วกดนำเข้า</div></div>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body">
+            <label class="drop" id="drop" for="impFile"><span data-icon="upload"></span><b id="dropTitle">ลากไฟล์ CSV มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</b><span id="dropSub">รองรับไฟล์ .csv ขนาดไม่เกิน 2 MB</span></label>
+            <input type="file" id="impFile" accept=".csv,text/csv" hidden>
+            <div class="imp-help"><span id="impCols"></span><a id="tplLink" role="button" tabindex="0"><span data-icon="download" data-size="sm" style="vertical-align:-3px"></span> ดาวน์โหลดไฟล์ตัวอย่าง</a></div>
+            <div id="impResult" hidden>
+              <div class="imp-sum" id="impSum"></div>
+              <div class="imp-prev"><table class="gg-table compact"><thead id="impHead"></thead><tbody id="impRows"></tbody></table></div>
+            </div>
+          </div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn gg-btn-primary" id="impGo" disabled><span data-icon="check"></span><span id="impGoText">นำเข้า</span></button></div>
+        </div>
+      </div>
+
+      <!-- View -->
+      <div class="gg-scrim" id="viewModal" hidden>
+        <div class="gg-modal lg" role="dialog" aria-modal="true" aria-labelledby="viewTitle">
+          <div class="gg-modal-head"><div><h2 class="gg-modal-title" id="viewTitle"></h2><div class="gg-hint" id="viewSub" style="margin-top:2px"></div></div>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body" id="viewBody"></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ปิด</button><a class="gg-btn gg-btn-primary" id="viewEdit" href="#"><span data-icon="edit"></span>แก้ไขข้อมูล</a></div>
+        </div>
+      </div>
+
+      <!-- Confirm delete -->
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon"><span data-icon="trash"></span></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close id="confirmCancel">ยกเลิก</button><button type="button" class="gg-btn gg-btn-danger" id="confirmDelete">ลบ</button></div>
+        </div>
+      </div>
+
+      <span class="toast gg-badge success" id="toast" role="status"><span class="gg-badge-dot"></span><span id="toastText"></span></span>
+===JS===
+/*@include sales-data*/
+/*@include people-data*/
+/*@include transfer-data*/
+(function () {
+  var KIND = '__KIND__';
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc;
+  function created(r) { return '<td class="created">' + GG.thDate(r.created) + '<span>' + GG.thTime(r.created) + '</span></td>'; }
+  function whStats(w) { var v = 0, n = 0, low = 0; D.PRODUCTS.forEach(function (p) { var q = D.stockAt(p.code, w.id); v += q * p.cost; if (q > 0) n++; if (q <= 0) low++; }); return { value: D.r2(v), items: n, low: low }; }
+  function fullName(u) { return u.first + ' ' + u.last; }
+  var CFG = {
+    suppliers: {
+      title: 'ผู้จำหน่าย', noun: 'ผู้จำหน่าย', list: D.SUPPLIERS, create: 'lts-create-supplier.html', createLabel: 'เพิ่มผู้จำหน่าย', importLabel: 'นำเข้าผู้จำหน่าย',
+      search: 'ค้นหาด้วยชื่อ อีเมล หรือเบอร์โทร', text: function (r) { return r.name + ' ' + r.email + ' ' + r.phone + ' ' + r.city; },
+      summary: function (l) { return 'โรงทอและผู้ค้าผ้าที่เราสั่งซื้อ · ' + l.length + ' ราย · ยอดซื้อสะสม ' + GG.baht(l.reduce(function (a, s) { return a + s.spent; }, 0)); },
+      cols: [
+        { h: 'ผู้จำหน่าย', sort: 'name', cell: function (r) { return '<td><div class="who"><span class="gg-avatar sup">' + esc(D.initials(r.name)) + '</span><div><span class="n">' + esc(r.name) + '</span><span class="sub">' + esc(r.email) + '</span></div></div></td>'; } },
+        { h: 'เบอร์โทรศัพท์', cell: function (r) { return '<td>' + esc(r.phone) + '</td>'; } },
+        { h: 'ที่ตั้ง', cell: function (r) { return '<td>' + esc(r.city) + '<span class="sub">' + esc(r.country) + '</span></td>'; } },
+        { h: 'ยอดซื้อสะสม', sort: 'spent', right: true, cell: function (r) { return '<td class="right"><span class="money-strong">' + GG.baht(r.spent) + '</span><span class="sub">' + (r.purchases ? r.purchases + ' ใบสั่งซื้อ' : 'ยังไม่มีการสั่งซื้อ') + '</span></td>'; } },
+        { h: 'วันที่สร้าง', sort: 'created', cell: created }
+      ],
+      blocked: function (r) { return r.purchases ? 'มีใบสั่งซื้อ ' + r.purchases + ' ใบที่อ้างถึงผู้จำหน่ายรายนี้ ระบบจึงเก็บประวัติไว้' : ''; },
+      label: function (r) { return r.name; },
+      fields: ['name', 'email', 'phone', 'country', 'city', 'address'],
+      make: function (o, i) { return { id: 'S' + (Date.now() + i), name: o.name, email: o.email, phone: o.phone, country: o.country || 'ไทย', city: o.city || '', address: o.address || '', taxId: '', created: nowIso(), purchases: 0, spent: 0 }; }
+    },
+    customers: {
+      title: 'ลูกค้า', noun: 'ลูกค้า', list: D.CUSTOMERS, create: 'lts-create-customer.html', createLabel: 'เพิ่มลูกค้า', importLabel: 'นำเข้าลูกค้า',
+      search: 'ค้นหาด้วยชื่อ อีเมล เบอร์โทร หรือภูมิภาค', text: function (r) { return r.name + ' ' + r.email + ' ' + r.phone + ' ' + r.city + ' ' + (r.region || ''); },
+      summary: function (l) { var due = l.reduce(function (a, c) { return a + D.custStats(c).due; }, 0); return 'ร้านค้าและโรงงานที่ซื้อผ้าจากเรา · ' + l.length + ' ราย · ยอดค้างชำระรวม ' + GG.baht(due); },
+      cols: [
+        { h: 'ลูกค้า', sort: 'name', cell: function (r) { return '<td><div class="who"><span class="gg-avatar' + (r.walkIn ? ' alt' : '') + '">' + esc(r.initials || D.initials(r.name)) + '</span><div><span class="n">' + esc(r.name) + '</span><span class="sub">' + esc(r.email) + '</span></div></div></td>'; } },
+        { h: 'เบอร์โทรศัพท์', cell: function (r) { return '<td>' + esc(r.phone) + '</td>'; } },
+        { h: 'จังหวัด / ภูมิภาค', sort: 'region', cell: function (r) { r.region = D.regionOf(r.city, r.country); return '<td>' + esc(r.city || '—') + (r.region ? '<span class="region">' + esc(r.region) + '</span>' : '<span class="sub">ยังไม่ระบุภาค</span>') + '</td>'; } },
+        { h: 'เครดิต', cell: function (r) { return '<td>' + (r.terms ? '<span class="gg-badge info">' + r.terms + ' วัน</span>' : '<span class="gg-badge neutral">เงินสด</span>') + '</td>'; } },
+        { h: 'ยอดซื้อ / ค้างชำระ', right: true, cell: function (r) { var s = D.custStats(r); return '<td class="right"><span class="money-strong">' + GG.baht(s.total) + '</span><span class="sub"' + (s.due > .005 ? ' style="color:var(--danger-text);font-weight:600"' : '') + '>' + (s.due > .005 ? 'ค้าง ' + GG.baht(s.due) : s.count + ' บิล · ชำระครบ') + '</span></td>'; } },
+        { h: 'วันที่สร้าง', sort: 'created', cell: created }
+      ],
+      extraMenu: function (r) { return r.terms ? '<a role="menuitem" class="gg-menu-item" href="lts-billing-notes.html?new&customer=' + r.id + '"><span data-icon="receipt" data-size="sm"></span>สร้างใบวางบิล</a>' : ''; },
+      blocked: function (r) { if (r.walkIn) return 'ลูกค้าหน้าร้านเป็นลูกค้าเริ่มต้นของ POS'; var s = D.custStats(r); return s.count ? 'มีรายการขาย ' + s.count + ' บิล' + (s.due > .005 ? ' และยอดค้างชำระ ' + GG.baht(s.due) : '') + ' ระบบจึงเก็บประวัติไว้' : ''; },
+      label: function (r) { return r.name; },
+      fields: ['name', 'email', 'phone', 'country', 'city', 'address'],
+      make: function (o, i) { return { id: 'C' + (Date.now() + i), name: o.name, initials: D.initials(o.name), email: o.email, phone: o.phone, country: o.country || 'ไทย', city: o.city || '', region: D.regionOf(o.city, o.country || 'ไทย'), address: o.address || '', terms: 0, dob: '', created: nowIso() }; }
+    },
+    warehouses: {
+      title: 'คลังสินค้า', noun: 'คลังสินค้า', list: D.WAREHOUSES, create: 'lts-create-warehouse.html', createLabel: 'เพิ่มคลังสินค้า',
+      search: 'ค้นหาด้วยชื่อ อีเมล เมือง หรือรหัสไปรษณีย์', text: function (r) { return r.name + ' ' + r.email + ' ' + r.phone + ' ' + r.city + ' ' + r.zip; },
+      summary: function (l) { return 'คลังและหน้าร้านที่เก็บผ้า · ' + l.length + ' แห่ง · มูลค่าสต็อกรวม ' + GG.baht(l.reduce(function (a, w) { return a + whStats(w).value; }, 0)); },
+      cols: [
+        { h: 'คลังสินค้า', sort: 'name', cell: function (r) { return '<td><div class="who"><span class="gg-avatar sup"><span data-icon="warehouse" data-size="sm"></span></span><div><span class="n">' + esc(r.name) + '</span><span class="sub">' + esc(r.email) + '</span></div></div></td>'; } },
+        { h: 'เบอร์โทรศัพท์', cell: function (r) { return '<td>' + esc(r.phone) + '</td>'; } },
+        { h: 'ประเทศ', cell: function (r) { return '<td>' + esc(r.country) + '</td>'; } },
+        { h: 'เมือง', sort: 'city', cell: function (r) { return '<td>' + esc(r.city) + (r.area ? '<span class="sub">' + esc(r.area) + '</span>' : '') + '</td>'; } },
+        { h: 'รหัสไปรษณีย์', cell: function (r) { return '<td class="gg-num">' + esc(r.zip) + '</td>'; } },
+        { h: 'มูลค่าสต็อก', right: true, cell: function (r) { var s = whStats(r); return '<td class="right"><span class="money-strong">' + GG.baht(s.value) + '</span><span class="sub">' + (s.items ? s.items + ' รายการผ้า' : 'ไม่มีสต็อก') + '</span></td>'; } },
+        { h: 'วันที่สร้าง', sort: 'created', cell: created }
+      ],
+      view: function (r) {
+        var s = whStats(r), rows = D.PRODUCTS.map(function (p) { return { p: p, q: D.stockAt(p.code, r.id) }; });
+        return { title: r.name, sub: [r.area, r.city, r.zip].filter(Boolean).join(' · ') + ' · ' + r.phone,
+          html: '<div class="wh-cards"><div class="wh-card"><div class="k">มูลค่าสต็อก (ต้นทุน)</div><div class="v">' + GG.baht(s.value) + '</div></div><div class="wh-card"><div class="k">รายการผ้าที่มีสต็อก</div><div class="v">' + s.items + ' / ' + D.PRODUCTS.length + '</div></div><div class="wh-card"><div class="k">หมดสต็อกในคลังนี้</div><div class="v" style="color:' + (s.low ? 'var(--danger-text)' : 'var(--ink)') + '">' + s.low + ' รายการ</div></div></div>' +
+            '<div class="wh-lines"><table class="gg-table compact"><thead><tr><th>สินค้า</th><th class="right">คงเหลือ</th><th class="right">ต้นทุนต่อหน่วย</th><th class="right">มูลค่า</th></tr></thead><tbody>' +
+            rows.map(function (x) { var p = x.p, tone = x.q <= 0 ? 'danger' : 'neutral'; return '<tr><td><div class="pc"><span class="swatch sw-' + p.swatch + '"></span><div><span style="color:var(--ink);font-weight:600">' + esc(p.name) + '</span><span class="sub">' + p.code + '</span></div></div></td><td class="right"><span class="gg-badge ' + tone + '">' + D.num(x.q) + ' ' + D.SHORT[p.unit] + '</span></td><td class="right">' + GG.baht(p.cost) + '</td><td class="right" style="font-weight:600;color:var(--ink)">' + GG.baht(x.q * p.cost) + '</td></tr>'; }).join('') +
+            '</tbody></table></div>' };
+      },
+      viewLabel: 'ดูสต็อกในคลัง',
+      blocked: function (r) { var s = whStats(r), t = D.TRANSFERS.filter(function (x) { return x.from === r.id || x.to === r.id; }).length; if (D.WAREHOUSES.length < 2) return 'ต้องมีคลังสินค้าอย่างน้อย 1 แห่ง'; return s.items ? 'คลังนี้ยังมีผ้าคงเหลือ ' + s.items + ' รายการ มูลค่า ' + GG.baht(s.value) + ' โอนย้ายสต็อกออกให้หมดก่อน แล้วจึงลบ' : t ? 'มีรายการโอนย้าย ' + t + ' รายการอ้างถึงคลังนี้ ระบบจึงเก็บประวัติไว้' : ''; },
+      label: function (r) { return r.name; }
+    },
+    users: {
+      title: 'ผู้ใช้งาน', noun: 'ผู้ใช้งาน', list: D.USERS, create: 'lts-create-user.html', createLabel: 'เพิ่มผู้ใช้งาน',
+      search: 'ค้นหาด้วยชื่อ อีเมล หรือบทบาท', text: function (r) { return fullName(r) + ' ' + r.email + ' ' + r.phone + ' ' + D.role(r.role).name; },
+      summary: function (l) { return 'พนักงานที่เข้าใช้ระบบ · ' + l.length + ' คน'; },
+      cols: [
+        { h: 'ผู้ใช้งาน', sort: 'first', cell: function (r) { return '<td><div class="who"><span class="gg-avatar">' + (r.photo ? '<img src="' + r.photo + '" alt="" style="width:100%;height:100%;object-fit:cover">' : esc(D.ch(r.first) + D.ch(r.last))) + '</span><div><span class="n">' + esc(fullName(r)) + (r.self ? '<span class="gg-badge neutral tag-you">คุณ</span>' : '') + '</span><span class="sub">' + esc(r.email) + '</span></div></div></td>'; } },
+        { h: 'บทบาท', sort: 'role', cell: function (r) { var ro = D.role(r.role); return '<td><span class="gg-badge ' + ro.tone + '">' + ro.name + '</span></td>'; } },
+        { h: 'เบอร์โทรศัพท์', cell: function (r) { return '<td>' + esc(r.phone) + '</td>'; } },
+        { h: 'เข้าสู่ระบบล่าสุด', cell: function (r) { return r.last_login ? '<td class="created">' + GG.thDate(r.last_login) + '<span>' + GG.thTime(r.last_login) + '</span></td>' : '<td><span class="gg-badge warning">ยังไม่เคยเข้าใช้</span></td>'; } },
+        { h: 'วันที่สร้าง', sort: 'created', cell: created }
+      ],
+      blocked: function (r) { if (r.self) return 'คุณไม่สามารถลบบัญชีที่กำลังใช้งานอยู่'; if (r.role === 'admin' && D.USERS.filter(function (u) { return u.role === 'admin'; }).length < 2) return 'ต้องมีผู้ดูแลระบบอย่างน้อย 1 คน'; return ''; },
+      label: function (r) { return fullName(r); }
+    }
+  }, C = CFG[KIND], L = C.list;
+  function nowIso() { var t = new Date(); return D.today() + 'T' + String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0'); }
+
+  $('pageTitle').textContent = C.title; $('search').placeholder = C.search;
+  $('createBtn').href = C.create; $('createLabel').textContent = C.createLabel;
+  if (C.importLabel) { $('importBtn').hidden = false; $('importLabel').textContent = C.importLabel; $('impTitle').textContent = C.importLabel; }
+  $('headRow').innerHTML = C.cols.map(function (c) { return '<th class="' + (c.right ? 'right ' : '') + (c.sort ? 'sortable' : '') + '"' + (c.sort ? ' data-sort="' + c.sort + '"' : '') + '>' + c.h + (c.sort ? '<span class="gg-sort"></span>' : '') + '</th>'; }).join('') + '<th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>';
+
+  var state = { q: '', sort: { key: 'created', dir: 'desc' }, page: 1, size: 10 };
+  function render() {
+    var q = state.q.toLowerCase(), list = L.filter(function (r) { return !q || C.text(r).toLowerCase().indexOf(q) >= 0; });
+    var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+    list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y, 'th') : x - y) * dir; });
+    var total = list.length, pages = Math.max(1, Math.ceil(total / state.size));
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * state.size, rows = list.slice(start, start + state.size), body = $('rows');
+    body.innerHTML = rows.length ? rows.map(function (r, i) {
+      return '<tr>' + C.cols.map(function (c) { return c.cell(r); }).join('') +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu>' +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + esc(C.label(r)) + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+          '<div class="gg-menu' + (i >= rows.length - 2 && rows.length > 4 ? ' up' : '') + '" role="menu" hidden>' +
+            '<a role="menuitem" class="gg-menu-item" href="' + C.create + '?edit=' + r.id + '"><span data-icon="edit" data-size="sm"></span>แก้ไขข้อมูล</a>' +
+            (C.view ? '<button type="button" role="menuitem" class="gg-menu-item" data-view="' + r.id + '"><span data-icon="eye" data-size="sm"></span>' + C.viewLabel + '</button>' : '') +
+            (C.extraMenu ? C.extraMenu(r) : '') +
+            '<div class="gg-menu-sep" role="separator"></div>' +
+            '<button type="button" role="menuitem" class="gg-menu-item danger" data-delete="' + r.id + '"><span data-icon="trash" data-size="sm"></span>ลบ' + C.noun + '</button>' +
+          '</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="' + (C.cols.length + 1) + '" class="gg-empty">ไม่พบ' + C.noun + 'ที่ตรงกับ "' + esc(state.q) + '"</td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { openView(L.filter(function (r) { return r.id === b.dataset.view; })[0]); }); });
+    body.querySelectorAll('[data-delete]').forEach(function (b) { b.addEventListener('click', function () { askDelete(L.filter(function (r) { return r.id === b.dataset.delete; })[0]); }); });
+    GG.hydrateIcons(body);
+    $('summaryLine').textContent = C.summary(L);
+    $('count').textContent = (total ? start + 1 : 0) + '–' + Math.min(total, start + state.size) + ' จาก ' + total;
+    var nav = $('pages'); nav.innerHTML = '';
+    function pb(label, iconName, page, disabled, active) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gg-page' + (active ? ' active' : ''); b.disabled = disabled;
+      if (iconName) { b.setAttribute('aria-label', label); b.appendChild(GG.icon(iconName, 'sm')); } else b.textContent = label;
+      if (active) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { state.page = page; render(); });
+      nav.appendChild(b);
+    }
+    pb('หน้าแรก', 'chevrons-left', 1, state.page <= 1); pb('หน้าก่อนหน้า', 'chevron-left', state.page - 1, state.page <= 1);
+    for (var p = 1; p <= pages; p++) pb(String(p), null, p, false, p === state.page);
+    pb('หน้าถัดไป', 'chevron-right', state.page + 1, state.page >= pages); pb('หน้าสุดท้าย', 'chevrons-right', pages, state.page >= pages);
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort.key === th.dataset.sort;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var h = th.querySelector('.gg-sort'); h.innerHTML = ''; h.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+  }
+  $('search').addEventListener('input', function (e) { state.q = e.target.value; state.page = 1; render(); });
+  $('pageSize').addEventListener('change', function (e) { state.size = +e.target.value; state.page = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) { th.addEventListener('click', function () { var k = th.dataset.sort; state.sort = state.sort.key === k ? { key: k, dir: state.sort.dir === 'asc' ? 'desc' : 'asc' } : { key: k, dir: 'asc' }; render(); }); });
+
+  function closeModal(m) { m.hidden = true; }
+  document.querySelectorAll('.gg-scrim').forEach(function (m) {
+    m.addEventListener('mousedown', function (e) { if (e.target === m) closeModal(m); });
+    m.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(m); }); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key !== 'Escape') return; var open = [].filter.call(document.querySelectorAll('.gg-scrim'), function (m) { return !m.hidden; }); if (open.length) closeModal(open[open.length - 1]); });
+  function toast(t) { $('toastText').textContent = t; $('toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(function () { $('toast').classList.remove('show'); }, 3000); }
+
+  function openView(r) {
+    var v = C.view(r); $('viewTitle').textContent = v.title; $('viewSub').textContent = v.sub; $('viewBody').innerHTML = v.html;
+    $('viewEdit').href = C.create + '?edit=' + r.id; $('viewModal').hidden = false;
+  }
+  /* Delete: records with history are kept */
+  var pending = null;
+  function askDelete(r) {
+    pending = r; var why = C.blocked(r);
+    $('confirmTitle').textContent = why ? 'ลบ "' + C.label(r) + '" ไม่ได้' : 'ลบ' + C.noun + ' "' + C.label(r) + '" ใช่หรือไม่?';
+    $('confirmText').textContent = why || 'ข้อมูลติดต่อของ' + C.noun + 'รายนี้จะถูกลบ การลบนี้ไม่สามารถย้อนกลับได้';
+    $('confirmDelete').hidden = !!why; $('confirmDelete').textContent = 'ลบ' + C.noun; $('confirmCancel').textContent = why ? 'ปิด' : 'ยกเลิก';
+    $('confirm').hidden = false;
+  }
+  $('confirmDelete').addEventListener('click', function () { if (pending) { L.splice(L.indexOf(pending), 1); toast('ลบ "' + C.label(pending) + '" แล้ว'); } pending = null; closeModal($('confirm')); render(); });
+
+  /* ---- CSV import (suppliers, customers) ---- */
+  var HEAD = { name: 'ชื่อ', email: 'อีเมล', phone: 'เบอร์โทร', country: 'ประเทศ', city: 'เมือง', address: 'ที่อยู่' }, parsed = [];
+  if (C.fields) $('impCols').textContent = 'คอลัมน์: ' + C.fields.join(', ') + ' (name, email, phone จำเป็น)';
+  function csvRows(text) {
+    var rows = [], row = [], cell = '', q = false;
+    text = text.replace(/^﻿/, '');
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (q) { if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += ch; }
+      else if (ch === '"') q = true;
+      else if (ch === ',') { row.push(cell); cell = ''; }
+      else if (ch === '\n' || ch === '\r') { if (ch === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+      else cell += ch;
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows.filter(function (r) { return r.some(function (c) { return c.trim(); }); });
+  }
+  function readFile(f) {
+    if (!f) return;
+    if (!/\.csv$/i.test(f.name)) { showDrop('ไฟล์ต้องเป็น .csv', f.name, true); return; }
+    if (f.size > 2 * 1024 * 1024) { showDrop('ไฟล์ใหญ่เกิน 2 MB', f.name, true); return; }
+    var fr = new FileReader();
+    fr.onload = function () { preview(csvRows(String(fr.result)), f.name); };
+    fr.readAsText(f, 'utf-8');
+  }
+  function showDrop(title, sub, bad) { $('dropTitle').textContent = title; $('dropSub').textContent = sub; $('dropTitle').style.color = bad ? 'var(--danger-text)' : ''; }
+  function preview(rows, name) {
+    if (!rows.length) { showDrop('ไฟล์ว่าง', name, true); return; }
+    var head = rows[0].map(function (h) { return h.trim().toLowerCase(); }), idx = {};
+    C.fields.forEach(function (f) { idx[f] = head.indexOf(f); });
+    if (idx.name < 0 || idx.email < 0 || idx.phone < 0) { showDrop('ไม่พบคอลัมน์ name, email หรือ phone ในแถวแรก', name, true); $('impResult').hidden = true; $('impGo').disabled = true; return; }
+    var seen = {}; L.forEach(function (r) { seen[String(r.email).toLowerCase()] = 'มีอยู่แล้วในระบบ'; });
+    parsed = rows.slice(1).map(function (r) {
+      var o = {}; C.fields.forEach(function (f) { o[f] = idx[f] >= 0 ? (r[idx[f]] || '').trim() : ''; });
+      var em = o.email.toLowerCase();
+      o.why = !o.name ? 'ไม่มีชื่อ' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.email) ? 'อีเมลไม่ถูกต้อง' : !o.phone ? 'ไม่มีเบอร์โทร' : seen[em] || '';
+      if (!o.why) seen[em] = 'อีเมลซ้ำในไฟล์';
+      return o;
+    });
+    var ok = parsed.filter(function (o) { return !o.why; }).length, bad = parsed.length - ok;
+    showDrop(name, parsed.length + ' แถว · คลิกเพื่อเลือกไฟล์ใหม่', false);
+    $('impSum').innerHTML = '<span class="gg-badge success"><span class="gg-badge-dot"></span>พร้อมนำเข้า ' + ok + ' รายการ</span>' + (bad ? '<span class="gg-badge danger"><span class="gg-badge-dot"></span>ข้าม ' + bad + ' แถว</span>' : '');
+    $('impHead').innerHTML = '<tr><th>#</th><th>ชื่อ</th><th>อีเมล</th><th>เบอร์โทร</th><th>เมือง</th><th>ผลตรวจสอบ</th></tr>';
+    $('impRows').innerHTML = parsed.map(function (o, i) { return '<tr class="' + (o.why ? 'bad' : '') + '"><td>' + (i + 2) + '</td><td>' + esc(o.name || '—') + '</td><td>' + esc(o.email || '—') + '</td><td>' + esc(o.phone || '—') + '</td><td>' + esc(o.city || '—') + '</td><td>' + (o.why ? '<span class="why">' + o.why + '</span>' : '<span class="gg-badge success">พร้อม</span>') + '</td></tr>'; }).join('');
+    $('impResult').hidden = false; $('impGo').disabled = !ok; $('impGoText').textContent = 'นำเข้า ' + ok + ' รายการ';
+  }
+  function openImport() { parsed = []; $('impFile').value = ''; showDrop('ลากไฟล์ CSV มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์', 'รองรับไฟล์ .csv ขนาดไม่เกิน 2 MB'); $('impResult').hidden = true; $('impGo').disabled = true; $('impGoText').textContent = 'นำเข้า'; $('impModal').hidden = false; }
+  $('importBtn').addEventListener('click', openImport);
+  $('impFile').addEventListener('change', function () { readFile($('impFile').files[0]); });
+  var drop = $('drop');
+  ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop', function (e) { readFile(e.dataTransfer.files[0]); });
+  function downloadTpl() {
+    if (!C.fields) return;
+    var sample = KIND === 'suppliers' ? ['โรงทอผ้าตัวอย่าง จำกัด', 'sales@example.com', '02-111-2222', 'ไทย', 'กรุงเทพฯ', '"1 ถ.ตัวอย่าง, แขวงตัวอย่าง"'] : ['ร้านผ้าตัวอย่าง', 'shop@example.com', '081-222-3333', 'ไทย', 'ขอนแก่น', '"9 ถ.หน้าเมือง, อ.เมือง"'];
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + C.fields.join(',') + '\n' + sample.join(',') + '\n'], { type: 'text/csv;charset=utf-8' }));
+    a.download = KIND + '-template.csv'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  $('tplLink').addEventListener('click', downloadTpl);
+  $('tplLink').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); downloadTpl(); } });
+  $('impGo').addEventListener('click', function () {
+    var ok = parsed.filter(function (o) { return !o.why; });
+    ok.forEach(function (o, i) { L.unshift(C.make(o, i)); });
+    closeModal($('impModal')); state.page = 1; state.sort = { key: 'created', dir: 'desc' }; render(); toast('นำเข้า' + C.noun + ' ' + ok.length + ' รายการแล้ว');
+  });
+
+  render();
+  var saved = new URLSearchParams(location.search).get('saved');
+  if (saved) toast('บันทึก "' + saved + '" แล้ว (ข้อมูลตัวอย่างไม่ได้บันทึกถาวร)');
+})();

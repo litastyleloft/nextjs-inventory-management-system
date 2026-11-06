@@ -1,0 +1,139 @@
+===CSS===
+.rf-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-5) var(--space-8); }
+.gg-hint, .gg-error { line-height: 18px; }
+.optional { margin-left: 6px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.perm-head { display: flex; align-items: center; gap: var(--space-6); margin: var(--space-8) 0 var(--space-4); }
+.perm-head h2 { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.perm-head .count { margin-left: auto; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.perm-head .count b { color: var(--primary); }
+.chk { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font: 500 14px/20px var(--font-sans); color: var(--ink-2); user-select: none; }
+.chk input { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); cursor: pointer; flex: none; }
+.chk:hover { color: var(--ink); }
+.chk.all { padding: 8px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); font-weight: 600; color: var(--ink); }
+.chk.all:has(input:checked) { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.groups { display: grid; gap: var(--space-4); }
+.group { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.group.invalid { border-color: var(--danger); }
+.group-h { display: flex; align-items: center; justify-content: space-between; padding: 12px var(--space-5); background: var(--surface-sunken); border-bottom: 1px solid var(--border); }
+.group-h .chk { font: 700 14px/20px var(--font-display); color: var(--ink); }
+.group-h .n { font: 500 12px/18px var(--font-sans); color: var(--muted); font-variant-numeric: tabular-nums; }
+.group-b { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px var(--space-6); padding: var(--space-5); }
+.perm-err { display: none; margin-top: var(--space-3); }
+.perm-err.show { display: block; }
+.locked { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-5); padding: 10px var(--space-4); border-radius: var(--radius-md); background: var(--info-soft); color: var(--info-text); font: 500 13px/18px var(--font-sans); }
+.locked[hidden] { display: none; }
+.foot-note { margin-right: auto; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.form-ok { display: none; margin-right: auto; }
+.form-ok.show { display: inline-flex; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title" id="pageTitle">สร้างบทบาท</h1>
+          <p class="gg-pagehead-sub" id="pageSub">ตั้งชื่อบทบาทและเลือกเมนูที่ผู้ใช้ในบทบาทนี้เข้าถึงได้</p>
+        </div>
+        <div class="gg-pagehead-actions">
+          <a class="gg-btn gg-btn-secondary" href="lts-roles.html"><span data-icon="chevron-left"></span>ย้อนกลับ</a>
+        </div>
+      </div>
+
+      <form class="gg-card" id="rfForm" novalidate autocomplete="off">
+        <div class="gg-card-body" style="padding-top:var(--space-6);padding-bottom:var(--space-6)">
+          <div class="locked" id="locked" hidden><span data-icon="shield" data-size="sm"></span>บทบาทผู้ดูแลระบบได้รับทุกสิทธิ์เสมอ จึงแก้ไขไม่ได้</div>
+          <div class="rf-top">
+            <div class="gg-field"><label class="gg-label" for="name">ชื่อบทบาท<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="name" maxlength="40" placeholder="กรอกชื่อบทบาท"></div><div class="gg-hint" id="nameHint">เช่น พนักงานตัดผ้า หรือ ฝ่ายบัญชี</div></div>
+            <div class="gg-field"><label class="gg-label" for="desc">คำอธิบาย<span class="optional">(ไม่บังคับ)</span></label>
+              <div class="gg-control"><input id="desc" maxlength="80" placeholder="บทบาทนี้ทำหน้าที่อะไร"></div><div class="gg-hint">แสดงในหน้ารายการบทบาท</div></div>
+          </div>
+
+          <div class="perm-head">
+            <h2>สิทธิ์การใช้งาน<span class="gg-req" aria-hidden="true">*</span></h2>
+            <label class="chk all"><input type="checkbox" id="all">สิทธิ์ทั้งหมด</label>
+            <span class="count" id="count"></span>
+          </div>
+          <div class="groups" id="groups"></div>
+          <div class="gg-error perm-err" id="permErr" role="alert">กรุณาเลือกสิทธิ์อย่างน้อย 1 รายการ</div>
+        </div>
+        <div class="gg-card-foot">
+          <span class="foot-note" id="footNote"></span>
+          <span class="form-ok gg-badge success" id="formOk" role="status"><span class="gg-badge-dot"></span><span id="formOkText"></span></span>
+          <a class="gg-btn gg-btn-secondary" href="lts-roles.html">ยกเลิก</a>
+          <button type="submit" class="gg-btn gg-btn-primary" id="saveBtn" disabled><span data-icon="check"></span>บันทึก</button>
+        </div>
+      </form>
+===JS===
+/*@include sales-data*/
+/*@include people-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc, N = D.ALL_PERMS.length;
+  var qs = new URLSearchParams(location.search), ED = qs.get('edit') ? D.role(qs.get('edit')) : null, CP = qs.get('copy') ? D.role(qs.get('copy')) : null;
+  var sel = {};
+  (ED || CP ? (ED || CP).perms : []).forEach(function (p) { sel[p] = true; });
+
+  $('groups').innerHTML = D.PERM_GROUPS.map(function (g, gi) {
+    return '<section class="group" data-g="' + gi + '"><div class="group-h"><label class="chk"><input type="checkbox" data-group="' + gi + '">' + g.name + '</label><span class="n" data-gn="' + gi + '"></span></div>' +
+      '<div class="group-b">' + g.perms.map(function (p) { return '<label class="chk"><input type="checkbox" data-perm="' + p[0] + '">จัดการ' + p[1] + '</label>'; }).join('') + '</div></section>';
+  }).join('');
+
+  if (ED) {
+    $('pageTitle').textContent = 'แก้ไขบทบาท ' + ED.name; document.title = 'แก้ไขบทบาท · LTS Solution';
+    var cur = document.querySelector('.gg-crumbs .current'); if (cur) cur.textContent = 'แก้ไขบทบาท';
+    var n = D.USERS.filter(function (u) { return u.role === ED.id; }).length;
+    $('pageSub').textContent = n ? 'การเปลี่ยนสิทธิ์จะมีผลกับผู้ใช้งาน ' + n + ' คนในบทบาทนี้ทันที' : 'ยังไม่มีผู้ใช้งานในบทบาทนี้';
+    $('name').value = ED.name; $('desc').value = ED.desc || '';
+  } else if (CP) {
+    $('name').value = CP.name + ' (สำเนา)'; $('desc').value = CP.desc || '';
+    $('pageSub').textContent = 'สำเนาจากบทบาท "' + CP.name + '" ปรับชื่อและสิทธิ์ได้ตามต้องการ';
+  } else if (qs.get('edit')) $('pageSub').textContent = 'ไม่พบบทบาทที่ต้องการแก้ไข จึงสร้างเป็นบทบาทใหม่';
+  var locked = !!(ED && ED.system);
+  if (locked) { $('locked').hidden = false; document.querySelectorAll('#rfForm input').forEach(function (i) { i.disabled = true; }); }
+
+  function norm(s) { return s.replace(/\s+/g, ' ').trim().toLowerCase(); }
+  function nameErr() {
+    var v = norm($('name').value);
+    if (!v) return 'กรุณากรอกชื่อบทบาท';
+    if (D.ROLES.some(function (r) { return r !== ED && norm(r.name) === v; })) return 'มีบทบาทชื่อนี้อยู่แล้ว';
+    return '';
+  }
+  var touched = false, tried = false;
+  function sync() {
+    var count = D.ALL_PERMS.filter(function (p) { return sel[p]; }).length;
+    document.querySelectorAll('[data-perm]').forEach(function (c) { c.checked = !!sel[c.dataset.perm]; });
+    D.PERM_GROUPS.forEach(function (g, gi) {
+      var k = g.perms.filter(function (p) { return sel[p[0]]; }).length, box = document.querySelector('[data-group="' + gi + '"]');
+      box.checked = k === g.perms.length; box.indeterminate = k > 0 && k < g.perms.length;
+      document.querySelector('[data-gn="' + gi + '"]').textContent = k + ' / ' + g.perms.length;
+    });
+    $('all').checked = count === N; $('all').indeterminate = count > 0 && count < N;
+    $('count').innerHTML = 'เลือกแล้ว <b>' + count + '</b> จาก ' + N + ' สิทธิ์';
+    var ne = nameErr(), f = $('name').closest('.gg-field'), x = f.querySelector('.gg-error'), show = ne && (touched || tried);
+    $('name').closest('.gg-control').classList.toggle('invalid', !!show);
+    if (show) { if (!x) { x = document.createElement('div'); x.className = 'gg-error'; f.appendChild(x); } x.textContent = ne; $('nameHint').hidden = true; } else { if (x) x.remove(); $('nameHint').hidden = false; }
+    var noPerm = count === 0;
+    $('permErr').classList.toggle('show', noPerm && tried);
+    document.querySelectorAll('.group').forEach(function (g) { g.classList.toggle('invalid', noPerm && tried); });
+    var left = (ne ? 1 : 0) + (noPerm ? 1 : 0);
+    $('saveBtn').disabled = locked || left > 0;
+    $('footNote').textContent = locked ? 'บทบาทนี้เป็นบทบาทระบบ' : left ? (ne ? 'ระบุชื่อบทบาทที่ไม่ซ้ำ' : '') + (ne && noPerm ? ' และ' : '') + (noPerm ? 'เลือกสิทธิ์อย่างน้อย 1 รายการ' : '') + 'เพื่อบันทึก' : 'พร้อมบันทึก';
+  }
+  $('groups').addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.dataset.perm) sel[t.dataset.perm] = t.checked;
+    if (t.dataset.group != null) D.PERM_GROUPS[+t.dataset.group].perms.forEach(function (p) { sel[p[0]] = t.checked; });
+    sync();
+  });
+  $('all').addEventListener('change', function () { var on = $('all').checked; D.ALL_PERMS.forEach(function (p) { sel[p] = on; }); sync(); });
+  $('name').addEventListener('input', sync);
+  $('name').addEventListener('blur', function () { touched = true; sync(); });
+  sync();
+
+  $('rfForm').addEventListener('submit', function (e) {
+    e.preventDefault(); tried = true; touched = true; sync();
+    if ($('saveBtn').disabled) return;
+    var name = $('name').value.replace(/\s+/g, ' ').trim();
+    $('footNote').hidden = true; $('saveBtn').disabled = true;
+    $('formOkText').textContent = 'บันทึกบทบาท "' + name + '" แล้ว กำลังกลับไปหน้ารายการ…'; $('formOk').classList.add('show');
+    setTimeout(function () { location.href = 'lts-roles.html?saved=' + encodeURIComponent(name); }, 1400);
+  });
+  if (!locked) $('name').focus();
+})();

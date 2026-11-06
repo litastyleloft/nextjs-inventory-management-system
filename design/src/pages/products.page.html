@@ -1,0 +1,259 @@
+===CSS===
+/* Fabric swatches stand in for product photos. Their colours depict the cloth, not UI tokens. */
+.swatch { width: 44px; height: 44px; border-radius: var(--radius-md); border: 1px solid var(--border); display: block; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25); }
+.sw-poplin { background-color: #f3f1ea; background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0 1px, transparent 1px 3px); }
+.sw-denim { background-color: #2e4a74; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.16) 0 1.5px, transparent 1.5px 4px); }
+.sw-floral { background-color: #f6ead8; background-image: radial-gradient(circle at 30% 30%, #c2456b 0 4px, transparent 5px), radial-gradient(circle at 72% 64%, #d9a53b 0 3px, transparent 4px), radial-gradient(circle at 70% 22%, #3f7d5c 0 2.5px, transparent 3.5px), radial-gradient(circle at 26% 78%, #3f7d5c 0 2.5px, transparent 3.5px); }
+.sw-georgette { background-color: #1f2b4d; background-image: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 48%, transparent 66%); }
+.sw-linen { background-color: #d8cab0; background-image: repeating-linear-gradient(0deg, rgba(80,60,30,.12) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(80,60,30,.1) 0 1px, transparent 1px 5px); }
+.sw-jersey { background-color: #a7a9ad; background-image: radial-gradient(rgba(255,255,255,.35) 0.8px, transparent 1.2px), radial-gradient(rgba(0,0,0,.18) 0.8px, transparent 1.2px); background-size: 4px 4px, 5px 5px; background-position: 0 0, 2px 2px; }
+.name-cell .n { color: var(--ink); font-weight: 600; }
+.name-cell .c { margin-top: 2px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.created { font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+.created span { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.filters { display: none; gap: var(--space-4); align-items: flex-end; padding: 0 var(--space-6) var(--space-5); }
+.filters.open { display: flex; }
+.filters .gg-field { width: 220px; }
+.gg-btn.on { background: var(--primary-soft); border-color: var(--primary); }
+.stock-ok { color: var(--ink); font-weight: 600; }
+.unit-sfx { color: var(--muted); font-weight: 500; margin-left: 4px; }
+.gg-table td { height: 64px; }
+.dropzone { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-6); border: 1.5px dashed var(--border-input); border-radius: var(--radius-md); background: var(--surface-sunken); text-align: center; color: var(--muted); cursor: pointer; }
+.dropzone strong { color: var(--ink); font: 600 14px/20px var(--font-sans); }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">สินค้า</h1>
+          <p class="gg-pagehead-sub" id="summary">ผ้าทุกรายการซื้อ ขาย และนับสต็อกเป็นหลา ในทุกคลังสินค้า</p>
+        </div>
+      </div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div class="gg-row" style="flex:1">
+            <div style="width:360px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="search" placeholder="ค้นหาด้วยชื่อผ้า รหัส หรือส่วนประกอบ" aria-label="ค้นหาสินค้า"></div></div>
+          </div>
+          <div class="gg-row">
+            <button type="button" class="gg-btn gg-btn-secondary" id="filterBtn" aria-expanded="false" aria-controls="filters"><span data-icon="filter"></span>ตัวกรอง</button>
+            <button type="button" class="gg-btn gg-btn-secondary" id="exportBtn"><span data-icon="download"></span>ส่งออกสินค้า</button>
+            <button type="button" class="gg-btn gg-btn-secondary" id="importBtn"><span data-icon="upload"></span>นำเข้าสินค้า</button>
+            <a class="gg-btn gg-btn-primary" href="lts-create-product.html"><span data-icon="plus"></span>เพิ่มสินค้า</a>
+          </div>
+        </div>
+        <div class="filters" id="filters">
+          <div class="gg-field"><label class="gg-label" for="fCat">หมวดหมู่</label>
+            <div class="gg-control"><select id="fCat"><option value="">ทุกหมวดหมู่</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <select id="fUnit" hidden aria-hidden="true"><option value=""></option></select>
+          <div class="gg-field"><label class="gg-label" for="fStock">สต็อก</label>
+            <div class="gg-control"><select id="fStock"><option value="">ทุกระดับสต็อก</option><option value="in-stock">มีสินค้า</option><option value="low-stock">สินค้าใกล้หมด</option><option value="out-of-stock">สินค้าหมด</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <button type="button" class="gg-btn gg-btn-ghost" id="clearFilters">ล้างตัวกรอง</button>
+        </div>
+
+        <div class="gg-table-wrap">
+          <table class="gg-table">
+            <thead><tr>
+              <th style="width:76px">สินค้า</th>
+              <th class="sortable" data-sort="name" aria-sort="none">ชื่อสินค้า<span class="gg-sort"><span data-icon="sort" data-size="sm"></span></span></th>
+              <th>รหัส</th>
+              <th class="sortable" data-sort="category">หมวดหมู่<span class="gg-sort"><span data-icon="sort" data-size="sm"></span></span></th>
+              <th class="right sortable" data-sort="price">ราคาขายล่าสุด<span class="gg-sort"><span data-icon="sort" data-size="sm"></span></span></th>
+              <th class="right sortable" data-sort="stock">คงเหลือ<span class="gg-sort"><span data-icon="sort" data-size="sm"></span></span></th>
+              <th class="sortable" data-sort="created">วันที่สร้าง<span class="gg-sort"><span data-icon="sort" data-size="sm"></span></span></th>
+              <th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+
+        <div class="gg-pager">
+          <div class="gg-pager-size">แถวต่อหน้า
+            <div class="gg-control"><select id="pageSize" aria-label="แถวต่อหน้า"><option>10</option><option>25</option><option>50</option><option>100</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <span class="gg-num" id="count" style="margin-left:8px"></span>
+          </div>
+          <nav class="gg-pager-pages" aria-label="เลขหน้า" id="pages"></nav>
+        </div>
+      </div>
+
+      <!-- Confirm delete (ConfirmModal) -->
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle">ลบสินค้าใช่หรือไม่?</h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon"><span data-icon="trash"></span></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn gg-btn-danger" id="confirmDelete">ลบสินค้า</button></div>
+        </div>
+      </div>
+
+      <!-- Import products (Modal) -->
+      <div class="gg-scrim" id="importModal" hidden>
+        <div class="gg-modal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="importTitle">นำเข้าสินค้า</h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body">
+            <div class="gg-stack">
+              <label class="dropzone" for="importFile">
+                <span data-icon="upload" data-size="lg"></span>
+                <strong id="importName">เลือกไฟล์ CSV</strong>
+                <span class="gg-hint">หนึ่งแถวต่อผ้าหนึ่งรายการ: ชื่อ รหัส หมวดหมู่ ส่วนประกอบ หน้ากว้าง ราคา หน่วยขาย</span>
+                <input type="file" id="importFile" accept=".csv" class="gg-sr">
+              </label>
+              <button type="button" class="gg-btn gg-btn-ghost" id="templateBtn" style="align-self:flex-start"><span data-icon="download"></span>ดาวน์โหลดเทมเพลต CSV</button>
+            </div>
+          </div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn gg-btn-primary" data-close>นำเข้า</button></div>
+        </div>
+      </div>
+===JS===
+(function () {
+  var PRODUCTS = [
+    { code: 'COT58A101001', name: 'ผ้าคอตตอนป๊อปลิน 60s สีขาวออปติก', category: 'ฝ้าย', comp: 'ฝ้าย 100%', width: 58, price: 78, unit: 'yard', stock: 2680, alert: 330, swatch: 'poplin', created: '2024-02-03T23:28' },
+    { code: 'DEN58A201014', name: 'ผ้ายีนส์ยืด 10 ออนซ์ สีคราม', category: 'เดนิม', comp: 'ฝ้าย 98%, สแปนเด็กซ์ 2%', width: 60, price: 165, unit: 'yard', stock: 1290, alert: 220, swatch: 'denim', created: '2024-02-03T23:23' },
+    { code: 'VIS44B305022', name: 'ผ้าเรยอนพิมพ์ลายดอกไม้', category: 'วิสคอส', comp: 'วิสคอส 100%', width: 56, price: 110, unit: 'yard', stock: 700, alert: 165, swatch: 'floral', created: '2024-02-03T23:15' },
+    { code: 'PLY58A410012', name: 'ผ้าจอร์เจ็ตโพลีเอสเตอร์ สีกรมท่า', category: 'โพลีเอสเตอร์', comp: 'โพลีเอสเตอร์ 100%', width: 58, price: 60, unit: 'yard', stock: 82, alert: 110, swatch: 'georgette', created: '2024-02-03T23:12' },
+    { code: 'LIN54C120003', name: 'ผ้าลินินผสมฝ้าย สีธรรมชาติ', category: 'ลินิน', comp: 'ลินิน 55%, ฝ้าย 45%', width: 57, price: 238, unit: 'yard', stock: 0, alert: 90, swatch: 'linen', created: '2024-02-03T23:02' },
+    { code: 'KNT72A160008', name: 'ผ้ายืดซิงเกิลเจอร์ซีย์ 160 แกรม สีเทาท็อปดราย', category: 'ผ้ายืด', comp: '', width: 72, price: 120, unit: 'yard', stock: 350, alert: 60, swatch: 'jersey', created: '2024-02-02T23:08' }
+  ];
+  var UNIT = { meter: 'เมตร', kilogram: 'กิโลกรัม', yard: 'หลา', roll: 'ม้วน' };
+  var SHORT = { meter: 'ม.', kilogram: 'กก.', yard: 'หลา', roll: 'ม้วน' };
+  function stockState(p) { return p.stock <= 0 ? 'out-of-stock' : p.stock <= p.alert ? 'low-stock' : 'in-stock'; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function n(x) { return Number(x).toLocaleString('th-TH'); }
+
+  var state = { q: '', cat: '', unit: '', stock: '', sort: null, page: 1, size: 10 };
+  var cats = Array.from(new Set(PRODUCTS.map(function (p) { return p.category; })));
+  var fCat = document.getElementById('fCat');
+  cats.forEach(function (c) { var o = document.createElement('option'); o.textContent = c; fCat.appendChild(o); });
+  document.getElementById('summary').textContent = 'ผ้า ' + PRODUCTS.length + ' รายการ ใน ' + cats.length + ' หมวดหมู่ · ซื้อ ขาย และนับสต็อกเป็นหลา';
+
+  function filtered() {
+    var q = state.q.toLowerCase();
+    var list = PRODUCTS.filter(function (p) {
+      return (!q || (p.name + ' ' + p.code + ' ' + p.comp).toLowerCase().indexOf(q) >= 0) &&
+        (!state.cat || p.category === state.cat) && (!state.unit || p.unit === state.unit) && (!state.stock || stockState(p) === state.stock);
+    });
+    if (state.sort) {
+      var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+      list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y, 'th') : x - y) * dir; });
+    }
+    return list;
+  }
+
+  function stockCell(p) {
+    var s = stockState(p);
+    if (s === 'out-of-stock') return '<span class="gg-badge danger"><span class="gg-badge-dot"></span>สินค้าหมด</span>';
+    if (s === 'low-stock') return '<span class="gg-badge warning" title="ถึงจุดแจ้งเตือน ' + n(p.alert) + ' ' + SHORT[p.unit] + '"><span class="gg-badge-dot"></span>' + n(p.stock) + ' ' + SHORT[p.unit] + ' · ใกล้หมด</span>';
+    return '<span class="stock-ok gg-num">' + n(p.stock) + '</span><span class="unit-sfx">' + SHORT[p.unit] + '</span>';
+  }
+
+  function render() {
+    var list = filtered(), total = list.length, pages = Math.max(1, Math.ceil(total / state.size));
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * state.size, rows = list.slice(start, start + state.size);
+    var body = document.getElementById('rows');
+    body.innerHTML = rows.length ? rows.map(function (p, i) {
+      var spec = (p.comp ? esc(p.comp) + ' · ' : '') + 'หน้ากว้าง ' + p.width + '″';
+      return '<tr>' +
+        '<td><span class="swatch sw-' + p.swatch + '" role="img" aria-label="ตัวอย่างผ้า ' + esc(p.name) + '"></span></td>' +
+        '<td class="name-cell"><div class="n">' + esc(p.name) + '</div><div class="c">' + spec + '</div></td>' +
+        '<td><span class="gg-badge neutral mono">' + p.code + '</span></td>' +
+        '<td>' + p.category + '</td>' +
+        '<td class="right"><span class="gg-num" style="color:var(--ink);font-weight:600">' + GG.baht(p.price) + '</span><div class="gg-hint">ต่อ' + UNIT[p.unit] + '</div></td>' +
+        '<td class="right">' + stockCell(p) + '</td>' +
+        '<td class="created">' + GG.thDate(p.created) + '<span>' + GG.thTime(p.created) + '</span></td>' +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu>' +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + esc(p.name) + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+          '<div class="gg-menu' + (i >= rows.length - 2 && rows.length > 3 ? ' up' : '') + '" role="menu" hidden>' +
+            '<button type="button" role="menuitem" class="gg-menu-item"><span data-icon="eye" data-size="sm"></span>ดูรายละเอียด</button>' +
+            '<a role="menuitem" class="gg-menu-item" href="lts-create-product.html" style="text-decoration:none"><span data-icon="edit" data-size="sm"></span>แก้ไข</a>' +
+            '<button type="button" role="menuitem" class="gg-menu-item"><span data-icon="barcode" data-size="sm"></span>พิมพ์บาร์โค้ด</button>' +
+            '<button type="button" role="menuitem" class="gg-menu-item"><span data-icon="copy" data-size="sm"></span>ทำสำเนา</button>' +
+            '<div class="gg-menu-sep" role="separator"></div>' +
+            '<button type="button" role="menuitem" class="gg-menu-item danger" data-delete="' + p.code + '"><span data-icon="trash" data-size="sm"></span>ลบ</button>' +
+          '</div></div></td>' +
+        '</tr>';
+    }).join('') : '<tr><td colspan="8" class="gg-empty">ไม่พบผ้าที่ตรงกับตัวกรอง <button type="button" class="gg-btn gg-btn-ghost sm" id="emptyClear">ล้างตัวกรอง</button></td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-delete]').forEach(function (b) { b.addEventListener('click', function () { askDelete(b.getAttribute('data-delete')); }); });
+    var ec = document.getElementById('emptyClear'); if (ec) ec.addEventListener('click', clearFilters);
+    GG.hydrateIcons(body);
+
+    document.getElementById('count').textContent = (total ? start + 1 : 0) + '–' + Math.min(total, start + state.size) + ' จาก ' + total;
+    var nav = document.getElementById('pages'); nav.innerHTML = '';
+    function pb(label, iconName, page, disabled, active) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gg-page' + (active ? ' active' : ''); b.disabled = disabled;
+      if (iconName) { b.setAttribute('aria-label', label); b.appendChild(GG.icon(iconName, 'sm')); } else b.textContent = label;
+      if (active) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { state.page = page; render(); });
+      nav.appendChild(b);
+    }
+    pb('หน้าแรก', 'chevrons-left', 1, state.page <= 1); pb('หน้าก่อนหน้า', 'chevron-left', state.page - 1, state.page <= 1);
+    for (var k = 1; k <= pages; k++) pb(String(k), null, k, false, k === state.page);
+    pb('หน้าถัดไป', 'chevron-right', state.page + 1, state.page >= pages); pb('หน้าสุดท้าย', 'chevrons-right', pages, state.page >= pages);
+
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort && state.sort.key === th.getAttribute('data-sort');
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var holder = th.querySelector('.gg-sort'); holder.innerHTML = '';
+      holder.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+  }
+
+  document.getElementById('search').addEventListener('input', function (e) { state.q = e.target.value; state.page = 1; render(); });
+  document.getElementById('pageSize').addEventListener('change', function (e) { state.size = +e.target.value; state.page = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) {
+    th.addEventListener('click', function () {
+      var k = th.getAttribute('data-sort');
+      state.sort = state.sort && state.sort.key === k ? (state.sort.dir === 'asc' ? { key: k, dir: 'desc' } : null) : { key: k, dir: 'asc' };
+      render();
+    });
+  });
+  var filterBtn = document.getElementById('filterBtn'), filters = document.getElementById('filters');
+  filterBtn.addEventListener('click', function () { var o = filters.classList.toggle('open'); filterBtn.classList.toggle('on', o); filterBtn.setAttribute('aria-expanded', String(o)); });
+  [['fCat', 'cat'], ['fUnit', 'unit'], ['fStock', 'stock']].forEach(function (pair) {
+    document.getElementById(pair[0]).addEventListener('change', function (e) { state[pair[1]] = e.target.value; state.page = 1; render(); });
+  });
+  function clearFilters() {
+    state.q = state.cat = state.unit = state.stock = ''; state.page = 1;
+    ['search', 'fCat', 'fUnit', 'fStock'].forEach(function (id) { document.getElementById(id).value = ''; });
+    render();
+  }
+  document.getElementById('clearFilters').addEventListener('click', clearFilters);
+
+  /* Modals */
+  function openModal(id) { var m = document.getElementById(id); m.hidden = false; var f = m.querySelector('button'); if (f) f.focus(); }
+  function closeModal(m) { m.hidden = true; }
+  document.querySelectorAll('.gg-scrim').forEach(function (m) {
+    m.addEventListener('mousedown', function (e) { if (e.target === m) closeModal(m); });
+    m.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(m); }); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('.gg-scrim').forEach(closeModal); });
+
+  var pending = null;
+  function askDelete(code) {
+    var p = PRODUCTS.filter(function (x) { return x.code === code; })[0]; pending = p;
+    document.getElementById('confirmTitle').textContent = 'ลบ ' + p.name + ' ใช่หรือไม่?';
+    document.getElementById('confirmText').textContent = 'ระบบจะนำ ' + p.code + ' ออกจากรายการสินค้า' +
+      (p.stock ? ' และตัดสต็อกคงเหลือ ' + n(p.stock) + ' ' + SHORT[p.unit] + ' ออก' : '') + ' ประวัติการขายและการซื้อเดิมยังคงอยู่ การลบนี้ไม่สามารถย้อนกลับได้';
+    openModal('confirm');
+  }
+  document.getElementById('confirmDelete').addEventListener('click', function () {
+    if (pending) PRODUCTS.splice(PRODUCTS.indexOf(pending), 1);
+    pending = null; closeModal(document.getElementById('confirm')); render();
+  });
+
+  document.getElementById('importBtn').addEventListener('click', function () { openModal('importModal'); });
+  document.getElementById('importFile').addEventListener('change', function (e) { document.getElementById('importName').textContent = e.target.files[0] ? e.target.files[0].name : 'เลือกไฟล์ CSV'; });
+
+  function download(name, rows) {
+    var csv = '﻿' + rows.map(function (r) { return r.map(function (v) { v = String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(','); }).join('\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = name; a.click();
+  }
+  var HEAD = ['ชื่อสินค้า', 'รหัส', 'หมวดหมู่', 'ส่วนประกอบ', 'หน้ากว้าง (นิ้ว)', 'ราคา (บาท)', 'หน่วยขาย', 'คงเหลือ', 'จุดแจ้งเตือน'];
+  document.getElementById('exportBtn').addEventListener('click', function () {
+    download('lts-products.csv', [HEAD].concat(filtered().map(function (p) { return [p.name, p.code, p.category, p.comp, p.width, p.price.toFixed(2), UNIT[p.unit], p.stock, p.alert]; })));
+  });
+  document.getElementById('templateBtn').addEventListener('click', function () { download('lts-products-template.csv', [HEAD]); });
+
+  render();
+})();

@@ -1,0 +1,450 @@
+===CSS===
+.gg-table td { height: 60px; }
+.bn-table .gg-table th, .bn-table .gg-table td { padding-left: 12px; padding-right: 12px; }
+.bn-table .gg-table th:first-child, .bn-table .gg-table td:first-child { padding-left: var(--space-6); }
+.cust { display: flex; align-items: center; gap: var(--space-3); }
+.cust .gg-avatar { width: 32px; height: 32px; font-size: 12px; }
+.cust .n { color: var(--ink); font-weight: 600; }
+.sub { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.gg-table tfoot .label { font: 700 15px/20px var(--font-display); }
+.toast { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: calc(var(--z-modal) + 5); display: none; }
+.toast.show { display: inline-flex; box-shadow: var(--shadow-2); height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+.seg { display: inline-flex; padding: 3px; border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); gap: 2px; }
+.seg button { height: 32px; padding: 0 var(--space-4); border: 0; border-radius: 6px; background: transparent; font: 600 13px/18px var(--font-sans); color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.seg button .c { font-weight: 700; font-size: 12px; color: var(--muted); }
+.seg button.on { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-1); }
+.seg button.on .c { color: var(--primary); }
+.seg button:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.stat-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6); }
+.stat-row .gg-stat { min-height: 96px; padding: var(--space-4) var(--space-5); }
+.stat-row .gg-stat-value { font-size: 24px; line-height: 30px; }
+.stat-row .gg-stat-delta { color: var(--muted); }
+
+/* Create billing note */
+.bn-modal { max-width: 1280px; }
+.bn-modal .gg-modal-body { padding: 0; display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0; overflow: hidden; }
+.bn-main { padding: var(--space-6); overflow: auto; min-width: 0; }
+.bn-side { border-left: 1px solid var(--border); background: var(--surface-sunken); padding: var(--space-6); overflow: auto; display: flex; flex-direction: column; gap: var(--space-5); }
+.bn-head { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.cust-ctl .gg-avatar { width: 28px; height: 28px; font-size: 11px; margin-left: 6px; }
+.cust-ctl select { padding-left: 10px; font-weight: 600; color: var(--ink); }
+.mono-box { display: flex; align-items: center; height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); font: 600 14px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: var(--space-5) 0 var(--space-6); }
+.mcard { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px var(--space-4); background: var(--surface); }
+.mcard .k { font: 600 12px/18px var(--font-sans); color: var(--muted); }
+.mcard .v { margin-top: 4px; font: 700 20px/26px var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.mcard .s { margin-top: 2px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.mcard.paid .v { color: var(--success-text); }
+.mcard.due { border-color: var(--danger); background: var(--danger-soft); }
+.mcard.due .v, .mcard.due .s b { color: var(--danger-text); }
+.hist-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
+.hist-head h3 { margin: 0; font: 700 17px/24px var(--font-display); color: var(--ink); }
+.hist { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.hist .gg-table th { border-top: 0; }
+.hist .gg-table td { height: 52px; }
+.hist .gg-table th, .hist .gg-table td { padding-left: 10px; padding-right: 10px; }
+.hist .gg-table th:first-child, .hist .gg-table td:first-child { padding-left: var(--space-4); width: 40px; }
+.hist tr.sel td { background: var(--primary-soft); }
+.hist tr.dis td { color: var(--muted); }
+.hist tr.dis .gg-check { opacity: .45; }
+.hist tr[data-ref]:not(.dis) { cursor: pointer; }
+.tag { display: inline-flex; align-items: center; height: 20px; padding: 0 6px; margin-left: 6px; border-radius: 4px; font: 700 11px/1 var(--font-sans); background: var(--danger-soft); color: var(--danger-text); white-space: nowrap; }
+.tag.muted { background: var(--surface-sunken); color: var(--muted); border: 1px solid var(--border); }
+.hist-foot { display: flex; align-items: center; justify-content: space-between; padding: 10px var(--space-4); border-top: 1px solid var(--border); background: var(--surface-sunken); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.hist-foot b { color: var(--ink); }
+.side-h { margin: 0; font: 700 16px/22px var(--font-display); color: var(--ink); }
+.sum { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); overflow: hidden; }
+.sum .tr { display: flex; justify-content: space-between; align-items: center; height: 44px; padding: 0 var(--space-4); border-bottom: 1px solid var(--border); font: 400 14px/20px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.sum .tr span:last-child { color: var(--ink); font-weight: 600; }
+.sum .tr.grand { height: 60px; border-bottom: 0; background: var(--primary-soft); }
+.sum .tr.grand span { color: var(--primary) !important; font: 700 15px/20px var(--font-display); }
+.sum .tr.grand span:last-child { font-size: 22px; }
+.opt { display: flex; gap: 10px; align-items: flex-start; font: 500 13px/20px var(--font-sans); color: var(--ink-2); cursor: pointer; }
+.opt input { margin-top: 2px; width: 16px; height: 16px; accent-color: var(--primary); flex: none; }
+.opt .sub { font-weight: 400; }
+.foot-info { margin-right: auto; display: inline-flex; align-items: center; gap: 6px; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.foot-info.err { color: var(--danger-text); }
+.due-note { padding: 12px var(--space-4); border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); font: 500 13px/20px var(--font-sans); color: var(--ink-2); }
+.due-note b { color: var(--ink); }
+.due-note .od { color: var(--danger-text); font-weight: 700; }
+.duecell { white-space: nowrap; }
+.duecell .sub { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.tag.soon { background: var(--warning-soft); color: var(--warning-text); }
+.tag.ok { background: var(--success-soft); color: var(--success-text); }
+.view-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); margin-bottom: var(--space-5); }
+.view-grid .k { font: 600 12px/18px var(--font-sans); color: var(--muted); }
+.view-grid .v { font: 500 14px/20px var(--font-sans); color: var(--ink); margin-top: 2px; }
+.view-lines { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.view-lines .gg-table td { height: 46px; }
+.view-lines .gg-table th:first-child, .view-lines .gg-table td:first-child { padding-left: var(--space-4); }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">ใบวางบิล</h1>
+          <p class="gg-pagehead-sub">รวมบิลขายเชื่อของลูกค้าเพื่อเรียกเก็บเงินตามรอบเครดิต</p>
+        </div>
+        <div class="gg-pagehead-actions">
+          <button type="button" class="gg-btn gg-btn-primary" id="newBtn"><span data-icon="plus"></span>สร้างใบวางบิล</button>
+        </div>
+      </div>
+
+      <div class="stat-row" id="stats"></div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div class="gg-row" style="flex:1;gap:var(--space-4)">
+            <div style="width:320px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="search" placeholder="ค้นหาด้วยเลขที่ใบวางบิลหรือลูกค้า" aria-label="ค้นหาใบวางบิล"></div></div>
+            <div class="seg" role="tablist" aria-label="กรองตามสถานะ" id="statusTabs"></div>
+          </div>
+        </div>
+        <div class="gg-table-wrap bn-table">
+          <table class="gg-table">
+            <thead><tr>
+              <th class="sortable" data-sort="ref">เลขที่<span class="gg-sort"></span></th>
+              <th class="sortable" data-sort="customerName">ลูกค้า<span class="gg-sort"></span></th>
+              <th class="sortable" data-sort="date">วันที่วางบิล<span class="gg-sort"></span></th>
+              <th class="sortable" data-sort="due">ครบกำหนดชำระ<span class="gg-sort"></span></th>
+              <th class="right">จำนวนบิล</th>
+              <th class="right sortable" data-sort="amount">ยอดเรียกเก็บ<span class="gg-sort"></span></th>
+              <th>สถานะ</th>
+              <th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+            <tfoot><tr><td class="label">รวม</td><td></td><td></td><td></td><td class="right gg-num" id="footBills"></td><td class="right gg-num" id="footAmt"></td><td colspan="2"></td></tr></tfoot>
+          </table>
+        </div>
+        <div class="gg-pager">
+          <div class="gg-pager-size"><span class="gg-num" id="count"></span></div>
+          <span></span>
+        </div>
+      </div>
+
+      <!-- Create / edit billing note -->
+      <div class="gg-scrim" id="bnModal" data-static="1" hidden>
+        <form class="gg-modal bn-modal" id="bnForm" novalidate role="dialog" aria-modal="true" aria-labelledby="bnTitle">
+          <div class="gg-modal-head"><div><h2 class="gg-modal-title" id="bnTitle">สร้างใบวางบิล</h2><div class="gg-hint" style="margin-top:2px">เลือกบิลขายที่ยังค้างชำระของลูกค้าเพื่อรวมเรียกเก็บในใบเดียว</div></div>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body">
+            <div class="bn-main">
+              <div class="bn-head">
+                <div class="gg-field"><label class="gg-label" for="fCust">ลูกค้า<span class="gg-req" aria-hidden="true">*</span></label>
+                  <div class="gg-control cust-ctl"><span class="gg-avatar" id="custAv" aria-hidden="true"></span><select id="fCust"></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+                  <div class="gg-hint" id="custHint"></div></div>
+                <div class="gg-field"><span class="gg-label">เลขที่ใบวางบิล</span><div class="mono-box" id="fNo"></div><div class="gg-hint">ออกเลขอัตโนมัติ</div></div>
+                <div class="gg-field"><label class="gg-label" for="fDate">วันที่วางบิล<span class="gg-req" aria-hidden="true">*</span></label>
+                  <div class="gg-control"><input type="date" id="fDate" required></div><div class="gg-hint" id="fDateTh"></div></div>
+                <div class="gg-field"><label class="gg-label" for="fDue">ครบกำหนดชำระ<span class="gg-req" aria-hidden="true">*</span></label>
+                  <div class="gg-control"><input type="date" id="fDue" required></div><div class="gg-hint" id="fDueTh"></div></div>
+              </div>
+
+              <div class="cards" id="cards"></div>
+
+              <div class="hist-head">
+                <h3>ประวัติการซื้อ</h3>
+                <div class="seg" role="tablist" aria-label="กรองบิลขาย" id="histTabs"></div>
+              </div>
+              <div class="hist">
+                <div class="gg-table-wrap"><table class="gg-table">
+                  <thead><tr>
+                    <th><input type="checkbox" class="gg-check" id="checkAll" aria-label="เลือกบิลที่ค้างชำระทั้งหมด"></th>
+                    <th>เลขที่ขาย</th><th>วันที่ขาย</th><th class="right">ยอดรวม</th><th class="right">ชำระแล้ว</th><th class="right">ค้างชำระ</th><th>สถานะ</th><th>ครบกำหนด (ตามเครดิตของบิล)</th>
+                  </tr></thead>
+                  <tbody id="histRows"></tbody>
+                </table></div>
+                <div class="hist-foot"><span id="histInfo"></span><button type="button" class="gg-btn gg-btn-ghost sm" id="showAll"></button></div>
+              </div>
+            </div>
+
+            <aside class="bn-side" aria-label="สรุปใบวางบิล">
+              <h3 class="side-h">สรุปใบวางบิล</h3>
+              <div class="sum">
+                <div class="tr"><span>บิลที่เลือก</span><span id="sCount"></span></div>
+                <div class="tr"><span>ยอดรวมบิล</span><span id="sGrand"></span></div>
+                <div class="tr"><span>ชำระแล้ว</span><span id="sPaid"></span></div>
+                <div class="tr grand"><span>ยอดเรียกเก็บ</span><span id="sDue"></span></div>
+              </div>
+              <div class="due-note" id="dueNote"></div>
+              <div class="gg-field"><label class="gg-label" for="fNote">หมายเหตุถึงลูกค้า</label>
+                <div class="gg-control textarea"><textarea id="fNote" rows="3" placeholder="เช่น กรุณาโอนเข้าบัญชีกสิกรไทย 123-4-56789-0"></textarea></div></div>
+              <label class="opt"><input type="checkbox" id="fMark" checked><span>ทำเครื่องหมายบิลที่เลือกว่า "วางบิลแล้ว"<span class="sub">บิลเหล่านี้จะไม่ถูกเลือกซ้ำในใบวางบิลอื่น</span></span></label>
+              <label class="opt"><input type="checkbox" id="fEmail"><span>ส่ง PDF ทางอีเมลถึงลูกค้า<span class="sub" id="emailTo"></span></span></label>
+            </aside>
+          </div>
+          <div class="gg-modal-foot">
+            <span class="foot-info" id="footInfo"><span data-icon="info" data-size="sm"></span><span id="footInfoText"></span></span>
+            <button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button>
+            <button type="button" class="gg-btn gg-btn-secondary" id="saveDraft"><span data-icon="edit"></span>บันทึกฉบับร่าง</button>
+            <button type="submit" class="gg-btn gg-btn-primary" id="createBtn"><span data-icon="check"></span><span id="createText"></span></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- View -->
+      <div class="gg-scrim" id="viewModal" hidden>
+        <div class="gg-modal lg" role="dialog" aria-modal="true" aria-labelledby="viewTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="viewTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body" id="viewBody"></div>
+          <div class="gg-modal-foot">
+            <button type="button" class="gg-btn gg-btn-secondary" id="viewPdf"><span data-icon="download"></span>ดาวน์โหลด PDF</button>
+            <button type="button" class="gg-btn gg-btn-primary" id="viewEdit"><span data-icon="edit"></span>แก้ไขใบวางบิล</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm -->
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon" id="confirmIcon"></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn" id="confirmOk"></button></div>
+        </div>
+      </div>
+
+      <span class="toast gg-badge success" id="toast" role="status"><span class="gg-badge-dot"></span><span id="toastText"></span></span>
+===JS===
+/*@include sales-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc, B = D.BILLING, r2 = D.r2;
+  var TODAY = D.today();
+  var BN_STATUS = { draft: ['neutral', 'ฉบับร่าง'], issued: ['info', 'วางบิลแล้ว'], overdue: ['danger', 'เกินกำหนด'], paid: ['success', 'ชำระแล้ว'] };
+  function addDays(iso, n) { var d = new Date(iso + 'T00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function dueOf(s) { return r2(D.totals(s).grand - D.paidOf(s)); }
+  function shown(b) { return b.status === 'issued' && b.due < TODAY ? 'overdue' : b.status; }
+  /* What the note asks for: the sales' open balance, or their full value once the note is settled */
+  function amountOf(b) { return r2(b.sales.reduce(function (a, ref) { var s = D.saleByRef(ref); return a + (b.status === 'paid' ? D.totals(s).grand : dueOf(s)); }, 0)); }
+  function enrich(b) { b.customerName = D.customer(b.customer).name; b.amount = amountOf(b); return b; }
+  B.forEach(enrich);
+  function thd(iso) { return GG.thDate(iso + 'T00:00'); }
+  function toast(t) { $('toastText').textContent = t; $('toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(function () { $('toast').classList.remove('show'); }, 2800); }
+
+  /* ---------- List ---------- */
+  var state = { q: '', status: '', sort: { key: 'date', dir: 'desc' } };
+  function seg(el, items, current, onPick) {
+    el.innerHTML = items.map(function (it) { return '<button type="button" role="tab" aria-selected="' + (it[0] === current) + '" class="' + (it[0] === current ? 'on' : '') + '" data-v="' + it[0] + '">' + it[1] + (it[2] != null ? ' <span class="c">' + it[2] + '</span>' : '') + '</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { onPick(b.dataset.v); }); });
+  }
+  function renderStats() {
+    var open = B.filter(function (b) { return b.status === 'issued'; }), od = open.filter(function (b) { return shown(b) === 'overdue'; });
+    var unbilled = D.SALES.filter(function (s) { return s.terms > 0 && dueOf(s) > .005 && !D.billedOn(s.ref); });
+    var tiles = [
+      ['soft navy', 'receipt', 'รอรับชำระตามใบวางบิล', GG.baht(open.reduce(function (a, b) { return a + b.amount; }, 0)), open.length + ' ใบ'],
+      ['soft rose', 'alert', 'เกินกำหนดชำระ', GG.baht(od.reduce(function (a, b) { return a + b.amount; }, 0)), od.length + ' ใบ'],
+      ['soft gold', 'edit', 'ฉบับร่าง', B.filter(function (b) { return b.status === 'draft'; }).length + ' ใบ', 'ยังไม่ได้ส่งลูกค้า'],
+      ['soft teal', 'cart', 'บิลเครดิตที่ยังไม่วางบิล', GG.baht(unbilled.reduce(function (a, s) { return a + dueOf(s); }, 0)), unbilled.length + ' บิล']
+    ];
+    $('stats').innerHTML = tiles.map(function (t) {
+      return '<div class="gg-stat ' + t[0] + '"><div class="gg-stat-icon"><span data-icon="' + t[1] + '"></span></div><div class="gg-stat-body"><div class="gg-stat-label">' + t[2] + '</div><div class="gg-stat-value">' + t[3] + '</div><div class="gg-stat-delta">' + t[4] + '</div></div></div>';
+    }).join('');
+    GG.hydrateIcons($('stats'));
+  }
+  function render() {
+    renderStats();
+    var counts = {}; B.forEach(function (b) { var s = shown(b); counts[s] = (counts[s] || 0) + 1; });
+    seg($('statusTabs'), [['', 'ทั้งหมด', B.length], ['draft', 'ฉบับร่าง', counts.draft || 0], ['issued', 'วางบิลแล้ว', counts.issued || 0], ['overdue', 'เกินกำหนด', counts.overdue || 0], ['paid', 'ชำระแล้ว', counts.paid || 0]], state.status, function (v) { state.status = v; render(); });
+    var q = state.q.toLowerCase();
+    var list = B.filter(function (b) { return (!q || (b.ref + ' ' + b.customerName).toLowerCase().indexOf(q) >= 0) && (!state.status || shown(b) === state.status); });
+    var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+    list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y, 'th') : x - y) * dir; });
+    var body = $('rows');
+    body.innerHTML = list.length ? list.map(function (b, i) {
+      var c = D.customer(b.customer), st = shown(b), late = st === 'overdue' ? D.daysBetween(b.due, TODAY) : 0;
+      var items = '<button type="button" role="menuitem" class="gg-menu-item" data-act="view" data-ref="' + b.ref + '"><span data-icon="eye" data-size="sm"></span>ดูใบวางบิล</button>' +
+        '<button type="button" role="menuitem" class="gg-menu-item" data-act="pdf" data-ref="' + b.ref + '"><span data-icon="download" data-size="sm"></span>ดาวน์โหลด PDF</button>' +
+        (b.status !== 'paid' ? '<button type="button" role="menuitem" class="gg-menu-item" data-act="edit" data-ref="' + b.ref + '"><span data-icon="edit" data-size="sm"></span>แก้ไขใบวางบิล</button>' : '') +
+        (b.status === 'draft' ? '<button type="button" role="menuitem" class="gg-menu-item" data-act="issue" data-ref="' + b.ref + '"><span data-icon="return-right" data-size="sm"></span>ออกใบวางบิล</button>' : '') +
+        (b.status === 'issued' ? '<button type="button" role="menuitem" class="gg-menu-item" data-act="paid" data-ref="' + b.ref + '"><span data-icon="check" data-size="sm"></span>บันทึกรับชำระทั้งใบ</button>' : '') +
+        (b.status !== 'paid' ? '<div class="gg-menu-sep" role="separator"></div><button type="button" role="menuitem" class="gg-menu-item danger" data-act="delete" data-ref="' + b.ref + '"><span data-icon="trash" data-size="sm"></span>ลบใบวางบิล</button>' : '');
+      return '<tr><td><span class="gg-badge neutral mono">' + b.ref + '</span></td>' +
+        '<td><div class="cust"><span class="gg-avatar" aria-hidden="true">' + c.initials + '</span><div><span class="n">' + esc(c.name) + '</span><span class="sub">' + esc(c.region || '') + '</span></div></div></td>' +
+        '<td>' + thd(b.date) + '</td><td>' + thd(b.due) + (late ? '<span class="sub" style="color:var(--danger-text)">เลยกำหนด ' + late + ' วัน</span>' : '') + '</td>' +
+        '<td class="right">' + b.sales.length + '</td><td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(b.amount) + '</td>' +
+        '<td>' + D.badge(BN_STATUS[st]) + '</td>' +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu><button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + b.ref + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+        '<div class="gg-menu' + (i >= list.length - 2 && list.length > 3 ? ' up' : '') + '" role="menu" hidden>' + items + '</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="8" class="gg-empty">ไม่พบใบวางบิลที่ตรงกับตัวกรอง</td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-act]').forEach(function (b) { b.addEventListener('click', function () { act(b.dataset.act, find(b.dataset.ref)); }); });
+    GG.hydrateIcons(body);
+    $('footBills').textContent = list.reduce(function (a, b) { return a + b.sales.length; }, 0);
+    $('footAmt').textContent = GG.baht(list.reduce(function (a, b) { return a + b.amount; }, 0));
+    $('count').textContent = 'แสดง ' + list.length + ' จาก ' + B.length + ' ใบ';
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort.key === th.dataset.sort;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var h = th.querySelector('.gg-sort'); h.innerHTML = ''; h.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+  }
+  function find(ref) { return B.filter(function (b) { return b.ref === ref; })[0]; }
+  $('search').addEventListener('input', function (e) { state.q = e.target.value; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) { th.addEventListener('click', function () { var k = th.dataset.sort; state.sort = state.sort.key === k ? { key: k, dir: state.sort.dir === 'asc' ? 'desc' : 'asc' } : { key: k, dir: 'asc' }; render(); }); });
+
+  function closeModal(m) { m.hidden = true; }
+  document.querySelectorAll('.gg-scrim').forEach(function (m) {
+    m.addEventListener('mousedown', function (e) { if (e.target === m && !m.dataset.static) closeModal(m); });
+    m.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(m); }); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key !== 'Escape') return; var open = [].filter.call(document.querySelectorAll('.gg-scrim'), function (m) { return !m.hidden; }); if (open.length) closeModal(open[open.length - 1]); });
+
+  /* ---------- Create / edit ---------- */
+  var editing = null, sel = {}, tab = 'unpaid', showAll = false, ROWS_MAX = 6;
+  var billable = D.CUSTOMERS.filter(function (c) { return !c.walkIn && D.SALES.some(function (s) { return s.customer === c.id && s.terms > 0; }); });
+  billable.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.name; $('fCust').appendChild(o); });
+  function nextRef() { return 'BN_' + (Math.max.apply(null, B.map(function (b) { return +b.ref.slice(3); })) + 1); }
+  function saleDue(s) { return D.dueDate(s); }
+  function daysLeft(s) { return D.daysBetween(TODAY, saleDue(s)); }
+  function custSales() { var id = $('fCust').value; return D.SALES.filter(function (s) { return s.customer === id; }).sort(function (a, b) { return b.created.localeCompare(a.created); }); }
+  /* why a sale can't be put on this note, or '' if it can */
+  function blocked(s) { if (dueOf(s) <= .005) return 'paid'; var on = D.billedOn(s.ref, editing); return on ? on.ref : ''; }
+  /* The note is due when its last selected bill falls due (each bill keeps the credit term set when it was sold) */
+  var dueTouched = false;
+  function setDue() {
+    if (dueTouched) { showDates(); return; }
+    var p = picked(), last = p.reduce(function (m, s) { var d = saleDue(s); return d > m ? d : m; }, '');
+    $('fDue').value = last && last > $('fDate').value ? last : $('fDate').value; showDates();
+  }
+  function showDates() { $('fDateTh').textContent = $('fDate').value ? thd($('fDate').value) : ''; $('fDueTh').textContent = $('fDue').value ? thd($('fDue').value) : ''; }
+  function loadCustomer(keepSel) {
+    var c = D.customer($('fCust').value), sales = custSales();
+    $('custAv').textContent = c.initials; $('custHint').textContent = 'โทร ' + c.phone + (c.region ? ' · ' + c.region : '');
+    $('emailTo').textContent = c.email;
+    if (!keepSel) { sel = {}; sales.forEach(function (s) { if (!blocked(s)) sel[s.ref] = true; }); }
+    var all = sales.reduce(function (a, s) { return a + D.totals(s).grand; }, 0), paid = sales.reduce(function (a, s) { return a + D.paidOf(s); }, 0);
+    var od = sales.filter(function (s) { return dueOf(s) > .005 && daysLeft(s) < 0; });
+    var first = sales.length ? sales[sales.length - 1].created : null;
+    $('cards').innerHTML =
+      '<div class="mcard"><div class="k">ยอดซื้อทั้งหมด</div><div class="v">' + sales.length + ' บิล</div><div class="s">ตั้งแต่ ' + (first ? GG.thDate(first) : '—') + '</div></div>' +
+      '<div class="mcard"><div class="k">มูลค่าซื้อสะสม</div><div class="v">' + GG.baht(all) + '</div><div class="s">ลูกค้าตลอดอายุ</div></div>' +
+      '<div class="mcard paid"><div class="k">ชำระแล้ว</div><div class="v">' + GG.baht(paid) + '</div><div class="s">' + (all ? Math.round(paid / all * 100) : 0) + '% ของมูลค่าซื้อ</div></div>' +
+      '<div class="mcard' + (all - paid > .005 ? ' due' : '') + '"><div class="k">ค้างชำระ</div><div class="v">' + GG.baht(all - paid) + '</div><div class="s">' + (od.length ? 'เกินกำหนด <b>' + od.length + ' บิล</b>' : 'ไม่มีบิลเกินกำหนด') + '</div></div>';
+    renderHist();
+  }
+  function renderHist() {
+    var c = D.customer($('fCust').value), sales = custSales();
+    var unpaid = sales.filter(function (s) { return dueOf(s) > .005; }), paidL = sales.filter(function (s) { return dueOf(s) <= .005; });
+    seg($('histTabs'), [['all', 'ทั้งหมด', sales.length], ['unpaid', 'ค้างชำระ', unpaid.length], ['paid', 'ชำระแล้ว', paidL.length]], tab, function (v) { tab = v; showAll = false; renderHist(); });
+    var list = tab === 'all' ? sales : tab === 'paid' ? paidL : unpaid, rows = showAll ? list : list.slice(0, ROWS_MAX);
+    $('histRows').innerHTML = rows.length ? rows.map(function (s) {
+      var t = D.totals(s), paid = D.paidOf(s), due = r2(t.grand - paid), why = blocked(s), left = daysLeft(s), open = due > .005;
+      return '<tr data-ref="' + s.ref + '" class="' + (why ? 'dis' : sel[s.ref] ? 'sel' : '') + '">' +
+        '<td><input type="checkbox" class="gg-check" ' + (sel[s.ref] && !why ? 'checked ' : '') + (why ? 'disabled ' : '') + 'aria-label="เลือก ' + s.ref + '"></td>' +
+        '<td><span class="gg-badge neutral mono">' + s.ref + '</span>' + (why && why !== 'paid' ? '<span class="tag muted" title="อยู่ในใบวางบิล ' + why + '">อยู่ใน ' + why + '</span>' : '') + '</td>' +
+        '<td>' + GG.thDate(s.created) + '</td><td class="right">' + GG.baht(t.grand) + '</td><td class="right">' + GG.baht(paid) + '</td>' +
+        '<td class="right" style="font-weight:600;color:' + (due > .005 ? 'var(--ink)' : 'var(--muted)') + '">' + GG.baht(due) + '</td>' +
+        '<td>' + D.badge(D.PAY[D.payState(t.grand, paid)]) + '</td>' +
+        '<td class="duecell">' + (s.terms ? thd(saleDue(s)) + (open ? (left < 0 ? '<span class="tag">เกินกำหนด ' + (-left) + ' วัน</span>' : left === 0 ? '<span class="tag soon">ครบกำหนดวันนี้</span>' : left <= 7 ? '<span class="tag soon">อีก ' + left + ' วัน</span>' : '<span class="tag ok">อีก ' + left + ' วัน</span>') : '') + '<span class="sub">เครดิต ' + s.terms + ' วัน</span>' : '<span class="gg-hint">ขายเงินสด</span>') + '</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="gg-empty" style="padding:28px">' + (tab === 'unpaid' ? 'ลูกค้ารายนี้ไม่มีบิลค้างชำระ' : 'ไม่มีบิลในหมวดนี้') + '</td></tr>';
+    var selectable = unpaid.filter(function (s) { return !blocked(s); }), nSel = selectable.filter(function (s) { return sel[s.ref]; }).length;
+    $('histInfo').innerHTML = 'เลือกแล้ว <b>' + nSel + '</b> จาก ' + selectable.length + ' บิลที่ค้างชำระ · บิลที่ชำระครบแล้วไม่สามารถวางบิลได้';
+    $('showAll').hidden = list.length <= ROWS_MAX; $('showAll').textContent = showAll ? 'แสดงน้อยลง' : 'ดูทั้งหมด (' + list.length + ')';
+    var visSel = rows.filter(function (s) { return !blocked(s); });
+    $('checkAll').disabled = !visSel.length;
+    $('checkAll').checked = visSel.length > 0 && visSel.every(function (s) { return sel[s.ref]; });
+    $('checkAll').indeterminate = !$('checkAll').checked && visSel.some(function (s) { return sel[s.ref]; });
+    renderSummary();
+  }
+  function picked() { return custSales().filter(function (s) { return sel[s.ref] && !blocked(s); }); }
+  function renderSummary() {
+    setDue();
+    var p = picked(), g = p.reduce(function (a, s) { return a + D.totals(s).grand; }, 0), paid = p.reduce(function (a, s) { return a + D.paidOf(s); }, 0), due = r2(g - paid);
+    $('sCount').textContent = p.length + ' บิล'; $('sGrand').textContent = GG.baht(g); $('sPaid').textContent = (paid ? '−' : '') + GG.baht(paid); $('sDue').textContent = GG.baht(due);
+    $('createText').textContent = (editing && editing.status !== 'draft' ? 'บันทึกใบวางบิล' : 'สร้างใบวางบิล') + ' · ' + GG.baht(due);
+    var od = p.filter(function (s) { return daysLeft(s) < 0; }), soon = p.filter(function (s) { var l = daysLeft(s); return l >= 0 && l <= 7; });
+    $('dueNote').innerHTML = p.length ? 'ครบกำหนดตามเครดิตที่กำหนดตอนขายของแต่ละบิล<br>' + (od.length ? '<span class="od">เกินกำหนดแล้ว ' + od.length + ' บิล</span> · ' : '') + (soon.length ? 'ครบกำหนดใน 7 วัน ' + soon.length + ' บิล · ' : '') + 'บิลสุดท้ายครบกำหนด <b>' + thd(p.reduce(function (m, s) { var d = saleDue(s); return d > m ? d : m; }, '')) + '</b>' : 'เลือกบิลเพื่อดูวันครบกำหนด';
+    $('footInfo').classList.remove('err');
+    $('footInfoText').textContent = p.length ? 'ลูกค้าต้องชำระภายใน ' + ($('fDue').value ? thd($('fDue').value) : '—') : 'เลือกบิลอย่างน้อย 1 รายการ';
+    return { list: p, due: due };
+  }
+  $('histRows').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr[data-ref]'); if (!tr || tr.classList.contains('dis')) return;
+    sel[tr.dataset.ref] = !sel[tr.dataset.ref]; renderHist();
+  });
+  $('checkAll').addEventListener('change', function () {
+    var c = custSales(), list = tab === 'all' ? c : tab === 'paid' ? [] : c.filter(function (s) { return dueOf(s) > .005; });
+    (showAll ? list : list.slice(0, ROWS_MAX)).forEach(function (s) { if (!blocked(s)) sel[s.ref] = $('checkAll').checked; });
+    renderHist();
+  });
+  $('showAll').addEventListener('click', function () { showAll = !showAll; renderHist(); });
+  $('fCust').addEventListener('change', function () { tab = 'unpaid'; showAll = false; loadCustomer(false); });
+  $('fDate').addEventListener('change', function () { setDue(); renderSummary(); });
+  $('fDue').addEventListener('change', function () { dueTouched = true; showDates(); renderSummary(); });
+
+  function openForm(b, custId) {
+    editing = b || null; tab = 'unpaid'; showAll = false; dueTouched = !!b;
+    $('bnTitle').textContent = b ? 'แก้ไขใบวางบิล ' + b.ref : 'สร้างใบวางบิล';
+    $('fNo').textContent = b ? b.ref : nextRef();
+    $('fCust').value = b ? b.customer : custId || 'C1'; $('fCust').disabled = !!b;
+    $('fDate').value = b ? b.date : TODAY;
+    $('saveDraft').hidden = !!b && b.status !== 'draft';
+    $('fNote').value = b ? b.note : ''; $('fEmail').checked = false; $('fMark').checked = true;
+    loadCustomer(false);
+    if (b) { $('fDue').value = b.due; showDates(); sel = {}; b.sales.forEach(function (r) { sel[r] = true; }); tab = 'all'; renderHist(); }
+    $('bnModal').hidden = false; $('bnModal').querySelector('.bn-main').scrollTop = 0; $('fCust').focus();
+  }
+  function save(asDraft) {
+    var s = renderSummary(), errs = [];
+    if (!s.list.length) errs.push('เลือกบิลอย่างน้อย 1 รายการ');
+    if (!$('fDate').value || !$('fDue').value) errs.push('ระบุวันที่ให้ครบ');
+    else if ($('fDue').value < $('fDate').value) errs.push('วันครบกำหนดต้องไม่ก่อนวันที่วางบิล');
+    if (errs.length) { $('footInfo').classList.add('err'); $('footInfoText').textContent = errs.join(' · '); return; }
+    var rec = { ref: editing ? editing.ref : nextRef(), customer: $('fCust').value, date: $('fDate').value, due: $('fDue').value, terms: null,
+      sales: s.list.map(function (x) { return x.ref; }), status: asDraft ? 'draft' : editing && editing.status !== 'draft' ? editing.status : 'issued', note: $('fNote').value };
+    /* Unticking "mark as billed" keeps the note as a plain statement: its sales stay free for other notes */
+    if (!$('fMark').checked && !asDraft) rec.status = 'draft';
+    enrich(rec);
+    if (editing) Object.assign(editing, rec); else B.unshift(rec);
+    closeModal($('bnModal')); render();
+    toast((asDraft || rec.status === 'draft' ? 'บันทึกฉบับร่าง ' : editing ? 'บันทึก ' : 'สร้างใบวางบิล ') + rec.ref + ' · ' + GG.baht(rec.amount) + ($('fEmail').checked && !asDraft ? ' · ส่งอีเมลถึงลูกค้าแล้ว' : ''));
+  }
+  $('bnForm').addEventListener('submit', function (e) { e.preventDefault(); save(false); });
+  $('saveDraft').addEventListener('click', function () { save(true); });
+  $('newBtn').addEventListener('click', function () { openForm(null); });
+
+  /* ---------- Row actions ---------- */
+  var viewing = null, pending = null;
+  function noteRows(b) { return b.sales.map(function (ref) { var s = D.saleByRef(ref), t = D.totals(s), paid = D.paidOf(s); return '<tr><td><a href="lts-sale-details.html?ref=' + ref + '" style="text-decoration:none"><span class="gg-badge neutral mono">' + ref + '</span></a></td><td>' + GG.thDate(s.created) + '</td><td class="right">' + GG.baht(t.grand) + '</td><td class="right">' + GG.baht(paid) + '</td><td class="right" style="font-weight:600;color:var(--ink)">' + GG.baht(t.grand - paid) + '</td></tr>'; }).join(''); }
+  function act(a, b) {
+    if (a === 'view') {
+      viewing = b; var c = D.customer(b.customer);
+      $('viewTitle').textContent = 'ใบวางบิล ' + b.ref;
+      $('viewBody').innerHTML = '<div class="view-grid"><div><div class="k">ลูกค้า</div><div class="v">' + esc(c.name) + '</div></div><div><div class="k">วันที่วางบิล</div><div class="v">' + thd(b.date) + '</div></div><div><div class="k">ครบกำหนดชำระ</div><div class="v">' + thd(b.due) + '</div></div>' +
+        '<div><div class="k">สถานะ</div><div class="v">' + D.badge(BN_STATUS[shown(b)]) + '</div></div><div><div class="k">ยอดเรียกเก็บ</div><div class="v" style="font-weight:700;color:var(--primary)">' + GG.baht(b.amount) + '</div></div><div><div class="k">หมายเหตุ</div><div class="v">' + (esc(b.note) || '—') + '</div></div></div>' +
+        '<div class="view-lines"><table class="gg-table compact"><thead><tr><th>เลขที่ขาย</th><th>วันที่</th><th class="right">ยอดรวม</th><th class="right">ชำระแล้ว</th><th class="right">ค้างชำระ</th></tr></thead><tbody>' + noteRows(b) + '</tbody></table></div>';
+      $('viewEdit').hidden = b.status === 'paid';
+      $('viewModal').hidden = false;
+    } else if (a === 'pdf') pdf(b);
+    else if (a === 'edit') openForm(b);
+    else if (a === 'issue') { b.status = 'issued'; enrich(b); render(); toast('ออกใบวางบิล ' + b.ref + ' แล้ว'); }
+    else if (a === 'paid' || a === 'delete') {
+      pending = { a: a, b: b };
+      $('confirmTitle').textContent = a === 'paid' ? 'บันทึกรับชำระ ' + b.ref + ' ทั้งใบ?' : 'ลบใบวางบิล ' + b.ref + ' ใช่หรือไม่?';
+      $('confirmText').textContent = a === 'paid' ? 'ระบบจะบันทึกรับเงิน ' + GG.baht(b.amount) + ' ให้ครบทุกบิลขาย ' + b.sales.length + ' รายการในใบนี้' : 'บิลขาย ' + b.sales.length + ' รายการในใบนี้จะกลับไปเป็น "ยังไม่วางบิล" การลบนี้ไม่สามารถย้อนกลับได้';
+      $('confirmIcon').innerHTML = ''; $('confirmIcon').appendChild(GG.icon(a === 'paid' ? 'check' : 'trash'));
+      $('confirmOk').className = 'gg-btn ' + (a === 'paid' ? 'gg-btn-primary' : 'gg-btn-danger'); $('confirmOk').textContent = a === 'paid' ? 'บันทึกรับชำระ' : 'ลบใบวางบิล';
+      $('confirm').hidden = false;
+    }
+  }
+  $('confirmOk').addEventListener('click', function () {
+    var p = pending; pending = null; closeModal($('confirm')); if (!p) return;
+    if (p.a === 'paid') {
+      p.b.sales.forEach(function (ref) { var s = D.saleByRef(ref), d = dueOf(s); if (d > .005) s.payments.push({ date: TODAY, amount: d, method: 'โอนผ่านธนาคาร', note: 'รับชำระตาม ' + p.b.ref }); });
+      p.b.status = 'paid'; enrich(p.b); toast('บันทึกรับชำระ ' + p.b.ref + ' แล้ว');
+    } else { B.splice(B.indexOf(p.b), 1); toast('ลบใบวางบิล ' + p.b.ref + ' แล้ว'); }
+    render();
+  });
+  $('viewEdit').addEventListener('click', function () { if (viewing) { closeModal($('viewModal')); openForm(viewing); } });
+  $('viewPdf').addEventListener('click', function () { if (viewing) pdf(viewing); });
+  function pdf(b) {
+    var c = D.customer(b.customer);
+    if (!D.printDoc('ใบวางบิล ' + b.ref, '<div>ลูกค้า: ' + esc(c.name) + ' · ' + esc(c.address) + '</div><div>วันที่วางบิล ' + thd(b.date) + ' · ครบกำหนดชำระ ' + thd(b.due) + '</div>',
+      '<tr><th>เลขที่ขาย</th><th>วันที่</th><th class="r">ยอดรวม</th><th class="r">ชำระแล้ว</th><th class="r">ค้างชำระ</th></tr>' + b.sales.map(function (ref) { var s = D.saleByRef(ref), t = D.totals(s), paid = D.paidOf(s); return '<tr><td>' + ref + '</td><td>' + GG.thDate(s.created) + '</td><td class="r">' + GG.baht(t.grand) + '</td><td class="r">' + GG.baht(paid) + '</td><td class="r">' + GG.baht(t.grand - paid) + '</td></tr>'; }).join(''),
+      '<tr class="tot"><td colspan="4" class="r">ยอดเรียกเก็บ</td><td class="r">' + GG.baht(b.amount) + '</td></tr>')) toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ กรุณาอนุญาตป๊อปอัปเพื่อดาวน์โหลด PDF');
+  }
+
+  render();
+  var qs = new URLSearchParams(location.search);
+  if (qs.get('new') != null) openForm(null, qs.get('customer') || undefined);
+})();

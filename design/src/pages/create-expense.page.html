@@ -1,0 +1,113 @@
+===CSS===
+.ex-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-8); }
+.ex-grid .gg-control.textarea textarea { min-height: 92px; }
+.gg-hint, .gg-error { line-height: 18px; }
+.gg-control select.is-placeholder { color: var(--placeholder); }
+.gg-control select option { color: var(--ink); }
+.label-row { display: flex; justify-content: space-between; align-items: baseline; }
+.label-row a { font: 600 12px/18px var(--font-sans); color: var(--primary); text-decoration: none; }
+.label-row a:hover { text-decoration: underline; }
+.ref { display: flex; align-items: center; height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); font: 500 14px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); }
+.foot-note { margin-right: auto; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.form-ok { display: none; margin-right: auto; }
+.form-ok.show { display: inline-flex; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title" id="pageTitle">บันทึกค่าใช้จ่าย</h1>
+          <p class="gg-pagehead-sub" id="pageSub">บันทึกค่าใช้จ่ายดำเนินงานของคลังสินค้าหรือหน้าร้าน</p>
+        </div>
+        <div class="gg-pagehead-actions">
+          <a class="gg-btn gg-btn-secondary" href="lts-expenses.html"><span data-icon="chevron-left"></span>ย้อนกลับ</a>
+        </div>
+      </div>
+
+      <form class="gg-card" id="exForm" novalidate>
+        <div class="gg-card-body" style="padding-top:var(--space-6);padding-bottom:var(--space-6)">
+          <div class="ex-grid">
+            <div class="gg-field"><label class="gg-label" for="date">วันที่<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="date" type="date" required></div><div class="gg-hint" id="dateTh"></div></div>
+            <div class="gg-field"><label class="gg-label" for="title">ชื่อรายการค่าใช้จ่าย<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="title" maxlength="80" required placeholder="กรอกชื่อรายการค่าใช้จ่าย"></div><div class="gg-hint" id="titleHint">เช่น ค่าเช่าโกดังบางนา เดือน พ.ย.</div></div>
+            <div class="gg-field"><label class="gg-label" for="warehouse">คลังสินค้า<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="warehouse" required class="is-placeholder"><option value="" selected disabled>เลือกคลังสินค้า</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+            <div class="gg-field"><div class="label-row"><label class="gg-label" for="category">หมวดหมู่ค่าใช้จ่าย<span class="gg-req" aria-hidden="true">*</span></label><a href="lts-expense-categories.html">จัดการหมวดหมู่</a></div>
+              <div class="gg-control"><select id="category" required class="is-placeholder"><option value="" selected disabled>เลือกหมวดหมู่ค่าใช้จ่าย</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+            <div class="gg-field"><label class="gg-label" for="amount">จำนวนเงิน<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="amount" inputmode="decimal" required placeholder="กรอกจำนวนเงิน"><span class="gg-addon">฿</span></div><div class="gg-hint" id="amountHint"></div></div>
+            <div class="gg-field" style="grid-row:span 2"><label class="gg-label" for="details">รายละเอียด</label>
+              <div class="gg-control textarea"><textarea id="details" rows="4" placeholder="กรอกรายละเอียด"></textarea></div></div>
+            <div class="gg-field"><span class="gg-label">เลขที่อ้างอิง</span><div class="ref" id="docRef"></div><div class="gg-hint">ระบบออกเลขให้อัตโนมัติ</div></div>
+          </div>
+        </div>
+        <div class="gg-card-foot">
+          <span class="foot-note" id="footNote">กรอกช่องที่มีเครื่องหมาย * ให้ครบเพื่อบันทึก</span>
+          <span class="form-ok gg-badge success" id="formOk" role="status"><span class="gg-badge-dot"></span><span id="formOkText"></span></span>
+          <a class="gg-btn gg-btn-secondary" href="lts-expenses.html">ยกเลิก</a>
+          <button type="submit" class="gg-btn gg-btn-primary" id="saveBtn" disabled><span data-icon="check"></span>บันทึก</button>
+        </div>
+      </form>
+===JS===
+/*@include sales-data*/
+/*@include transfer-data*/
+/*@include expense-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS;
+  D.WAREHOUSES.forEach(function (w) { var o = document.createElement('option'); o.value = w.id; o.textContent = w.name; $('warehouse').appendChild(o); });
+  D.ECATS.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.name; $('category').appendChild(o); });
+  var ref = new URLSearchParams(location.search).get('edit'), ED = ref ? D.expense(ref) : null;
+  $('docRef').textContent = ED ? ED.ref : D.nextExpense();
+  $('date').value = ED ? ED.created.slice(0, 10) : D.today();
+  if (ED) {
+    $('pageTitle').textContent = 'แก้ไขค่าใช้จ่าย ' + ED.ref; document.title = 'แก้ไข ' + ED.ref + ' · LTS Solution';
+    var cur = document.querySelector('.gg-crumbs .current'); if (cur) cur.textContent = 'แก้ไข ' + ED.ref;
+    $('pageSub').textContent = 'บันทึกเมื่อ ' + GG.thDate(ED.created) + ' ' + GG.thTime(ED.created);
+    $('title').value = ED.title; $('warehouse').value = ED.warehouse; $('category').value = ED.category; $('amount').value = ED.amount.toFixed(2); $('details').value = ED.details;
+  } else if (ref) $('pageSub').textContent = 'ไม่พบค่าใช้จ่าย ' + ref + ' จึงบันทึกเป็นรายการใหม่';
+
+  function amount() { var v = $('amount').value.replace(/,/g, '').trim(); return v === '' ? NaN : +v; }
+  function err(el, msg) {
+    var f = el.closest('.gg-field'), x = f.querySelector('.gg-error'), h = f.querySelector('.gg-hint');
+    el.closest('.gg-control').classList.toggle('invalid', !!msg); if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    if (msg) { if (!x) { x = document.createElement('div'); x.className = 'gg-error'; f.appendChild(x); } x.textContent = msg; if (h) h.hidden = true; }
+    else { if (x) x.remove(); if (h) h.hidden = false; }
+  }
+  function problems() {
+    var p = {};
+    if (!$('date').value) p.date = 'กรุณาเลือกวันที่';
+    if (!$('title').value.trim()) p.title = 'กรุณากรอกชื่อรายการ';
+    if (!$('warehouse').value) p.warehouse = 'กรุณาเลือกคลังสินค้า';
+    if (!$('category').value) p.category = 'กรุณาเลือกหมวดหมู่';
+    var a = amount();
+    if (isNaN(a)) p.amount = $('amount').value.trim() ? 'กรุณากรอกตัวเลขเท่านั้น' : 'กรุณากรอกจำนวนเงิน';
+    else if (a <= 0) p.amount = 'จำนวนเงินต้องมากกว่า 0';
+    return p;
+  }
+  var touched = {};
+  function sync() {
+    var p = problems(), n = Object.keys(p).length;
+    Object.keys(touched).forEach(function (id) { err($(id), p[id] || ''); });
+    ['warehouse', 'category'].forEach(function (id) { $(id).classList.toggle('is-placeholder', !$(id).value); });
+    $('dateTh').textContent = $('date').value ? GG.thDate($('date').value + 'T00:00') : '';
+    var a = amount(); $('amountHint').textContent = a > 0 ? GG.baht(a) : '';
+    $('saveBtn').disabled = n > 0;
+    $('footNote').textContent = n ? 'กรอกช่องที่มีเครื่องหมาย * ให้ครบเพื่อบันทึก (เหลือ ' + n + ' ช่อง)' : 'พร้อมบันทึก';
+  }
+  ['date', 'title', 'warehouse', 'category', 'amount', 'details'].forEach(function (id) {
+    $(id).addEventListener('input', sync); $(id).addEventListener('change', function () { touched[id] = true; sync(); });
+    $(id).addEventListener('blur', function () { if (id !== 'details') touched[id] = true; sync(); });
+  });
+  $('amount').addEventListener('blur', function () { var a = amount(); if (a > 0) $('amount').value = a.toFixed(2); });
+  if (ED) ['date', 'title', 'warehouse', 'category', 'amount'].forEach(function (id) { touched[id] = true; });
+  sync();
+
+  $('exForm').addEventListener('submit', function (e) {
+    e.preventDefault(); ['date', 'title', 'warehouse', 'category', 'amount'].forEach(function (id) { touched[id] = true; }); sync();
+    if ($('saveBtn').disabled) return;
+    var r = $('docRef').textContent;
+    $('footNote').hidden = true; $('saveBtn').disabled = true;
+    $('formOkText').textContent = 'บันทึก ' + r + ' จำนวน ' + GG.baht(amount()) + ' แล้ว กำลังกลับไปหน้ารายการ…'; $('formOk').classList.add('show');
+    setTimeout(function () { location.href = 'lts-expenses.html?saved=' + r; }, 1400);
+  });
+  $('title').focus();
+})();

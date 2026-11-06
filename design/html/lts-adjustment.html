@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="th" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>สร้างรายการปรับปรุงสต็อก · LTS Solution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Public+Sans:ital,wght@0,400..700;1,400&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+
+<style>
+/* ===== LTS Solution design tokens (generated from tokens.json) ===== */
+:root {
+  --canvas: #3f538c;
+  --on-canvas: #ffffff;
+  --on-canvas-muted: #d8d9d9;
+  --canvas-rule: #5b6da0;
+  --surface: #ffffff;
+  --surface-sunken: #f7f8fa;
+  --surface-hover: #eef1f7;
+  --border: #e2e5eb;
+  --border-input: #8a92a2;
+  --ink: #141b2b;
+  --ink-2: #3a4357;
+  --muted: #5d6576;
+  --placeholder: #6b7385;
+  --primary: #22407a;
+  --primary-hover: #1a3262;
+  --primary-soft: #e8edf7;
+  --on-primary: #ffffff;
+  --gold: #d9a53b;
+  --gold-hover: #c8932a;
+  --gold-soft: #fbf1dc;
+  --gold-text: #7f5a12;
+  --on-gold: #1f1605;
+  --teal: #0e6e6c;
+  --teal-soft: #e0f2f1;
+  --teal-text: #0b5856;
+  --rose: #a8365a;
+  --rose-soft: #fbe7ee;
+  --rose-text: #8c2b4a;
+  --success: #1b7a48;
+  --success-soft: #e3f3e8;
+  --success-text: #176239;
+  --warning: #c26a0a;
+  --warning-soft: #fdefd6;
+  --warning-text: #874604;
+  --danger: #c02a2a;
+  --danger-hover: #a11f22;
+  --danger-soft: #fce5e4;
+  --danger-text: #a11f22;
+  --info: #1f6fb2;
+  --info-soft: #e1eef9;
+  --info-text: #1a5a91;
+  --neutral-soft: #eceef2;
+  --neutral-text: #3a4357;
+  --sidebar-bg: #101b30;
+  --sidebar-raised: #1d2b47;
+  --sidebar-text: #c3cada;
+  --sidebar-muted: #8e98ae;
+  --sidebar-active: #ffffff;
+  --focus: #2e6be6;
+  --overlay: rgba(16, 27, 48, 0.55);
+  --shadow-1: {'light': '0 1px 2px rgba(16, 27, 48, 0.06), 0 0 0 1px rgba(16, 27, 48, 0.05)'};
+  --shadow-2: {'light': '0 6px 16px -4px rgba(16, 27, 48, 0.14), 0 0 0 1px rgba(16, 27, 48, 0.06)'};
+  --shadow-3: {'light': '0 24px 48px -12px rgba(16, 27, 48, 0.32)'};
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --sidebar-width: 264px;
+  --sidebar-collapsed: 76px;
+  --topbar-height: 64px;
+  --content-max: 1600px;
+  --control-height: 40px;
+  --row-height: 52px;
+  --z-sidebar: 20;
+  --z-menu: 40;
+  --z-modal: 60;
+  --font-display: "Bricolage Grotesque", "IBM Plex Sans Thai", "Public Sans", system-ui, sans-serif;
+  --font-sans: "Public Sans", "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ===== LTS Solution component styles (components/bundle.css) ===== */
+/* LTS Solution components — every value comes from tokens.json */
+.gg, .gg *, [class^="gg-"], [class*=" gg-"] { box-sizing: border-box; }
+body { margin: 0; background: var(--canvas); color: var(--ink-2); font-family: var(--font-sans); font-size: 14px; line-height: 20px; }
+.gg-num { font-variant-numeric: tabular-nums; }
+.gg-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.gg-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+.gg-stack > *, .gg-shell-content > * { min-width: 0; }
+.gg-pad { padding: var(--space-6); }
+.gg :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.gg-icon { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.gg-icon.sm { width: 16px; height: 16px; }
+.gg-icon.lg { width: 22px; height: 22px; }
+.gg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Button */
+.gg-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); border: 1px solid transparent; font: 600 14px/20px var(--font-sans); cursor: pointer; white-space: nowrap; transition: background-color .12s, border-color .12s, color .12s; }
+.gg-btn.sm { height: 32px; padding: 0 var(--space-3); font-size: 13px; }
+.gg-btn.lg { height: 48px; padding: 0 var(--space-6); font-size: 15px; }
+.gg-btn.icon-only { width: var(--control-height); padding: 0; }
+.gg-btn.sm.icon-only { width: 32px; }
+.gg-btn-primary { background: var(--primary); color: var(--on-primary); }
+.gg-btn-primary:hover { background: var(--primary-hover); }
+.gg-btn-secondary { background: var(--surface); color: var(--primary); border-color: var(--border-input); }
+.gg-btn-secondary:hover { background: var(--surface-hover); border-color: var(--primary); }
+.gg-btn-danger { background: var(--danger); color: var(--on-primary); }
+.gg-btn-danger:hover { background: var(--danger-hover); }
+.gg-btn-gold { background: var(--gold); color: var(--on-gold); }
+.gg-btn-gold:hover { background: var(--gold-hover); }
+.gg-btn-ghost { background: transparent; color: var(--ink-2); }
+.gg-btn-ghost:hover { background: var(--surface-hover); color: var(--ink); }
+.gg-btn[disabled], .gg-btn[aria-busy="true"] { cursor: not-allowed; opacity: .45; }
+.gg-btn-ghost.danger { color: var(--danger); }
+
+/* Badge */
+.gg-badge { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--radius-sm); font: 600 12px/16px var(--font-sans); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.gg-badge-dot { width: 6px; height: 6px; border-radius: var(--radius-pill); background: currentColor; }
+.gg-badge.success { background: var(--success-soft); color: var(--success-text); }
+.gg-badge.warning { background: var(--warning-soft); color: var(--warning-text); }
+.gg-badge.danger { background: var(--danger-soft); color: var(--danger-text); }
+.gg-badge.info { background: var(--info-soft); color: var(--info-text); }
+.gg-badge.neutral { background: var(--neutral-soft); color: var(--neutral-text); }
+.gg-badge.gold { background: var(--gold-soft); color: var(--gold-text); }
+.gg-badge.primary { background: var(--primary-soft); color: var(--primary); }
+.gg-badge.mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 500; letter-spacing: .02em; }
+
+/* Field + controls */
+.gg-field { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.gg-field.span-2 { grid-column: 1 / -1; }
+.gg-label { font: 600 13px/18px var(--font-sans); color: var(--ink); }
+.gg-req { color: var(--danger); margin-left: 2px; }
+.gg-hint { font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-error { font: 500 12px/16px var(--font-sans); color: var(--danger-text); }
+.gg-control { position: relative; display: flex; align-items: stretch; height: var(--control-height); background: var(--surface); border: 1px solid var(--border-input); border-radius: var(--radius-md); transition: border-color .12s, box-shadow .12s; }
+.gg-control:hover { border-color: var(--ink-2); }
+.gg-control:focus-within { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
+.gg-control input:focus-visible, .gg-control select:focus-visible, .gg-control textarea:focus-visible { outline: none; }
+.gg-control.invalid { border-color: var(--danger); }
+.gg-control.disabled { background: var(--surface-sunken); border-color: var(--border); }
+.gg-control.textarea { height: auto; }
+.gg-control input, .gg-control select, .gg-control textarea { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: 0 var(--space-4); font: 400 14px/20px var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; border-radius: var(--radius-md); }
+.gg-control textarea { padding: 10px var(--space-4); min-height: 96px; resize: vertical; }
+.gg-control select { appearance: none; padding-right: 40px; cursor: pointer; }
+.gg-control ::placeholder { color: var(--placeholder); opacity: 1; }
+.gg-control .gg-lead { display: flex; align-items: center; padding-left: var(--space-3); color: var(--muted); }
+.gg-control .gg-lead + input { padding-left: var(--space-2); }
+.gg-control .gg-caret { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.gg-addon { display: flex; align-items: center; padding: 0 var(--space-4); background: var(--surface-sunken); color: var(--muted); font: 600 13px/18px var(--font-sans); border-left: 1px solid var(--border); border-radius: 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0; }
+.gg-addon.btn { background: var(--primary); color: var(--on-primary); border-left: 0; cursor: pointer; border: 0; }
+.gg-stepper { display: inline-flex; height: 36px; border: 1px solid var(--border-input); border-radius: var(--radius-md); overflow: hidden; background: var(--surface); }
+.gg-stepper button { width: 36px; border: 0; background: var(--surface-sunken); color: var(--primary); cursor: pointer; display: grid; place-items: center; }
+.gg-stepper button:hover { background: var(--primary-soft); }
+.gg-stepper input { width: 52px; border: 0; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; font: 600 14px/20px var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; outline: 0; }
+
+/* Card + FormCard */
+.gg-card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); }
+.gg-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-6) 0; }
+.gg-card-title { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.gg-card-sub { margin: 2px 0 0; font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-card-body { padding: var(--space-5) var(--space-6) var(--space-6); }
+.gg-card-foot { display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border); }
+.gg-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+.gg-form-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gg-form-section { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-2); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.gg-form-section::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+/* StatCard */
+.gg-stat { position: relative; display: flex; align-items: center; gap: var(--space-4); min-height: 112px; padding: var(--space-5) var(--space-6); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); overflow: hidden; }
+.gg-stat-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-md); flex: none; }
+.gg-stat-body { min-width: 0; }
+.gg-stat-label { font: 600 13px/18px var(--font-sans); }
+.gg-stat-value { margin-top: 2px; font: 800 28px/32px var(--font-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gg-stat-delta { margin-top: 4px; font: 600 12px/16px var(--font-sans); }
+.gg-stat.strong { color: var(--on-primary); }
+.gg-stat.strong .gg-stat-icon { background: rgba(255, 255, 255, 0.14); }
+.gg-stat.strong .gg-stat-label, .gg-stat.strong .gg-stat-delta { opacity: .86; }
+.gg-stat.strong.navy { background: var(--primary); }
+.gg-stat.strong.teal { background: var(--teal); }
+.gg-stat.strong.rose { background: var(--rose); }
+.gg-stat.strong.gold { background: var(--gold); color: var(--on-gold); }
+.gg-stat.strong.gold .gg-stat-icon { background: rgba(31, 22, 5, 0.1); }
+.gg-stat.soft { background: var(--surface); }
+.gg-stat.soft .gg-stat-value { color: var(--ink); }
+.gg-stat.soft .gg-stat-label { color: var(--muted); }
+.gg-stat.soft.navy .gg-stat-icon { background: var(--primary-soft); color: var(--primary); }
+.gg-stat.soft.gold .gg-stat-icon { background: var(--gold-soft); color: var(--gold-text); }
+.gg-stat.soft.teal .gg-stat-icon { background: var(--teal-soft); color: var(--teal-text); }
+.gg-stat.soft.rose .gg-stat-icon { background: var(--rose-soft); color: var(--rose-text); }
+.gg-stat.soft .gg-stat-delta.up { color: var(--success-text); }
+.gg-stat.soft .gg-stat-delta.down { color: var(--danger-text); }
+.gg-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+
+/* DataTable */
+.gg-table-card { min-width: 0; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-1); }
+.gg-table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-5) var(--space-6); }
+.gg-table-wrap { overflow-x: auto; }
+.gg-table { width: 100%; border-collapse: separate; border-spacing: 0; font: 400 14px/20px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.gg-table th { position: sticky; top: 0; height: 44px; padding: 0 var(--space-4); background: var(--surface-sunken); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: left; font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.gg-table th:first-child, .gg-table td:first-child { padding-left: var(--space-6); }
+.gg-table th:last-child, .gg-table td:last-child { padding-right: var(--space-6); }
+.gg-table th.sortable { cursor: pointer; }
+.gg-table th.sortable:hover { color: var(--ink); }
+.gg-table th .gg-sort { display: inline-flex; vertical-align: -3px; margin-left: 4px; }
+.gg-table td { height: var(--row-height); padding: 0 var(--space-4); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.gg-table.compact td { height: 44px; }
+.gg-table .right { text-align: right; }
+.gg-table .center { text-align: center; }
+.gg-table td.primary { color: var(--ink); font-weight: 600; }
+.gg-table tbody tr { transition: background-color .08s; }
+.gg-table tbody tr:hover { background: var(--surface-hover); }
+.gg-table tbody tr.selected { background: var(--primary-soft); }
+.gg-table tfoot td { height: 52px; border-bottom: 0; background: var(--surface-sunken); color: var(--ink); font-weight: 700; }
+.gg-table .gg-check { width: 16px; height: 16px; accent-color: var(--primary); }
+.gg-thumb { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--surface-sunken); object-fit: cover; display: block; border: 1px solid var(--border); }
+.gg-empty { padding: var(--space-12) var(--space-6); text-align: center; color: var(--muted); }
+.gg-actions-cell { width: 56px; }
+.gg-menu-anchor { position: relative; display: inline-block; }
+.gg-menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: var(--z-menu); min-width: 184px; padding: 6px; background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-2); text-align: left; }
+.gg-menu.up { top: auto; bottom: calc(100% + 4px); }
+.gg-menu-item { display: flex; align-items: center; gap: 10px; width: 100%; height: 36px; padding: 0 10px; border: 0; background: none; border-radius: var(--radius-sm); font: 500 14px/20px var(--font-sans); color: var(--ink-2); cursor: pointer; text-align: left; }
+.gg-menu-item:hover { background: var(--surface-hover); color: var(--ink); }
+.gg-menu-item.danger { color: var(--danger-text); }
+.gg-menu-item.danger:hover { background: var(--danger-soft); }
+.gg-menu-sep { height: 1px; margin: 6px 4px; background: var(--border); }
+
+/* Pagination */
+.gg-pager { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-6); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.gg-pager-size { display: flex; align-items: center; gap: var(--space-2); }
+.gg-pager-size .gg-control { height: 32px; width: 76px; }
+.gg-pager-size select { padding: 0 28px 0 10px; font-size: 13px; }
+.gg-pager-pages { display: flex; align-items: center; gap: 4px; }
+.gg-page { min-width: 32px; height: 32px; padding: 0 8px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--ink-2); font: 600 13px/18px var(--font-sans); cursor: pointer; display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+.gg-page:hover { background: var(--surface-hover); }
+.gg-page.active { background: var(--primary); color: var(--on-primary); }
+.gg-page[disabled] { opacity: .4; cursor: default; background: transparent; }
+
+/* Modal */
+.gg-scrim { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-8); background: var(--overlay); }
+.gg-scrim.inline { position: relative; inset: auto; min-height: 100%; }
+.gg-modal { width: 100%; max-width: 560px; max-height: calc(100vh - 64px); display: flex; flex-direction: column; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-3); }
+.gg-modal.sm { max-width: 420px; }
+.gg-modal.lg { max-width: 800px; }
+.gg-modal-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--border); }
+.gg-modal-title { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.gg-modal-body { padding: var(--space-6); overflow-y: auto; }
+.gg-modal-foot { display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border); }
+.gg-modal-confirm { display: flex; gap: var(--space-4); }
+.gg-modal-confirm .gg-stat-icon { background: var(--danger-soft); color: var(--danger); }
+
+/* Sidebar */
+.gg-sidebar { position: sticky; top: 0; z-index: var(--z-sidebar); height: 100vh; width: var(--sidebar-width); flex: none; display: flex; flex-direction: column; background: var(--sidebar-bg); color: var(--sidebar-text); transition: width .18s ease; }
+.gg-sidebar.static { position: relative; height: auto; min-height: 100%; }
+.gg-sidebar.collapsed { width: var(--sidebar-collapsed); }
+.gg-sidebar :focus-visible { outline-color: var(--gold); }
+.gg-brand { display: flex; align-items: center; gap: var(--space-3); height: var(--topbar-height); padding: 0 var(--space-5); border-bottom: 1px solid var(--sidebar-raised); flex: none; }
+.gg-brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--gold); color: var(--on-gold); font: 800 17px/1 var(--font-display); flex: none; }
+.gg-brand-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.gg-brand-name { font: 700 18px/24px var(--font-display); color: var(--sidebar-active); white-space: nowrap; letter-spacing: -0.01em; }
+.gg-brand-name b { color: var(--gold); font-weight: 700; }
+.gg-nav { flex: 1; overflow-y: auto; padding: var(--space-4) var(--space-3); scrollbar-width: thin; scrollbar-color: var(--sidebar-raised) transparent; }
+.gg-nav-label { padding: var(--space-4) var(--space-3) var(--space-2); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--sidebar-muted); white-space: nowrap; }
+.gg-nav-item { position: relative; display: flex; align-items: center; gap: var(--space-3); width: 100%; height: 40px; padding: 0 var(--space-3); margin-bottom: 2px; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--sidebar-text); font: 500 14px/20px var(--font-sans); text-align: left; cursor: pointer; white-space: nowrap; text-decoration: none; }
+.gg-nav-item:hover { background: var(--sidebar-raised); color: var(--sidebar-active); }
+.gg-nav-item.active { background: var(--sidebar-raised); color: var(--sidebar-active); font-weight: 600; }
+.gg-nav-item.active::before { content: ""; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 4px; border-radius: 0 4px 4px 0; background: var(--gold); }
+.gg-nav-item.active .gg-icon { color: var(--gold); }
+.gg-nav-item.open-parent { color: var(--sidebar-active); }
+.gg-nav-item .gg-nav-text { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.gg-nav-item .gg-chev { color: var(--sidebar-muted); transition: transform .15s; }
+.gg-nav-item[aria-expanded="true"] .gg-chev { transform: rotate(90deg); }
+.gg-nav-count { min-width: 22px; height: 20px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--gold); color: var(--on-gold); font: 700 11px/20px var(--font-sans); text-align: center; }
+.gg-subnav { margin: 2px 0 6px; padding-left: 30px; position: relative; }
+.gg-subnav::before { content: ""; position: absolute; left: 20px; top: 4px; bottom: 4px; width: 1px; background: var(--sidebar-raised); }
+.gg-subnav .gg-nav-item { height: 36px; font-size: 13px; }
+.gg-subnav .gg-nav-item.active::before { left: -11px; top: 10px; bottom: 10px; width: 3px; border-radius: 3px; }
+.gg-sidebar.collapsed .gg-brand { justify-content: center; padding: 0; }
+.gg-sidebar.collapsed .gg-brand-name, .gg-sidebar.collapsed .gg-nav-text, .gg-sidebar.collapsed .gg-chev, .gg-sidebar.collapsed .gg-nav-count, .gg-sidebar.collapsed .gg-subnav, .gg-sidebar.collapsed .gg-nav-label { display: none; }
+.gg-sidebar.collapsed .gg-nav-item { justify-content: center; padding: 0; }
+.gg-sidebar.collapsed .gg-nav-item.child-active { background: var(--sidebar-raised); color: var(--sidebar-active); }
+.gg-sidebar.collapsed .gg-nav-item.child-active .gg-icon { color: var(--gold); }
+.gg-sidebar-foot { padding: var(--space-3); border-top: 1px solid var(--sidebar-raised); }
+
+/* TopBar */
+.gg-topbar { position: sticky; top: 0; z-index: var(--z-sidebar); display: flex; align-items: center; gap: var(--space-4); height: var(--topbar-height); padding: 0 var(--space-8) 0 var(--space-4); background: var(--surface); border-bottom: 1px solid var(--border); }
+.gg-topbar.static { position: relative; }
+.gg-crumbs { display: flex; align-items: center; gap: var(--space-2); font: 500 13px/18px var(--font-sans); color: var(--muted); white-space: nowrap; }
+.gg-crumbs .current { color: var(--ink); font-weight: 600; }
+.gg-topbar-search { flex: 1; max-width: 440px; margin-left: var(--space-4); }
+.gg-topbar-search .gg-control { height: 40px; background: var(--surface-sunken); border-color: var(--border); }
+.gg-kbd { align-self: center; margin-right: 10px; padding: 1px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); font: 600 11px/16px var(--font-sans); color: var(--muted); }
+.gg-topbar-end { margin-left: auto; display: flex; align-items: center; gap: var(--space-2); }
+.gg-pos { border-radius: var(--radius-pill); padding: 0 var(--space-5); }
+.gg-iconbtn-wrap { position: relative; }
+.gg-iconbtn-dot { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--danger); border: 2px solid var(--surface); }
+.gg-user { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 var(--space-2) 0 4px; margin-left: var(--space-2); border: 0; border-radius: var(--radius-pill); background: transparent; cursor: pointer; text-align: left; }
+.gg-user:hover { background: var(--surface-hover); }
+.gg-avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary); font: 700 14px/1 var(--font-display); flex: none; }
+.gg-user-name { font: 600 13px/18px var(--font-sans); color: var(--ink); }
+.gg-user-role { font: 500 12px/16px var(--font-sans); color: var(--muted); }
+.gg-divider-v { width: 1px; height: 28px; background: var(--border); margin: 0 var(--space-2); }
+
+/* PageHeader */
+.gg-pagehead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+.gg-pagehead-title { margin: 0; font: 700 26px/32px var(--font-display); letter-spacing: -0.01em; color: var(--on-canvas); }
+.gg-pagehead-sub { margin: 4px 0 0; font: 500 13px/18px var(--font-sans); color: var(--on-canvas-muted); }
+.gg-pagehead :focus-visible, .gg-shell-foot :focus-visible { outline-color: var(--on-canvas); }
+.gg-pagehead-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+/* AppShell */
+.gg-shell { display: flex; min-height: 100vh; background: var(--canvas); }
+.gg-shell.static { min-height: 0; height: 100%; }
+.gg-shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.gg-shell-content { flex: 1; width: 100%; min-width: 0; max-width: var(--content-max); padding: var(--space-8); }
+.gg-shell-foot { display: flex; justify-content: space-between; margin: 0 var(--space-8); padding: var(--space-5) 0; border-top: 1px solid var(--canvas-rule); font: 500 12px/16px var(--font-sans); color: var(--on-canvas-muted); max-width: calc(var(--content-max) - 64px); }
+.gg-shell-foot a { color: var(--on-canvas); font-weight: 600; text-decoration: none; }
+.gg-shell-foot a:hover { text-decoration: underline; }
+.gg-grid-2-1 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--space-6); }
+
+
+/* ===== Page composition ===== */
+html, body { min-width: 1440px; }
+.gg-topbar .gg-crumbs .gg-icon { width: 16px; height: 16px; }
+.gg-crumbs a { color: var(--muted); text-decoration: none; }
+.gg-crumbs a:hover { color: var(--primary); }
+a.gg-btn { text-decoration: none; }
+.gg-scrim[hidden], .gg-btn[hidden], [data-icon][hidden], .logo-pick [hidden] { display: none; }
+/* Fabric swatches depict the cloth, not UI tokens. */
+.swatch { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid var(--border); display: block; flex: none; }
+.sw-poplin { background-color: #f3f1ea; background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0 1px, transparent 1px 3px); }
+.sw-denim { background-color: #2e4a74; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.16) 0 1.5px, transparent 1.5px 4px); }
+.sw-floral { background-color: #f6ead8; background-image: radial-gradient(circle at 30% 30%, #c2456b 0 4px, transparent 5px), radial-gradient(circle at 72% 64%, #d9a53b 0 3px, transparent 4px), radial-gradient(circle at 70% 22%, #3f7d5c 0 2.5px, transparent 3.5px), radial-gradient(circle at 26% 78%, #3f7d5c 0 2.5px, transparent 3.5px); }
+.sw-georgette { background-color: #1f2b4d; background-image: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 48%, transparent 66%); }
+.sw-linen { background-color: #d8cab0; background-image: repeating-linear-gradient(0deg, rgba(80,60,30,.12) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(80,60,30,.1) 0 1px, transparent 1px 5px); }
+.sw-jersey { background-color: #a7a9ad; background-image: radial-gradient(rgba(255,255,255,.35) 0.8px, transparent 1.2px), radial-gradient(rgba(0,0,0,.18) 0.8px, transparent 1.2px); background-size: 4px 4px, 5px 5px; background-position: 0 0, 2px 2px; }
+
+.adj-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+.gg-hint, .gg-error { line-height: 18px; }
+.ref { display: flex; align-items: center; height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); font: 500 14px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); }
+.gg-control select.is-placeholder { color: var(--placeholder); }
+.gg-control select option { color: var(--ink); }
+
+/* Product search with results menu */
+.psearch { position: relative; margin-top: var(--space-6); }
+.psearch .gg-control { height: 48px; }
+.psearch .gg-control input { font-size: 15px; }
+.presults { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: var(--z-menu); max-height: 320px; overflow-y: auto; padding: 6px; background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-2); }
+.presult { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: 8px 10px; border: 0; background: none; border-radius: var(--radius-sm); text-align: left; cursor: pointer; font: 400 14px/20px var(--font-sans); color: var(--ink-2); }
+.presult:hover, .presult.on { background: var(--surface-hover); }
+.presult .n { color: var(--ink); font-weight: 600; }
+.presult .meta { margin-left: auto; display: flex; gap: var(--space-2); align-items: center; }
+.presult .added { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.presults .none { padding: 12px 10px; color: var(--muted); }
+
+/* Lines */
+.lines-title { display: flex; align-items: baseline; gap: var(--space-3); margin: var(--space-8) 0 var(--space-3); }
+.lines-title h2 { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.lines { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: visible; }
+.lines .gg-table th:first-child { border-top-left-radius: calc(var(--radius-lg) - 1px); }
+.lines .gg-table th:last-child { border-top-right-radius: calc(var(--radius-lg) - 1px); }
+.lines .gg-table th { border-top: 0; }
+.lines .gg-table td { height: 76px; }
+.lines .gg-table th, .lines .gg-table td { padding-left: 9px; padding-right: 9px; }
+.lines .gg-table th:first-child, .lines .gg-table td:first-child { padding-left: var(--space-5); }
+.lines .gg-table th:last-child, .lines .gg-table td:last-child { padding-right: var(--space-4); }
+.lines .pcol { white-space: normal; min-width: 180px; }
+.pcell .code { margin-top: 4px; height: 20px; padding: 0 6px; font-size: 11px; }
+.lines .gg-table tbody tr:last-child td { border-bottom: 0; }
+.lines.invalid { border-color: var(--danger); }
+.pcell { display: flex; align-items: center; gap: var(--space-3); }
+.pcell .n { color: var(--ink); font-weight: 600; }
+.lines .gg-control { height: 36px; }
+.lines .gg-control select { font-size: 13px; padding-left: 12px; }
+.lot-ctl { width: 150px; }
+.lot-ctl select { padding-right: 30px !important; font-variant-numeric: tabular-nums; }
+.lot-ctl .gg-caret { right: 8px; }
+.lines .pcol { max-width: 260px; }
+.type-ctl { width: 136px; }
+.qty-wrap { display: inline-flex; align-items: center; gap: var(--space-2); }
+.qty-wrap .u { font: 500 13px/18px var(--font-sans); color: var(--muted); min-width: 22px; }
+.gg-stepper input { width: 56px; }
+.gg-stepper.invalid { border-color: var(--danger); }
+.after { font-weight: 600; color: var(--ink); }
+.after .delta { display: block; font: 600 12px/18px var(--font-sans); }
+.after .delta.up { color: var(--success-text); }
+.after .delta.down { color: var(--danger-text); }
+.row-err { display: block; margin-top: 2px; font: 500 12px/18px var(--font-sans); color: var(--danger-text); white-space: normal; max-width: 180px; margin-left: auto; }
+.empty-lines { padding: var(--space-12) var(--space-6); text-align: center; color: var(--muted); }
+.empty-lines .gg-icon { width: 28px; height: 28px; margin-bottom: var(--space-2); color: var(--border-input); }
+.lines-summary { display: flex; justify-content: flex-end; gap: var(--space-6); padding: var(--space-3) var(--space-6); border-top: 1px solid var(--border); background: var(--surface-sunken); border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.lines-summary b { color: var(--ink); font-weight: 600; }
+.lines-summary .up { color: var(--success-text); }
+.lines-summary .down { color: var(--danger-text); }
+.notes { margin-top: var(--space-6); }
+.form-alert { display: none; align-items: center; gap: var(--space-2); margin-right: auto; }
+.form-alert.show { display: inline-flex; }
+</style>
+</head>
+<body>
+<div class="gg gg-shell" id="shell" data-active="adjustments">
+
+  <aside class="gg-sidebar" id="sidebar" aria-label="เมนูหลัก">
+    <div class="gg-brand">
+      <div class="gg-brand-mark">L</div>
+      <div class="gg-brand-name">LTS <b>Solution</b></div>
+    </div>
+    <nav class="gg-nav" id="nav"></nav>
+  </aside>
+
+  <div class="gg-shell-main">
+    <header class="gg-topbar">
+      <button type="button" class="gg-btn gg-btn-ghost icon-only" id="toggleSidebar" aria-label="ย่อแถบเมนู"><span data-icon="panel-left"></span></button>
+      <nav class="gg-crumbs" aria-label="เส้นทางหน้า"><span>ปรับปรุงสต็อก</span><span data-icon="chevron-right" data-size="sm"></span><span class="current" aria-current="page">สร้างรายการ</span></nav>
+      <div class="gg-topbar-search">
+        <div class="gg-control">
+          <span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+          <input id="globalSearch" placeholder="ค้นหาผ้า รายการขาย ลูกค้า" aria-label="ค้นหาทั้งระบบ">
+          <span class="gg-kbd">/</span>
+        </div>
+      </div>
+      <div class="gg-topbar-end">
+        <button type="button" class="gg-btn gg-btn-gold gg-pos"><span data-icon="barcode"></span>POS</button>
+        <button type="button" class="gg-btn gg-btn-ghost icon-only" id="fullscreen" aria-label="เต็มหน้าจอ"><span data-icon="expand"></span></button>
+        <span class="gg-iconbtn-wrap"><button type="button" class="gg-btn gg-btn-ghost icon-only" aria-label="การแจ้งเตือน"><span data-icon="bell"></span></button></span>
+        <span class="gg-divider-v" aria-hidden="true"></span>
+        <div class="gg-menu-anchor" data-menu>
+          <button type="button" class="gg-user" aria-haspopup="menu" aria-expanded="false">
+            <span class="gg-avatar">A</span>
+            <span><div class="gg-user-name">แอดมิน</div></span>
+            <span data-icon="chevron-down" data-size="sm"></span>
+          </button>
+          <div class="gg-menu" role="menu" hidden>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="user" data-size="sm"></span>โปรไฟล์ของฉัน</button>
+            <button type="button" role="menuitem" class="gg-menu-item"><span data-icon="settings" data-size="sm"></span>ตั้งค่า</button>
+            <div class="gg-menu-sep" role="separator"></div>
+            <button type="button" role="menuitem" class="gg-menu-item danger"><span data-icon="logout" data-size="sm"></span>ออกจากระบบ</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="gg-shell-content">
+
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">สร้างรายการปรับปรุงสต็อก</h1>
+          <p class="gg-pagehead-sub">ปรับจำนวนผ้าคงเหลือให้ตรงกับของจริง เช่น หลังตรวจนับ พบผ้าชำรุด หรือตัดเศษปลายม้วน</p>
+        </div>
+        <div class="gg-pagehead-actions">
+          <a class="gg-btn gg-btn-secondary" href="lts-products.html" id="backBtn"><span data-icon="chevron-left"></span>ย้อนกลับ</a>
+        </div>
+      </div>
+
+      <form class="gg-card" id="adjForm" novalidate>
+        <div class="gg-card-body" style="padding-top:var(--space-6)">
+          <div class="adj-head">
+            <div class="gg-field"><span class="gg-label">เลขที่เอกสาร</span>
+              <div class="ref" id="docRef">ADJ-2569-0013</div>
+              <div class="gg-hint">ระบบออกเลขให้อัตโนมัติ</div></div>
+            <div class="gg-field"><label class="gg-label" for="warehouse">คลังสินค้า<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control disabled"><select id="warehouse" required disabled><option selected>คลังสินค้าหลัก</option><option>หน้าร้านสำเพ็ง</option><option>ฝ่ายตัดผ้า</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+              <div class="gg-hint">ล็อกตามคลังสินค้าที่คุณดูแล</div></div>
+            <div class="gg-field"><label class="gg-label" for="date">วันที่<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="date" type="date" required></div>
+              <div class="gg-hint" id="dateTh"></div></div>
+            <div class="gg-field"><label class="gg-label" for="reason">เหตุผลการปรับปรุง<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="reason" required><option value="" disabled selected>เลือกเหตุผล</option><option>ตรวจนับสต็อก</option><option>ผ้าชำรุด / มีตำหนิ</option><option>เศษผ้า / ปลายม้วน</option><option>ผ้าหดตัวหลังฟอก</option><option>สูญหาย</option><option>พบสินค้าเกิน</option><option>อื่น ๆ</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          </div>
+
+          <div class="psearch" id="psearch">
+            <label class="gg-label" for="pq" style="display:block;margin-bottom:var(--space-2)">สินค้า</label>
+            <div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="pq" autocomplete="off" placeholder="ค้นหาผ้าด้วยรหัสหรือชื่อ แล้วกด Enter เพื่อเพิ่ม" role="combobox" aria-expanded="false" aria-controls="presults" aria-autocomplete="list"></div>
+            <div class="presults" id="presults" role="listbox" hidden></div>
+          </div>
+
+          <div class="lines-title"><h2>รายการสินค้า<span class="gg-req" aria-hidden="true">*</span></h2><span class="gg-hint" id="linesHint">ปรับได้หลายรายการในเอกสารเดียว</span></div>
+          <div class="lines" id="lines">
+            <div class="gg-table-wrap">
+              <table class="gg-table">
+                <thead><tr>
+                  <th>สินค้า</th><th>ล็อตย้อม</th><th class="right">คงเหลือ</th>
+                  <th>จำนวน</th><th>ประเภท</th><th class="right">คงเหลือหลังปรับ</th><th class="gg-actions-cell right"><span class="gg-sr">ลบรายการ</span></th>
+                </tr></thead>
+                <tbody id="lineRows"></tbody>
+              </table>
+            </div>
+            <div class="lines-summary" id="summary"></div>
+          </div>
+
+          <div class="gg-field notes"><label class="gg-label" for="notes">หมายเหตุ</label>
+            <div class="gg-control textarea"><textarea id="notes" rows="3" placeholder="เช่น ตรวจนับประจำเดือน พบผ้าเปียกน้ำ 2 ม้วน"></textarea></div></div>
+        </div>
+
+        <div class="gg-card-foot">
+          <span class="form-alert gg-badge danger" id="formAlert" role="alert"><span class="gg-badge-dot"></span><span id="formAlertText"></span></span>
+          <span class="form-alert gg-badge success" id="formOk" role="status"><span class="gg-badge-dot"></span><span id="formOkText"></span></span>
+          <a class="gg-btn gg-btn-secondary" href="lts-products.html">ยกเลิก</a>
+          <button type="submit" class="gg-btn gg-btn-primary"><span data-icon="check"></span>บันทึก</button>
+        </div>
+      </form>
+    </main>
+
+    <footer class="gg-shell-foot">
+      <span>© 2026 <a href="lts-dashboard.html">LTS Solution</a> สงวนลิขสิทธิ์</span>
+      <span>ค้าส่งผ้า · ระบบสินค้าคงคลังและ POS</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ===== LTS Solution shell: icon set and navigation copied from components/bundle.js ===== */
+(function () {
+  var ICONS = {
+    dashboard: ['M4 4h7v7H4z', 'M13 4h7v4h-7z', 'M13 10h7v10h-7z', 'M4 13h7v7H4z'],
+    box: ['M12 3l8 4.5v9L12 21l-8-4.5v-9z', 'M4 7.5l8 4.5 8-4.5', 'M12 12v9'],
+    adjust: ['M4 4h16v16H4z', 'M7.5 12h3.5', 'M9.25 10.25v3.5', 'M13.5 12h3'],
+    quote: ['M6 3h8l5 5v13H6z', 'M14 3v5h5', 'M9 13h7', 'M9 17h5'],
+    cart: ['M3 4h2.2l2.2 11h10.8l2-8H6.4', { c: [9, 19, 1.4] }, { c: [17, 19, 1.4] }],
+    receipt: ['M6 3h12v18l-3-2-3 2-3-2-3 2z', 'M9 8h6', 'M9 12h6', 'M9 16h3'],
+    transfer: ['M4 8h15', 'M15 4l4 4-4 4', 'M20 16H5', 'M9 12l-4 4 4 4'],
+    wallet: ['M4 7a2 2 0 0 1 2-2h11v4', 'M4 7v10a2 2 0 0 0 2 2h14V9H6a2 2 0 0 1-2-2z', 'M16 14h1'],
+    users: [{ c: [9, 8, 3.5] }, 'M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6', 'M15.5 5.2a3 3 0 0 1 0 5.6', 'M18 14.5c1.8.7 3 2.5 3 4.5'],
+    user: [{ c: [12, 8, 4] }, 'M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8'],
+    truck: ['M3 6h11v10H3z', 'M14 9h4l3 3v4h-7', { c: [7, 18, 1.8] }, { c: [17, 18, 1.8] }],
+    shield: ['M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z', 'M9 12l2 2 4-4'],
+    warehouse: ['M3 10l9-6 9 6v10H3z', 'M8 20v-6h8v6', 'M8 17h8'],
+    chart: ['M4 20h16', 'M7 16v-5', 'M12 16V7', 'M17 16v-8'],
+    coin: [{ c: [12, 12, 9] }, 'M14.8 9.4c-.5-.9-1.5-1.4-2.8-1.4-1.7 0-2.9.8-2.9 2s1.2 1.7 2.9 2 2.9.8 2.9 2-1.2 2-2.9 2c-1.3 0-2.4-.5-2.9-1.4', 'M12 6.5v11'],
+    globe: [{ c: [12, 12, 9] }, 'M3 12h18', 'M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3z'],
+    layout: ['M4 4h16v16H4z', 'M4 9h16', 'M10 9v11'],
+    settings: ['M4 6h9', 'M17 6h3', 'M4 12h3', 'M11 12h9', 'M4 18h11', 'M19 18h1', { c: [15, 6, 2] }, { c: [9, 12, 2] }, { c: [17, 18, 2] }],
+    tag: ['M3 12V4h8l9 9-8 8z', { c: [7.5, 8.5, 1.3] }],
+    barcode: ['M4 7V4h3', 'M17 4h3v3', 'M20 17v3h-3', 'M7 20H4v-3', 'M8 8v8', 'M11 8v8', 'M14 8v8', 'M16.5 8v8'],
+    ruler: ['M3 15l12-12 6 6-12 12z', 'M7 11l2 2', 'M10 8l2 2', 'M13 5l2 2'],
+    folder: ['M3 6h6l2 2h10v11H3z'],
+    search: [{ c: [11, 11, 7] }, 'M20 20l-4-4'],
+    plus: ['M12 5v14', 'M5 12h14'],
+    minus: ['M5 12h14'],
+    'chevron-right': ['M9 6l6 6-6 6'],
+    'chevron-left': ['M15 6l-6 6 6 6'],
+    'chevron-down': ['M6 9l6 6 6-6'],
+    'chevrons-left': ['M11 6l-6 6 6 6', 'M18 6l-6 6 6 6'],
+    'chevrons-right': ['M6 6l6 6-6 6', 'M13 6l6 6-6 6'],
+    menu: ['M4 7h16', 'M4 12h16', 'M4 17h16'],
+    'panel-left': ['M4 4h16v16H4z', 'M9 4v16', 'M15.5 10l-2 2 2 2'],
+    more: [{ c: [12, 5, 1.3] }, { c: [12, 12, 1.3] }, { c: [12, 19, 1.3] }],
+    edit: ['M4 20h4L19 9l-4-4L4 16z', 'M13 7l4 4'],
+    trash: ['M4 7h16', 'M9 7V4h6v3', 'M6 7l1 13h10l1-13', 'M10 11v6', 'M14 11v6'],
+    eye: [{ c: [12, 12, 3] }, 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'],
+    x: ['M6 6l12 12', 'M18 6L6 18'],
+    calendar: ['M4 6h16v14H4z', 'M4 10h16', 'M8 3v5', 'M16 3v5'],
+    filter: ['M4 5h16l-6 8v6l-4-2v-4z'],
+    download: ['M12 4v11', 'M7 10l5 5 5-5', 'M5 20h14'],
+    upload: ['M12 20V9', 'M7 14l5-5 5 5', 'M5 4h14'],
+    bell: ['M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z', 'M10 21h4'],
+    expand: ['M4 9V4h5', 'M20 9V4h-5', 'M4 15v5h5', 'M20 15v5h-5'],
+    'trend-up': ['M4 16l6-6 4 4 6-6', 'M15 8h5v5'],
+    'trend-down': ['M4 8l6 6 4-4 6 6', 'M15 16h5v-5'],
+    'return-left': ['M9 14l-5-5 5-5', 'M4 9h11a5 5 0 0 1 0 10h-3'],
+    'return-right': ['M15 14l5-5-5-5', 'M20 9H9a5 5 0 0 0 0 10h3'],
+    cash: ['M3 6h18v12H3z', { c: [12, 12, 2.5] }, 'M6.5 9.5v.01', 'M17.5 14.5v.01'],
+    alert: ['M12 4l9 16H3z', 'M12 10v4', 'M12 17v.5'],
+    check: ['M5 12l5 5 9-10'],
+    image: ['M4 5h16v14H4z', { c: [9, 10, 1.5] }, 'M4 17l5-5 4 4 2-2 5 5'],
+    logout: ['M15 4h4v16h-4', 'M10 8l-4 4 4 4', 'M6 12h10'],
+    sort: ['M8 9l4-4 4 4', 'M8 15l4 4 4-4'],
+    'sort-up': ['M8 14l4-4 4 4'],
+    'sort-down': ['M8 10l4 4 4-4'],
+    printer: ['M7 8V3h10v5', 'M5 8h14v8h-2', 'M7 16H5', 'M7 13h10v8H7z'],
+    copy: ['M8 8h12v12H8z', 'M16 8V4H4v12h4']
+  };
+  var NAV = [
+    { key: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { section: 'Inventory' },
+    { key: 'products', label: 'Products', icon: 'box', children: [
+      { key: 'products.list', label: 'Products' }, { key: 'products.categories', label: 'Product Categories' },
+      { key: 'products.units', label: 'Units' },
+      { key: 'products.base-units', label: 'Base Units' }, { key: 'products.barcode', label: 'Print Barcode' }] },
+    { key: 'adjustments', label: 'Adjustments', icon: 'adjust' },
+    { key: 'transfers', label: 'Transfers', icon: 'transfer' },
+    { key: 'warehouse', label: 'Warehouses', icon: 'warehouse' },
+    { section: 'Trading' },
+    { key: 'quotations', label: 'Quotations', icon: 'quote' },
+    { key: 'purchases', label: 'Purchases', icon: 'cart', children: [{ key: 'purchases.list', label: 'Purchases' }, { key: 'purchases.returns', label: 'Purchase Returns' }] },
+    { key: 'sales', label: 'Sales', icon: 'receipt', children: [{ key: 'sales.list', label: 'Sales' }, { key: 'sales.returns', label: 'Sales Returns' }, { key: 'sales.billing-notes', label: 'Billing Notes' }] },
+    { key: 'expenses', label: 'Expenses', icon: 'wallet', children: [{ key: 'expenses.list', label: 'Expenses' }, { key: 'expenses.categories', label: 'Expense Categories' }] },
+    { section: 'People' },
+    { key: 'people', label: 'People', icon: 'users', children: [{ key: 'people.suppliers', label: 'Suppliers' }, { key: 'people.customers', label: 'Customers' }, { key: 'people.users', label: 'Users' }] },
+    { key: 'roles', label: 'Roles & Permissions', icon: 'shield' },
+    { section: 'Insights & Setup' },
+    { key: 'reports', label: 'Reports', icon: 'chart' },
+    { key: 'currencies', label: 'Currencies', icon: 'coin' },
+    { key: 'languages', label: 'Languages', icon: 'globe' },
+    { key: 'templates', label: 'Templates', icon: 'layout', children: [{ key: 'templates.email', label: 'Email Templates' }, { key: 'templates.sms', label: 'SMS Templates' }] },
+    { key: 'settings', label: 'Settings', icon: 'settings' }
+  ];
+
+  /* Thai labels for the shared navigation (keys from the design system) */
+  var TH = {
+    'Inventory': 'สินค้าคงคลัง', 'Trading': 'ซื้อขาย', 'People': 'บุคคล', 'Insights & Setup': 'รายงานและการตั้งค่า',
+    'dashboard': 'แดชบอร์ด', 'products': 'สินค้า', 'products.list': 'สินค้าทั้งหมด', 'products.categories': 'หมวดหมู่สินค้า',
+    'products.units': 'หน่วยนับ', 'products.base-units': 'หน่วยพื้นฐาน', 'products.barcode': 'พิมพ์บาร์โค้ด',
+    'adjustments': 'ปรับปรุงสต็อก', 'transfers': 'โอนย้ายสินค้า', 'warehouse': 'คลังสินค้า', 'quotations': 'ใบเสนอราคา',
+    'purchases': 'การซื้อ', 'purchases.list': 'รายการซื้อ', 'purchases.returns': 'คืนสินค้าให้ผู้จำหน่าย',
+    'sales': 'การขาย', 'sales.list': 'รายการขาย', 'sales.returns': 'รับคืนสินค้า', 'sales.billing-notes': 'ใบวางบิล',
+    'expenses': 'ค่าใช้จ่าย', 'expenses.list': 'รายการค่าใช้จ่าย', 'expenses.categories': 'หมวดหมู่ค่าใช้จ่าย',
+    'people': 'บุคคล', 'people.suppliers': 'ผู้จำหน่าย', 'people.customers': 'ลูกค้า', 'people.users': 'ผู้ใช้งาน',
+    'roles': 'บทบาทและสิทธิ์', 'reports': 'รายงาน', 'currencies': 'สกุลเงิน', 'languages': 'ภาษา',
+    'templates': 'เทมเพลต', 'templates.email': 'เทมเพลตอีเมล', 'templates.sms': 'เทมเพลต SMS', 'settings': 'ตั้งค่า'
+  };
+  NAV.forEach(function (it) {
+    if (it.section) { it.section = TH[it.section] || it.section; return; }
+    it.label = TH[it.key] || it.label;
+    (it.children || []).forEach(function (c) { c.label = TH[c.key] || c.label; });
+  });
+  var PAGES = { 'dashboard': 'lts-dashboard.html', 'products.list': 'lts-products.html', 'products.create': 'lts-create-product.html', 'products.categories': 'lts-categories.html', 'adjustments': 'lts-adjustment.html', 'purchases.list': 'lts-purchases.html', 'purchases.returns': 'lts-purchase-return.html', 'sales.list': 'lts-sales.html', 'sales.returns': 'lts-sales-returns.html', 'sales.billing-notes': 'lts-billing-notes.html', 'transfers': 'lts-transfers.html', 'expenses.list': 'lts-expenses.html', 'expenses.categories': 'lts-expense-categories.html', 'people.suppliers': 'lts-suppliers.html', 'people.customers': 'lts-customers.html', 'people.users': 'lts-users.html', 'roles': 'lts-roles.html', 'warehouse': 'lts-warehouses.html', 'reports': 'lts-reports.html' };
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function icon(name, size, cls) {
+    var svg = document.createElementNS(SVGNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    svg.setAttribute('class', ['gg-icon', size === 'sm' ? 'sm' : '', size === 'lg' ? 'lg' : '', cls || ''].join(' ').trim());
+    (ICONS[name] || ICONS.box).forEach(function (p) {
+      var el;
+      if (typeof p === 'string') { el = document.createElementNS(SVGNS, 'path'); el.setAttribute('d', p); }
+      else { el = document.createElementNS(SVGNS, 'circle'); el.setAttribute('cx', p.c[0]); el.setAttribute('cy', p.c[1]); el.setAttribute('r', p.c[2]); }
+      svg.appendChild(el);
+    });
+    return svg;
+  }
+  function hydrateIcons(root) {
+    (root || document).querySelectorAll('[data-icon]').forEach(function (el) { el.replaceWith(icon(el.getAttribute('data-icon'), el.getAttribute('data-size'))); });
+  }
+
+  /* Sidebar */
+  var shell = document.getElementById('shell');
+  var ACTIVE = shell.getAttribute('data-active') || 'dashboard', open = {};
+  NAV.forEach(function (it) { if (it.children && it.children.some(function (c) { return c.key === ACTIVE; })) open[it.key] = true; });
+  var nav = document.getElementById('nav'), sidebar = document.getElementById('sidebar');
+  function go(key) { if (PAGES[key] && key !== ACTIVE) { location.href = PAGES[key]; return; } ACTIVE = key; renderNav(); }
+  function renderNav() {
+    var collapsed = sidebar.classList.contains('collapsed');
+    nav.innerHTML = '';
+    NAV.forEach(function (it) {
+      if (it.section) { var l = document.createElement('div'); l.className = 'gg-nav-label'; l.textContent = it.section; nav.appendChild(l); return; }
+      var childActive = it.children && it.children.some(function (c) { return c.key === ACTIVE; });
+      var b = document.createElement('button'); b.type = 'button';
+      b.className = 'gg-nav-item' + (it.key === ACTIVE ? ' active' : '') + (childActive ? ' child-active' : '') + (childActive && open[it.key] ? ' open-parent' : '');
+      if (it.key === ACTIVE) b.setAttribute('aria-current', 'page');
+      if (collapsed) b.title = it.label;
+      b.appendChild(icon(it.icon));
+      var t = document.createElement('span'); t.className = 'gg-nav-text'; t.textContent = it.label; b.appendChild(t);
+      if (it.children) { b.setAttribute('aria-expanded', !!open[it.key]); b.appendChild(icon('chevron-right', 'sm', 'gg-chev')); }
+      b.addEventListener('click', function () {
+        if (it.children && !collapsed) { open[it.key] = !open[it.key]; renderNav(); }
+        else go(it.children ? it.children[0].key : it.key);
+      });
+      nav.appendChild(b);
+      if (it.children && open[it.key] && !collapsed) {
+        var sub = document.createElement('div'); sub.className = 'gg-subnav';
+        it.children.forEach(function (c) {
+          var cb = document.createElement('button'); cb.type = 'button';
+          cb.className = 'gg-nav-item' + (c.key === ACTIVE ? ' active' : '');
+          if (c.key === ACTIVE) cb.setAttribute('aria-current', 'page');
+          var ct = document.createElement('span'); ct.className = 'gg-nav-text'; ct.textContent = c.label; cb.appendChild(ct);
+          cb.addEventListener('click', function () { go(c.key); });
+          sub.appendChild(cb);
+        });
+        nav.appendChild(sub);
+      }
+    });
+  }
+  renderNav();
+  var toggle = document.getElementById('toggleSidebar');
+  toggle.addEventListener('click', function () {
+    var c = sidebar.classList.toggle('collapsed');
+    toggle.setAttribute('aria-label', c ? 'ขยายแถบเมนู' : 'ย่อแถบเมนู');
+    toggle.innerHTML = ''; toggle.appendChild(icon(c ? 'menu' : 'panel-left'));
+    renderNav();
+  });
+
+  /* Menus (ActionMenu pattern) */
+  function wireMenu(anchor) {
+    if (anchor.dataset.wired) return; anchor.dataset.wired = '1';
+    var btn = anchor.querySelector('button'), menu = anchor.querySelector('.gg-menu');
+    function close() { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation(); var wasHidden = menu.hidden;
+      document.querySelectorAll('.gg-menu').forEach(function (m) { m.hidden = true; });
+      menu.hidden = !wasHidden; btn.setAttribute('aria-expanded', String(wasHidden));
+    });
+    menu.addEventListener('click', close);
+    document.addEventListener('click', function (e) { if (!anchor.contains(e.target)) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  }
+  document.getElementById('fullscreen').addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  });
+  document.querySelectorAll('.gg-menu-item.danger').forEach(function (b) { if (b.textContent.trim() === 'ออกจากระบบ') b.addEventListener('click', function () { location.href = 'lts-login.html?out=1'; }); });
+  var posBtn = document.querySelector('.gg-pos'); if (posBtn) posBtn.addEventListener('click', function () { location.href = 'lts-pos.html'; });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); document.getElementById('globalSearch').focus(); }
+  });
+
+  /* Money in Thai baht: ฿71,800.00 */
+  function baht(n) { return '฿' + Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  /* Thai dates, Buddhist Era: 3 ก.พ. 2567 · 23:28 น. */
+  function thDate(d) { return new Date(d).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  function thTime(d) { return new Date(d).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.'; }
+  window.GG = { icon: icon, hydrateIcons: hydrateIcons, wireMenu: wireMenu, baht: baht, thDate: thDate, thTime: thTime };
+})();
+</script>
+<script>
+/* ===== Page script ===== */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SHORT = { meter: 'ม.', kilogram: 'กก.', yard: 'หลา' };
+  var PRODUCTS = [
+    { code: 'COT58A101001', name: 'ผ้าคอตตอนป๊อปลิน 60s สีขาวออปติก', unit: 'yard', stock: 2680, alert: 330, swatch: 'poplin', lots: ['LOT-2409-03', 'LOT-2410-11'] },
+    { code: 'DEN58A201014', name: 'ผ้ายีนส์ยืด 10 ออนซ์ สีคราม', unit: 'yard', stock: 1290, alert: 220, swatch: 'denim', lots: ['LOT-2408-21', 'LOT-2410-02'] },
+    { code: 'VIS44B305022', name: 'ผ้าเรยอนพิมพ์ลายดอกไม้', unit: 'yard', stock: 700, alert: 165, swatch: 'floral', lots: ['LOT-2410-07'] },
+    { code: 'PLY58A410012', name: 'ผ้าจอร์เจ็ตโพลีเอสเตอร์ สีกรมท่า', unit: 'yard', stock: 82, alert: 110, swatch: 'georgette', lots: ['LOT-2407-15'] },
+    { code: 'LIN54C120003', name: 'ผ้าลินินผสมฝ้าย สีธรรมชาติ', unit: 'yard', stock: 0, alert: 90, swatch: 'linen', lots: ['LOT-2406-09'] },
+    { code: 'KNT72A160008', name: 'ผ้ายืดซิงเกิลเจอร์ซีย์ 160 แกรม สีเทาท็อปดราย', unit: 'yard', stock: 350, alert: 60, swatch: 'jersey', lots: ['LOT-2410-18', 'LOT-2410-19'] }
+  ];
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function num(x) { return Number(x).toLocaleString('th-TH', { maximumFractionDigits: 2 }); }
+  function find(code) { return PRODUCTS.filter(function (p) { return p.code === code; })[0]; }
+  function stockBadge(p, qty) {
+    var tone = qty <= 0 ? 'danger' : qty <= p.alert ? 'warning' : 'neutral';
+    return '<span class="gg-badge ' + tone + '">' + (tone !== 'neutral' ? '<span class="gg-badge-dot"></span>' : '') + num(qty) + ' ' + SHORT[p.unit] + '</span>';
+  }
+
+  /* Date: today, shown in Thai B.E. underneath */
+  var today = new Date(); var iso = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  $('date').value = iso; $('date').max = iso;
+  function showDate() { $('dateTh').textContent = $('date').value ? GG.thDate($('date').value + 'T00:00') : ''; }
+  $('date').addEventListener('change', showDate); showDate();
+
+  var sel = $('reason'); function mark() { sel.classList.toggle('is-placeholder', sel.value === ''); } sel.addEventListener('change', mark); mark();
+
+  /* Lines */
+  var LINES = [{ code: 'VIS44B305022', lot: 'LOT-2410-07', qty: 1, type: 'add' }];
+  var tried = false;
+  function lineError(l) {
+    var p = find(l.code);
+    if (!(l.qty > 0)) return 'กรุณากรอกจำนวนมากกว่า 0';
+    if (l.type === 'sub' && l.qty > p.stock) return 'ลดได้ไม่เกินคงเหลือ ' + num(p.stock) + ' ' + SHORT[p.unit];
+    return '';
+  }
+  function renderLines() {
+    var body = $('lineRows');
+    if (!LINES.length) {
+      body.innerHTML = '<tr><td colspan="7" class="empty-lines"><span data-icon="box"></span><div>ยังไม่มีสินค้า ค้นหาผ้าด้านบนเพื่อเพิ่มรายการ</div></td></tr>';
+    } else {
+      body.innerHTML = LINES.map(function (l, i) {
+        var p = find(l.code), after = p.stock + (l.type === 'add' ? 1 : -1) * (l.qty || 0), err = tried || l.touched ? lineError(l) : '';
+        return '<tr data-i="' + i + '">' +
+          '<td class="pcol"><div class="pcell"><span class="swatch sw-' + p.swatch + '" role="img" aria-label="ตัวอย่างผ้า"></span><div><div class="n">' + esc(p.name) + '</div><span class="gg-badge neutral mono code">' + p.code + '</span></div></div></td>' +
+          '<td><div class="gg-control lot-ctl"><select data-f="lot" aria-label="ล็อตย้อมของ ' + esc(p.name) + '">' + p.lots.map(function (x) { return '<option' + (x === l.lot ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></td>' +
+          '<td class="right">' + stockBadge(p, p.stock) + '</td>' +
+          '<td><div class="qty-wrap"><div class="gg-stepper' + (err ? ' invalid' : '') + '">' +
+            '<button type="button" data-step="-1" aria-label="ลดจำนวน"><span data-icon="minus" data-size="sm"></span></button>' +
+            '<input data-f="qty" inputmode="decimal" value="' + (l.qty === '' ? '' : l.qty) + '" aria-label="จำนวนของ ' + esc(p.name) + '">' +
+            '<button type="button" data-step="1" aria-label="เพิ่มจำนวน"><span data-icon="plus" data-size="sm"></span></button></div><span class="u">' + SHORT[p.unit] + '</span></div></td>' +
+          '<td><div class="gg-control type-ctl"><select data-f="type" aria-label="ประเภทการปรับ"><option value="add"' + (l.type === 'add' ? ' selected' : '') + '>เพิ่ม (รับเข้า)</option><option value="sub"' + (l.type === 'sub' ? ' selected' : '') + '>ลด (ตัดออก)</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></td>' +
+          '<td class="right"><div class="after">' + stockBadge(p, after) + '<span class="delta ' + (l.type === 'add' ? 'up' : 'down') + '">' + (l.type === 'add' ? '+' : '−') + num(l.qty || 0) + ' ' + SHORT[p.unit] + '</span>' + (err ? '<span class="row-err" role="alert">' + err + '</span>' : '') + '</div></td>' +
+          '<td class="gg-actions-cell right"><button type="button" class="gg-btn gg-btn-ghost sm icon-only danger" data-remove aria-label="ลบรายการ ' + esc(p.name) + '"><span data-icon="trash" data-size="sm"></span></button></td>' +
+          '</tr>';
+      }).join('');
+    }
+    GG.hydrateIcons(body);
+    renderSummary();
+  }
+  function renderSummary() {
+    var add = {}, sub = {};
+    LINES.forEach(function (l) { var u = SHORT[find(l.code).unit], b = l.type === 'add' ? add : sub; b[u] = (b[u] || 0) + (+l.qty || 0); });
+    function fmt(o, sign) { var k = Object.keys(o); return k.length ? k.map(function (u) { return sign + num(o[u]) + ' ' + u; }).join(', ') : '0'; }
+    $('summary').innerHTML = '<span>ทั้งหมด <b>' + LINES.length + '</b> รายการ</span><span>เพิ่ม <b class="up">' + fmt(add, '+') + '</b></span><span>ลด <b class="down">' + fmt(sub, '−') + '</b></span>';
+  }
+  /* Delegated line events (rows are re-rendered) */
+  $('lineRows').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr[data-i]'); if (!tr) return; var l = LINES[+tr.dataset.i];
+    var step = e.target.closest('[data-step]');
+    if (step) { l.qty = Math.max(0, Math.round(((+l.qty || 0) + +step.dataset.step) * 100) / 100); l.touched = true; renderLines(); return; }
+    if (e.target.closest('[data-remove]')) { LINES.splice(+tr.dataset.i, 1); renderLines(); $('pq').focus(); }
+  });
+  $('lineRows').addEventListener('change', function (e) {
+    var tr = e.target.closest('tr[data-i]'); if (!tr) return; var l = LINES[+tr.dataset.i], f = e.target.dataset.f;
+    if (f === 'qty') { var v = e.target.value.trim().replace(',', '.'); l.qty = v === '' ? '' : (isNaN(+v) ? '' : Math.max(0, +v)); l.touched = true; }
+    else if (f) l[f] = e.target.value;
+    renderLines();
+  });
+
+  /* Product search */
+  var results = $('presults'), q = $('pq'), active = 0, shown = [];
+  function openResults() {
+    var t = q.value.trim().toLowerCase();
+    shown = PRODUCTS.filter(function (p) { return !t || (p.name + ' ' + p.code).toLowerCase().indexOf(t) >= 0; });
+    active = 0;
+    results.innerHTML = shown.length ? shown.map(function (p, i) {
+      var inList = LINES.some(function (l) { return l.code === p.code; });
+      return '<button type="button" role="option" class="presult' + (i === 0 ? ' on' : '') + '" data-code="' + p.code + '"><span class="swatch sw-' + p.swatch + '" style="width:32px;height:32px"></span>' +
+        '<span><span class="n">' + esc(p.name) + '</span><br><span class="gg-badge neutral mono" style="height:20px;padding:0 6px;font-size:11px">' + p.code + '</span></span>' +
+        '<span class="meta">' + (inList ? '<span class="added">อยู่ในรายการแล้ว</span>' : '') + stockBadge(p, p.stock) + '</span></button>';
+    }).join('') : '<div class="none">ไม่พบผ้าที่ตรงกับ "' + esc(q.value) + '"</div>';
+    results.hidden = false; q.setAttribute('aria-expanded', 'true');
+  }
+  function closeResults() { results.hidden = true; q.setAttribute('aria-expanded', 'false'); }
+  function addProduct(code) {
+    var existing = LINES.filter(function (l) { return l.code === code; })[0];
+    if (existing) { existing.qty = (+existing.qty || 0) + 1; }
+    else { var p = find(code); LINES.push({ code: code, lot: p.lots[p.lots.length - 1], qty: 1, type: 'add' }); }
+    q.value = ''; closeResults(); $('lines').classList.remove('invalid'); renderLines();
+    var idx = LINES.findIndex(function (l) { return l.code === code; });
+    var inp = document.querySelector('tr[data-i="' + idx + '"] [data-f="qty"]'); if (inp) { inp.focus(); inp.select(); }
+  }
+  q.addEventListener('focus', openResults);
+  q.addEventListener('input', openResults);
+  q.addEventListener('keydown', function (e) {
+    var items = results.querySelectorAll('.presult');
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); if (!items.length) return;
+      items[active].classList.remove('on'); active = (active + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      items[active].classList.add('on'); items[active].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') { e.preventDefault(); if (shown[active]) addProduct(shown[active].code); }
+    else if (e.key === 'Escape') closeResults();
+  });
+  results.addEventListener('mousedown', function (e) { var b = e.target.closest('.presult'); if (b) { e.preventDefault(); addProduct(b.dataset.code); } });
+  document.addEventListener('mousedown', function (e) { if (!$('psearch').contains(e.target)) closeResults(); });
+
+  /* Save */
+  function fieldErr(el, msg) {
+    var f = el.closest('.gg-field'), c = el.closest('.gg-control'); c.classList.add('invalid'); el.setAttribute('aria-invalid', 'true');
+    var err = f.querySelector('.gg-error'); if (!err) { err = document.createElement('div'); err.className = 'gg-error'; f.appendChild(err); } err.textContent = msg;
+  }
+  function fieldOk(el) { var f = el.closest('.gg-field'); el.closest('.gg-control').classList.remove('invalid'); el.removeAttribute('aria-invalid'); var e = f.querySelector('.gg-error'); if (e) e.remove(); }
+  ['reason', 'date'].forEach(function (id) { $(id).addEventListener('change', function () { fieldOk($(id)); }); });
+  $('adjForm').addEventListener('submit', function (e) {
+    e.preventDefault(); tried = true; var bad = 0, first = null;
+    if (!$('date').value) { fieldErr($('date'), 'กรุณาเลือกวันที่'); bad++; first = first || $('date'); }
+    if (!$('reason').value) { fieldErr($('reason'), 'กรุณาเลือกเหตุผลการปรับปรุง'); bad++; first = first || $('reason'); }
+    if (!LINES.length) { $('lines').classList.add('invalid'); $('linesHint').textContent = 'กรุณาเพิ่มสินค้าอย่างน้อย 1 รายการ'; $('linesHint').style.color = 'var(--danger-text)'; bad++; first = first || q; }
+    else { $('linesHint').textContent = 'ปรับได้หลายรายการในเอกสารเดียว'; $('linesHint').style.color = ''; }
+    renderLines();
+    var lineBad = LINES.filter(function (l) { return lineError(l); }).length; bad += lineBad;
+    if (lineBad && !first) first = document.querySelector('.gg-stepper.invalid input');
+    $('formOk').classList.remove('show');
+    if (bad) { $('formAlertText').textContent = 'มี ' + bad + ' จุดที่ต้องแก้ไข'; $('formAlert').classList.add('show'); if (first) first.focus(); return; }
+    $('formAlert').classList.remove('show');
+    $('formOkText').textContent = 'บันทึก ' + $('docRef').textContent + ' แล้ว ปรับสต็อก ' + LINES.length + ' รายการ';
+    $('formOk').classList.add('show');
+  });
+
+  renderLines();
+})();
+/* wire every menu and draw every icon once the page content exists */
+document.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+GG.hydrateIcons(document);
+</script>
+</body>
+</html>

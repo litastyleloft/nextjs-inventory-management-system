@@ -1,0 +1,156 @@
+===CSS===
+.gg-table td { height: 60px; }
+.ex-table .gg-table th, .ex-table .gg-table td { padding-left: 14px; padding-right: 14px; }
+.ex-table .gg-table th:first-child, .ex-table .gg-table td:first-child { padding-left: var(--space-6); }
+.ex-table td.title { white-space: normal; min-width: 220px; color: var(--ink); font-weight: 600; }
+.sub, .created span { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.created { font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+.cat-chip { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--surface-sunken); border: 1px solid var(--border); font: 600 12px/1 var(--font-sans); color: var(--ink-2); white-space: nowrap; }
+.toolbar-filters { display: flex; gap: var(--space-3); }
+.toolbar-filters .gg-control { width: 220px; }
+.gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.gg-table tfoot .label { font: 700 15px/20px var(--font-display); }
+.toast { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: calc(var(--z-modal) + 5); display: none; }
+.toast.show { display: inline-flex; box-shadow: var(--shadow-2); height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">รายการค่าใช้จ่าย</h1>
+          <p class="gg-pagehead-sub" id="summaryLine">ค่าใช้จ่ายดำเนินงานของคลังสินค้าและหน้าร้าน</p>
+        </div>
+      </div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div class="gg-row" style="flex:1;gap:var(--space-3)">
+            <div style="width:320px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="search" placeholder="ค้นหาด้วยเลขที่ ชื่อรายการ หรือหมวดหมู่" aria-label="ค้นหาค่าใช้จ่าย"></div></div>
+            <div class="toolbar-filters">
+              <div class="gg-control"><select id="fCat" aria-label="กรองตามหมวดหมู่"><option value="">ทุกหมวดหมู่</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+              <div class="gg-control" style="width:190px"><select id="fWh" aria-label="กรองตามคลังสินค้า"><option value="">ทุกคลังสินค้า</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            </div>
+          </div>
+          <a class="gg-btn gg-btn-primary" href="lts-create-expense.html"><span data-icon="plus"></span>บันทึกค่าใช้จ่าย</a>
+        </div>
+
+        <div class="gg-table-wrap ex-table">
+          <table class="gg-table">
+            <thead><tr>
+              <th class="sortable" data-sort="ref">เลขที่อ้างอิง<span class="gg-sort"></span></th>
+              <th class="sortable" data-sort="title">ชื่อรายการ<span class="gg-sort"></span></th>
+              <th>คลังสินค้า</th>
+              <th class="sortable" data-sort="catName">หมวดหมู่ค่าใช้จ่าย<span class="gg-sort"></span></th>
+              <th class="right sortable" data-sort="amount">จำนวนเงิน<span class="gg-sort"></span></th>
+              <th class="sortable" data-sort="created">วันที่สร้าง<span class="gg-sort"></span></th>
+              <th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+            <tfoot><tr><td class="label">รวม</td><td id="footCount" class="gg-hint" style="font-weight:500"></td><td></td><td></td><td class="right gg-num" id="footAmt"></td><td colspan="2"></td></tr></tfoot>
+          </table>
+        </div>
+        <div class="gg-pager">
+          <div class="gg-pager-size">แถวต่อหน้า
+            <div class="gg-control"><select id="pageSize" aria-label="แถวต่อหน้า"><option>10</option><option>25</option><option>50</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <span class="gg-num" id="count" style="margin-left:8px"></span>
+          </div>
+          <nav class="gg-pager-pages" aria-label="เลขหน้า" id="pages"></nav>
+        </div>
+      </div>
+
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon"><span data-icon="trash"></span></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn gg-btn-danger" id="confirmDelete">ลบค่าใช้จ่าย</button></div>
+        </div>
+      </div>
+
+      <span class="toast gg-badge success" id="toast" role="status"><span class="gg-badge-dot"></span><span id="toastText"></span></span>
+===JS===
+/*@include sales-data*/
+/*@include transfer-data*/
+/*@include expense-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc, E = D.EXPENSES;
+  function enrich(e) { e.catName = D.ecat(e.category).name; e.whName = D.wh(e.warehouse).name; return e; }
+  E.forEach(enrich);
+  D.ECATS.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.name; $('fCat').appendChild(o); });
+  D.WAREHOUSES.forEach(function (w) { var o = document.createElement('option'); o.value = w.id; o.textContent = w.name; $('fWh').appendChild(o); });
+  var qs = new URLSearchParams(location.search);
+  var state = { q: '', cat: qs.get('category') || '', wh: '', sort: { key: 'created', dir: 'desc' }, page: 1, size: 10 };
+  $('fCat').value = state.cat;
+  function filtered() {
+    var q = state.q.toLowerCase();
+    var list = E.filter(function (e) { return (!q || (e.ref + ' ' + e.title + ' ' + e.catName + ' ' + e.whName).toLowerCase().indexOf(q) >= 0) && (!state.cat || e.category === state.cat) && (!state.wh || e.warehouse === state.wh); });
+    var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+    list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y, 'th') : x - y) * dir; });
+    return list;
+  }
+  function render() {
+    var list = filtered(), total = list.length, pages = Math.max(1, Math.ceil(total / state.size));
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * state.size, rows = list.slice(start, start + state.size), body = $('rows');
+    body.innerHTML = rows.length ? rows.map(function (e, i) {
+      return '<tr><td><span class="gg-badge neutral mono">' + e.ref + '</span></td>' +
+        '<td class="title">' + esc(e.title) + (e.details ? '<span class="sub">' + esc(e.details) + '</span>' : '') + '</td>' +
+        '<td>' + esc(e.whName) + '</td><td><span class="cat-chip">' + esc(e.catName) + '</span></td>' +
+        '<td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(e.amount) + '</td>' +
+        '<td class="created">' + GG.thDate(e.created) + '<span>' + GG.thTime(e.created) + '</span></td>' +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu>' +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + e.ref + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+          '<div class="gg-menu' + (i >= rows.length - 2 && rows.length > 4 ? ' up' : '') + '" role="menu" hidden>' +
+            '<a role="menuitem" class="gg-menu-item" href="lts-create-expense.html?edit=' + e.ref + '"><span data-icon="edit" data-size="sm"></span>แก้ไขค่าใช้จ่าย</a>' +
+            '<div class="gg-menu-sep" role="separator"></div>' +
+            '<button type="button" role="menuitem" class="gg-menu-item danger" data-delete="' + e.ref + '"><span data-icon="trash" data-size="sm"></span>ลบค่าใช้จ่าย</button>' +
+          '</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="7" class="gg-empty">ไม่พบค่าใช้จ่ายที่ตรงกับตัวกรอง</td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-delete]').forEach(function (b) { b.addEventListener('click', function () { askDelete(D.expense(b.dataset.delete)); }); });
+    GG.hydrateIcons(body);
+    $('footCount').textContent = total + ' รายการ';
+    $('footAmt').textContent = GG.baht(list.reduce(function (a, e) { return a + e.amount; }, 0));
+    var month = E.reduce(function (m, e) { return e.created > m ? e.created : m; }, '').slice(0, 7);
+    var mSum = E.filter(function (e) { return e.created.slice(0, 7) === month; }).reduce(function (a, e) { return a + e.amount; }, 0);
+    $('summaryLine').textContent = 'ค่าใช้จ่ายดำเนินงานของคลังสินค้าและหน้าร้าน · เดือนนี้ ' + GG.baht(mSum);
+    $('count').textContent = (total ? start + 1 : 0) + '–' + Math.min(total, start + state.size) + ' จาก ' + total;
+    var nav = $('pages'); nav.innerHTML = '';
+    function pb(label, iconName, page, disabled, active) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gg-page' + (active ? ' active' : ''); b.disabled = disabled;
+      if (iconName) { b.setAttribute('aria-label', label); b.appendChild(GG.icon(iconName, 'sm')); } else b.textContent = label;
+      if (active) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { state.page = page; render(); });
+      nav.appendChild(b);
+    }
+    pb('หน้าแรก', 'chevrons-left', 1, state.page <= 1); pb('หน้าก่อนหน้า', 'chevron-left', state.page - 1, state.page <= 1);
+    for (var k = 1; k <= pages; k++) pb(String(k), null, k, false, k === state.page);
+    pb('หน้าถัดไป', 'chevron-right', state.page + 1, state.page >= pages); pb('หน้าสุดท้าย', 'chevrons-right', pages, state.page >= pages);
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort.key === th.dataset.sort;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var h = th.querySelector('.gg-sort'); h.innerHTML = ''; h.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+  }
+  $('search').addEventListener('input', function (e) { state.q = e.target.value; state.page = 1; render(); });
+  $('fCat').addEventListener('change', function (e) { state.cat = e.target.value; state.page = 1; render(); });
+  $('fWh').addEventListener('change', function (e) { state.wh = e.target.value; state.page = 1; render(); });
+  $('pageSize').addEventListener('change', function (e) { state.size = +e.target.value; state.page = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) { th.addEventListener('click', function () { var k = th.dataset.sort; state.sort = state.sort.key === k ? { key: k, dir: state.sort.dir === 'asc' ? 'desc' : 'asc' } : { key: k, dir: 'asc' }; render(); }); });
+
+  function closeModal(m) { m.hidden = true; }
+  var cm = $('confirm');
+  cm.addEventListener('mousedown', function (e) { if (e.target === cm) closeModal(cm); });
+  cm.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(cm); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !cm.hidden) closeModal(cm); });
+  function toast(t) { $('toastText').textContent = t; $('toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(function () { $('toast').classList.remove('show'); }, 2800); }
+  var pending = null;
+  function askDelete(e) {
+    pending = e; $('confirmTitle').textContent = 'ลบค่าใช้จ่าย ' + e.ref + ' ใช่หรือไม่?';
+    $('confirmText').textContent = '"' + e.title + '" จำนวน ' + GG.baht(e.amount) + ' จะถูกลบออกจากรายงานค่าใช้จ่าย การลบนี้ไม่สามารถย้อนกลับได้';
+    cm.hidden = false;
+  }
+  $('confirmDelete').addEventListener('click', function () { if (pending) { E.splice(E.indexOf(pending), 1); toast('ลบค่าใช้จ่าย ' + pending.ref + ' แล้ว'); } pending = null; closeModal(cm); render(); });
+
+  render();
+  if (qs.get('saved')) toast('บันทึกค่าใช้จ่าย ' + qs.get('saved') + ' แล้ว (ข้อมูลตัวอย่างไม่ได้บันทึกถาวร)');
+})();

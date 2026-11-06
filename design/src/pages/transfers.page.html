@@ -1,0 +1,245 @@
+===CSS===
+.gg-table td { height: 60px; }
+.tr-table .gg-table th, .tr-table .gg-table td { padding-left: 12px; padding-right: 12px; }
+.tr-table .gg-table th:first-child, .tr-table .gg-table td:first-child { padding-left: var(--space-6); width: 44px; }
+.created { font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+.created span, .sub { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.route { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+.wh { color: var(--ink); font-weight: 600; }
+.filters { display: none; gap: var(--space-4); align-items: flex-end; padding: 0 var(--space-6) var(--space-5); }
+.filters.open { display: flex; }
+.filters .gg-field { width: 220px; }
+.gg-btn.on { background: var(--primary-soft); border-color: var(--primary); }
+.bulk { display: none; align-items: center; gap: var(--space-3); font: 600 13px/18px var(--font-sans); color: var(--primary); }
+.bulk.show { display: inline-flex; }
+tr.picked td { background: var(--primary-soft); }
+.gg-table tfoot td { font: 700 14px/20px var(--font-sans); }
+.gg-table tfoot .label { font: 700 15px/20px var(--font-display); }
+.toast { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: calc(var(--z-modal) + 5); display: none; }
+.toast.show { display: inline-flex; box-shadow: var(--shadow-2); height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+.view-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); margin-bottom: var(--space-5); }
+.view-grid .k { font: 600 12px/18px var(--font-sans); color: var(--muted); }
+.view-grid .v { font: 500 14px/20px var(--font-sans); color: var(--ink); margin-top: 2px; }
+.view-lines { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.view-lines .gg-table td { height: 48px; }
+.view-lines .gg-table th:first-child, .view-lines .gg-table td:first-child { padding-left: var(--space-4); }
+.view-total { display: flex; justify-content: flex-end; gap: var(--space-6); margin-top: var(--space-4); font: 500 14px/20px var(--font-sans); color: var(--ink-2); }
+.view-total b { color: var(--primary); font: 700 16px/20px var(--font-display); }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">โอนย้ายสินค้า</h1>
+          <p class="gg-pagehead-sub" id="summaryLine">ย้ายผ้าระหว่างคลังสินค้าและหน้าร้าน</p>
+        </div>
+      </div>
+
+      <div class="gg-table-card">
+        <div class="gg-table-toolbar">
+          <div class="gg-row" style="flex:1;gap:var(--space-4)">
+            <div style="width:340px"><div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="search" placeholder="ค้นหาด้วยเลขที่อ้างอิงหรือคลังสินค้า" aria-label="ค้นหารายการโอนย้าย"></div></div>
+            <div class="bulk" id="bulk"><span id="bulkText"></span>
+              <button type="button" class="gg-btn gg-btn-secondary sm" id="bulkClear">ยกเลิกการเลือก</button>
+              <button type="button" class="gg-btn gg-btn-danger sm" id="bulkDelete"><span data-icon="trash" data-size="sm"></span>ลบที่เลือก</button></div>
+          </div>
+          <div class="gg-row">
+            <button type="button" class="gg-btn gg-btn-secondary" id="filterBtn" aria-expanded="false" aria-controls="filters"><span data-icon="filter"></span>ตัวกรอง</button>
+            <a class="gg-btn gg-btn-primary" href="lts-create-transfer.html"><span data-icon="plus"></span>สร้างรายการโอนย้าย</a>
+          </div>
+        </div>
+        <div class="filters" id="filters">
+          <div class="gg-field"><label class="gg-label" for="fFrom">จากคลัง</label>
+            <div class="gg-control"><select id="fFrom"><option value="">ทุกคลัง</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <div class="gg-field"><label class="gg-label" for="fTo">ไปยังคลัง</label>
+            <div class="gg-control"><select id="fTo"><option value="">ทุกคลัง</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <div class="gg-field"><label class="gg-label" for="fStatus">สถานะ</label>
+            <div class="gg-control"><select id="fStatus"><option value="">ทุกสถานะ</option><option value="completed">โอนสำเร็จ</option><option value="sent">ระหว่างขนส่ง</option><option value="pending">รอดำเนินการ</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          <button type="button" class="gg-btn gg-btn-ghost" id="clearFilters">ล้างตัวกรอง</button>
+        </div>
+
+        <div class="gg-table-wrap tr-table">
+          <table class="gg-table">
+            <thead><tr>
+              <th><input type="checkbox" class="gg-check" id="checkAll" aria-label="เลือกทั้งหมดในหน้านี้"></th>
+              <th class="sortable" data-sort="ref">เลขที่อ้างอิง<span class="gg-sort"></span></th>
+              <th>จากคลัง</th>
+              <th>ไปยังคลัง</th>
+              <th class="right">จำนวนรายการ</th>
+              <th class="right sortable" data-sort="total">ยอดรวมสุทธิ<span class="gg-sort"></span></th>
+              <th>สถานะ</th>
+              <th class="sortable" data-sort="created">วันที่สร้าง<span class="gg-sort"></span></th>
+              <th class="gg-actions-cell right"><span class="gg-sr">การดำเนินการ</span></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+            <tfoot><tr><td></td><td class="label">รวม</td><td></td><td></td><td class="right gg-num" id="footItems"></td><td class="right gg-num" id="footTotal"></td><td colspan="3"></td></tr></tfoot>
+          </table>
+        </div>
+        <div class="gg-pager">
+          <div class="gg-pager-size">แถวต่อหน้า
+            <div class="gg-control"><select id="pageSize" aria-label="แถวต่อหน้า"><option>10</option><option>25</option><option>50</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+            <span class="gg-num" id="count" style="margin-left:8px"></span>
+          </div>
+          <nav class="gg-pager-pages" aria-label="เลขหน้า" id="pages"></nav>
+        </div>
+      </div>
+
+      <!-- View -->
+      <div class="gg-scrim" id="viewModal" hidden>
+        <div class="gg-modal lg" role="dialog" aria-modal="true" aria-labelledby="viewTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="viewTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body" id="viewBody"></div>
+          <div class="gg-modal-foot">
+            <button type="button" class="gg-btn gg-btn-secondary" id="viewPdf"><span data-icon="download"></span>ดาวน์โหลด PDF</button>
+            <a class="gg-btn gg-btn-primary" id="viewEdit" href="#"><span data-icon="edit"></span>แก้ไขรายการโอนย้าย</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm delete -->
+      <div class="gg-scrim" id="confirm" hidden>
+        <div class="gg-modal sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+          <div class="gg-modal-head"><h2 class="gg-modal-title" id="confirmTitle"></h2>
+            <button type="button" class="gg-btn gg-btn-ghost sm icon-only" data-close aria-label="ปิด"><span data-icon="x"></span></button></div>
+          <div class="gg-modal-body"><div class="gg-modal-confirm"><div class="gg-stat-icon"><span data-icon="trash"></span></div><div id="confirmText" style="color:var(--ink-2)"></div></div></div>
+          <div class="gg-modal-foot"><button type="button" class="gg-btn gg-btn-secondary" data-close>ยกเลิก</button><button type="button" class="gg-btn gg-btn-danger" id="confirmDelete"></button></div>
+        </div>
+      </div>
+
+      <span class="toast gg-badge success" id="toast" role="status"><span class="gg-badge-dot"></span><span id="toastText"></span></span>
+===JS===
+/*@include sales-data*/
+/*@include transfer-data*/
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc, T = D.TRANSFERS;
+  function enrich(t) { t.total = D.totals(t).grand; t.fromName = D.wh(t.from).name; t.toName = D.wh(t.to).name; return t; }
+  T.forEach(enrich);
+  D.WAREHOUSES.forEach(function (w) { ['fFrom', 'fTo'].forEach(function (id) { var o = document.createElement('option'); o.value = w.id; o.textContent = w.name; $(id).appendChild(o); }); });
+  var state = { q: '', from: '', to: '', status: '', sort: { key: 'created', dir: 'desc' }, page: 1, size: 10 }, picked = {};
+  function filtered() {
+    var q = state.q.toLowerCase();
+    var list = T.filter(function (t) {
+      return (!q || (t.ref + ' ' + t.fromName + ' ' + t.toName).toLowerCase().indexOf(q) >= 0) && (!state.from || t.from === state.from) && (!state.to || t.to === state.to) && (!state.status || t.status === state.status);
+    });
+    var k = state.sort.key, dir = state.sort.dir === 'desc' ? -1 : 1;
+    list.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * dir; });
+    return list;
+  }
+  var pageRows = [];
+  function render() {
+    var list = filtered(), total = list.length, pages = Math.max(1, Math.ceil(total / state.size));
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * state.size, rows = list.slice(start, start + state.size), body = $('rows'); pageRows = rows;
+    body.innerHTML = rows.length ? rows.map(function (t, i) {
+      return '<tr class="' + (picked[t.ref] ? 'picked' : '') + '"><td><input type="checkbox" class="gg-check" data-pick="' + t.ref + '"' + (picked[t.ref] ? ' checked' : '') + ' aria-label="เลือก ' + t.ref + '"></td>' +
+        '<td><span class="gg-badge neutral mono">' + t.ref + '</span></td>' +
+        '<td><span class="wh">' + esc(t.fromName) + '</span><span class="sub">' + esc(D.wh(t.from).area) + '</span></td>' +
+        '<td><span class="wh">' + esc(t.toName) + '</span><span class="sub">' + esc(D.wh(t.to).area) + '</span></td>' +
+        '<td class="right">' + t.lines.length + '</td>' +
+        '<td class="right" style="color:var(--ink);font-weight:600">' + GG.baht(t.total) + '</td>' +
+        '<td>' + D.badge(D.TSTATUS[t.status]) + '</td>' +
+        '<td class="created">' + GG.thDate(t.created) + '<span>' + GG.thTime(t.created) + '</span></td>' +
+        '<td class="gg-actions-cell right"><div class="gg-menu-anchor" data-menu>' +
+          '<button type="button" class="gg-btn gg-btn-ghost sm icon-only" aria-label="การดำเนินการสำหรับ ' + t.ref + '" aria-haspopup="menu"><span data-icon="more" data-size="sm"></span></button>' +
+          '<div class="gg-menu' + (i >= rows.length - 2 && rows.length > 4 ? ' up' : '') + '" role="menu" hidden>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-view="' + t.ref + '"><span data-icon="eye" data-size="sm"></span>ดูรายละเอียด</button>' +
+            '<button type="button" role="menuitem" class="gg-menu-item" data-pdf="' + t.ref + '"><span data-icon="download" data-size="sm"></span>ดาวน์โหลด PDF</button>' +
+            '<a role="menuitem" class="gg-menu-item" href="lts-create-transfer.html?edit=' + t.ref + '"><span data-icon="edit" data-size="sm"></span>แก้ไขรายการโอนย้าย</a>' +
+            '<div class="gg-menu-sep" role="separator"></div>' +
+            '<button type="button" role="menuitem" class="gg-menu-item danger" data-delete="' + t.ref + '"><span data-icon="trash" data-size="sm"></span>ลบรายการโอนย้าย</button>' +
+          '</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="9" class="gg-empty">ไม่พบรายการโอนย้ายที่ตรงกับตัวกรอง</td></tr>';
+    body.querySelectorAll('[data-menu]').forEach(GG.wireMenu);
+    body.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { openView(D.transfer(b.dataset.view)); }); });
+    body.querySelectorAll('[data-pdf]').forEach(function (b) { b.addEventListener('click', function () { pdf(D.transfer(b.dataset.pdf)); }); });
+    body.querySelectorAll('[data-delete]').forEach(function (b) { b.addEventListener('click', function () { askDelete([D.transfer(b.dataset.delete)]); }); });
+    GG.hydrateIcons(body);
+    $('footItems').textContent = list.reduce(function (a, t) { return a + t.lines.length; }, 0);
+    $('footTotal').textContent = GG.baht(list.reduce(function (a, t) { return a + t.total; }, 0));
+    var moving = T.filter(function (t) { return t.status !== 'completed'; }).length;
+    $('summaryLine').textContent = 'ย้ายผ้าระหว่างคลังสินค้าและหน้าร้าน · ' + T.length + ' รายการ' + (moving ? ' · ยังไม่เสร็จ ' + moving + ' รายการ' : '');
+    $('count').textContent = (total ? start + 1 : 0) + '–' + Math.min(total, start + state.size) + ' จาก ' + total;
+    var nav = $('pages'); nav.innerHTML = '';
+    function pb(label, iconName, page, disabled, active) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gg-page' + (active ? ' active' : ''); b.disabled = disabled;
+      if (iconName) { b.setAttribute('aria-label', label); b.appendChild(GG.icon(iconName, 'sm')); } else b.textContent = label;
+      if (active) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { state.page = page; render(); });
+      nav.appendChild(b);
+    }
+    pb('หน้าแรก', 'chevrons-left', 1, state.page <= 1); pb('หน้าก่อนหน้า', 'chevron-left', state.page - 1, state.page <= 1);
+    for (var k = 1; k <= pages; k++) pb(String(k), null, k, false, k === state.page);
+    pb('หน้าถัดไป', 'chevron-right', state.page + 1, state.page >= pages); pb('หน้าสุดท้าย', 'chevrons-right', pages, state.page >= pages);
+    document.querySelectorAll('th.sortable').forEach(function (th) {
+      var on = state.sort.key === th.dataset.sort;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none');
+      var h = th.querySelector('.gg-sort'); h.innerHTML = ''; h.appendChild(GG.icon(on ? (state.sort.dir === 'asc' ? 'sort-up' : 'sort-down') : 'sort', 'sm'));
+    });
+    syncBulk();
+  }
+  function syncBulk() {
+    var n = Object.keys(picked).length, onPage = pageRows.filter(function (t) { return picked[t.ref]; }).length;
+    $('bulk').classList.toggle('show', n > 0); $('bulkText').textContent = 'เลือกแล้ว ' + n + ' รายการ';
+    $('checkAll').checked = pageRows.length > 0 && onPage === pageRows.length; $('checkAll').indeterminate = onPage > 0 && onPage < pageRows.length;
+  }
+  $('rows').addEventListener('change', function (e) {
+    var ref = e.target.dataset.pick; if (!ref) return;
+    if (e.target.checked) picked[ref] = true; else delete picked[ref];
+    e.target.closest('tr').classList.toggle('picked', e.target.checked); syncBulk();
+  });
+  $('checkAll').addEventListener('change', function () { var on = $('checkAll').checked; pageRows.forEach(function (t) { if (on) picked[t.ref] = true; else delete picked[t.ref]; }); render(); });
+  $('bulkClear').addEventListener('click', function () { picked = {}; render(); });
+  $('bulkDelete').addEventListener('click', function () { askDelete(T.filter(function (t) { return picked[t.ref]; })); });
+
+  $('search').addEventListener('input', function (e) { state.q = e.target.value; state.page = 1; render(); });
+  $('pageSize').addEventListener('change', function (e) { state.size = +e.target.value; state.page = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(function (th) { th.addEventListener('click', function () { var k = th.dataset.sort; state.sort = state.sort.key === k ? { key: k, dir: state.sort.dir === 'asc' ? 'desc' : 'asc' } : { key: k, dir: 'asc' }; render(); }); });
+  $('filterBtn').addEventListener('click', function () { var o = $('filters').classList.toggle('open'); $('filterBtn').classList.toggle('on', o); $('filterBtn').setAttribute('aria-expanded', String(o)); });
+  [['fFrom', 'from'], ['fTo', 'to'], ['fStatus', 'status']].forEach(function (x) { $(x[0]).addEventListener('change', function (e) { state[x[1]] = e.target.value; state.page = 1; render(); }); });
+  $('clearFilters').addEventListener('click', function () { ['q', 'from', 'to', 'status'].forEach(function (k) { state[k] = ''; }); ['search', 'fFrom', 'fTo', 'fStatus'].forEach(function (id) { $(id).value = ''; }); render(); });
+
+  function closeModal(m) { m.hidden = true; }
+  document.querySelectorAll('.gg-scrim').forEach(function (m) {
+    m.addEventListener('mousedown', function (e) { if (e.target === m) closeModal(m); });
+    m.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeModal(m); }); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key !== 'Escape') return; var open = [].filter.call(document.querySelectorAll('.gg-scrim'), function (m) { return !m.hidden; }); if (open.length) closeModal(open[open.length - 1]); });
+  function toast(t) { $('toastText').textContent = t; $('toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(function () { $('toast').classList.remove('show'); }, 2800); }
+
+  var viewing = null;
+  function openView(t) {
+    viewing = t; var k = D.totals(t);
+    $('viewTitle').textContent = 'รายการโอนย้าย ' + t.ref;
+    $('viewBody').innerHTML = '<div class="view-grid"><div><div class="k">จากคลัง</div><div class="v">' + esc(t.fromName) + '</div></div><div><div class="k">ไปยังคลัง</div><div class="v">' + esc(t.toName) + '</div></div><div><div class="k">วันที่</div><div class="v">' + GG.thDate(t.created) + ' ' + GG.thTime(t.created) + '</div></div>' +
+      '<div><div class="k">สถานะ</div><div class="v">' + D.badge(D.TSTATUS[t.status]) + '</div></div><div><div class="k">ค่าขนส่ง</div><div class="v">' + GG.baht(k.ship) + '</div></div><div><div class="k">หมายเหตุ</div><div class="v">' + (esc(t.notes) || '—') + '</div></div></div>' +
+      '<div class="view-lines"><table class="gg-table compact"><thead><tr><th>สินค้า</th><th class="right">จำนวน</th><th class="right">ต้นทุนต่อหน่วย</th><th class="right">ยอดรวมย่อย</th></tr></thead><tbody>' +
+      t.lines.map(function (l) { var p = D.product(l.code), c = D.calc(l); return '<tr><td><span style="color:var(--ink);font-weight:600">' + esc(p.name) + '</span> <span class="gg-badge neutral mono" style="height:20px;padding:0 6px;font-size:11px">' + p.code + '</span></td><td class="right">' + D.num(l.qty) + ' ' + D.SHORT[l.unit || p.unit] + '</td><td class="right">' + GG.baht(c.unitTotal) + '</td><td class="right">' + GG.baht(c.sub) + '</td></tr>'; }).join('') +
+      '</tbody></table></div><div class="view-total"><span>สินค้า ' + GG.baht(k.sub) + '</span><span>ยอดรวมสุทธิ <b>' + GG.baht(k.grand) + '</b></span></div>';
+    $('viewEdit').href = 'lts-create-transfer.html?edit=' + t.ref;
+    $('viewModal').hidden = false;
+  }
+  $('viewPdf').addEventListener('click', function () { if (viewing) pdf(viewing); });
+  function pdf(t) {
+    var k = D.totals(t);
+    if (!D.printDoc('ใบโอนย้ายสินค้า ' + t.ref, '<div>จาก ' + esc(t.fromName) + ' ไปยัง ' + esc(t.toName) + ' · วันที่ ' + GG.thDate(t.created) + '</div>',
+      '<tr><th>สินค้า</th><th class="r">จำนวน</th><th class="r">ต้นทุนต่อหน่วย</th><th class="r">ยอดรวมย่อย</th></tr>' + t.lines.map(function (l) { var p = D.product(l.code), c = D.calc(l); return '<tr><td>' + esc(p.name) + ' (' + p.code + ')</td><td class="r">' + D.num(l.qty) + ' ' + D.SHORT[l.unit || p.unit] + '</td><td class="r">' + GG.baht(c.unitTotal) + '</td><td class="r">' + GG.baht(c.sub) + '</td></tr>'; }).join(''),
+      '<tr><td colspan="3" class="r">ค่าขนส่ง</td><td class="r">' + GG.baht(k.ship) + '</td></tr><tr class="tot"><td colspan="3" class="r">ยอดรวมสุทธิ</td><td class="r">' + GG.baht(k.grand) + '</td></tr>')) toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ กรุณาอนุญาตป๊อปอัปเพื่อดาวน์โหลด PDF');
+  }
+  var pending = [];
+  function askDelete(list) {
+    pending = list; var one = list.length === 1, done = list.filter(function (t) { return t.status !== 'pending'; }).length;
+    $('confirmTitle').textContent = one ? 'ลบรายการโอนย้าย ' + list[0].ref + ' ใช่หรือไม่?' : 'ลบรายการโอนย้าย ' + list.length + ' รายการใช่หรือไม่?';
+    $('confirmText').textContent = (done ? 'ผ้าที่ย้ายไปแล้วจะถูกคืนกลับคลังต้นทาง ' : '') + 'การลบนี้ไม่สามารถย้อนกลับได้';
+    $('confirmDelete').textContent = one ? 'ลบรายการโอนย้าย' : 'ลบ ' + list.length + ' รายการ';
+    $('confirm').hidden = false;
+  }
+  $('confirmDelete').addEventListener('click', function () {
+    pending.forEach(function (t) { T.splice(T.indexOf(t), 1); delete picked[t.ref]; });
+    toast(pending.length === 1 ? 'ลบรายการโอนย้าย ' + pending[0].ref + ' แล้ว' : 'ลบ ' + pending.length + ' รายการแล้ว');
+    pending = []; closeModal($('confirm')); render();
+  });
+
+  render();
+  var saved = new URLSearchParams(location.search).get('saved');
+  if (saved) toast('บันทึกรายการโอนย้าย ' + saved + ' แล้ว (ข้อมูลตัวอย่างไม่ได้บันทึกถาวร)');
+})();

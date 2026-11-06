@@ -1,0 +1,272 @@
+===CSS===
+/* Fabric swatches depict the cloth, not UI tokens. */
+.swatch { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid var(--border); display: block; flex: none; }
+.sw-poplin { background-color: #f3f1ea; background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0 1px, transparent 1px 3px); }
+.sw-denim { background-color: #2e4a74; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.16) 0 1.5px, transparent 1.5px 4px); }
+.sw-floral { background-color: #f6ead8; background-image: radial-gradient(circle at 30% 30%, #c2456b 0 4px, transparent 5px), radial-gradient(circle at 72% 64%, #d9a53b 0 3px, transparent 4px), radial-gradient(circle at 70% 22%, #3f7d5c 0 2.5px, transparent 3.5px), radial-gradient(circle at 26% 78%, #3f7d5c 0 2.5px, transparent 3.5px); }
+.sw-georgette { background-color: #1f2b4d; background-image: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 48%, transparent 66%); }
+.sw-linen { background-color: #d8cab0; background-image: repeating-linear-gradient(0deg, rgba(80,60,30,.12) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(80,60,30,.1) 0 1px, transparent 1px 5px); }
+.sw-jersey { background-color: #a7a9ad; background-image: radial-gradient(rgba(255,255,255,.35) 0.8px, transparent 1.2px), radial-gradient(rgba(0,0,0,.18) 0.8px, transparent 1.2px); background-size: 4px 4px, 5px 5px; background-position: 0 0, 2px 2px; }
+
+.adj-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+.gg-hint, .gg-error { line-height: 18px; }
+.ref { display: flex; align-items: center; height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); font: 500 14px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); }
+.gg-control select.is-placeholder { color: var(--placeholder); }
+.gg-control select option { color: var(--ink); }
+
+/* Product search with results menu */
+.psearch { position: relative; margin-top: var(--space-6); }
+.psearch .gg-control { height: 48px; }
+.psearch .gg-control input { font-size: 15px; }
+.presults { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: var(--z-menu); max-height: 320px; overflow-y: auto; padding: 6px; background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-2); }
+.presult { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: 8px 10px; border: 0; background: none; border-radius: var(--radius-sm); text-align: left; cursor: pointer; font: 400 14px/20px var(--font-sans); color: var(--ink-2); }
+.presult:hover, .presult.on { background: var(--surface-hover); }
+.presult .n { color: var(--ink); font-weight: 600; }
+.presult .meta { margin-left: auto; display: flex; gap: var(--space-2); align-items: center; }
+.presult .added { font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.presults .none { padding: 12px 10px; color: var(--muted); }
+
+/* Lines */
+.lines-title { display: flex; align-items: baseline; gap: var(--space-3); margin: var(--space-8) 0 var(--space-3); }
+.lines-title h2 { margin: 0; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.lines { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: visible; }
+.lines .gg-table th:first-child { border-top-left-radius: calc(var(--radius-lg) - 1px); }
+.lines .gg-table th:last-child { border-top-right-radius: calc(var(--radius-lg) - 1px); }
+.lines .gg-table th { border-top: 0; }
+.lines .gg-table td { height: 76px; }
+.lines .gg-table th, .lines .gg-table td { padding-left: 9px; padding-right: 9px; }
+.lines .gg-table th:first-child, .lines .gg-table td:first-child { padding-left: var(--space-5); }
+.lines .gg-table th:last-child, .lines .gg-table td:last-child { padding-right: var(--space-4); }
+.lines .pcol { white-space: normal; min-width: 180px; }
+.pcell .code { margin-top: 4px; height: 20px; padding: 0 6px; font-size: 11px; }
+.lines .gg-table tbody tr:last-child td { border-bottom: 0; }
+.lines.invalid { border-color: var(--danger); }
+.pcell { display: flex; align-items: center; gap: var(--space-3); }
+.pcell .n { color: var(--ink); font-weight: 600; }
+.lines .gg-control { height: 36px; }
+.lines .gg-control select { font-size: 13px; padding-left: 12px; }
+.lot-ctl { width: 150px; }
+.lot-ctl select { padding-right: 30px !important; font-variant-numeric: tabular-nums; }
+.lot-ctl .gg-caret { right: 8px; }
+.lines .pcol { max-width: 260px; }
+.type-ctl { width: 136px; }
+.qty-wrap { display: inline-flex; align-items: center; gap: var(--space-2); }
+.qty-wrap .u { font: 500 13px/18px var(--font-sans); color: var(--muted); min-width: 22px; }
+.gg-stepper input { width: 56px; }
+.gg-stepper.invalid { border-color: var(--danger); }
+.after { font-weight: 600; color: var(--ink); }
+.after .delta { display: block; font: 600 12px/18px var(--font-sans); }
+.after .delta.up { color: var(--success-text); }
+.after .delta.down { color: var(--danger-text); }
+.row-err { display: block; margin-top: 2px; font: 500 12px/18px var(--font-sans); color: var(--danger-text); white-space: normal; max-width: 180px; margin-left: auto; }
+.empty-lines { padding: var(--space-12) var(--space-6); text-align: center; color: var(--muted); }
+.empty-lines .gg-icon { width: 28px; height: 28px; margin-bottom: var(--space-2); color: var(--border-input); }
+.lines-summary { display: flex; justify-content: flex-end; gap: var(--space-6); padding: var(--space-3) var(--space-6); border-top: 1px solid var(--border); background: var(--surface-sunken); border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.lines-summary b { color: var(--ink); font-weight: 600; }
+.lines-summary .up { color: var(--success-text); }
+.lines-summary .down { color: var(--danger-text); }
+.notes { margin-top: var(--space-6); }
+.form-alert { display: none; align-items: center; gap: var(--space-2); margin-right: auto; }
+.form-alert.show { display: inline-flex; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">สร้างรายการปรับปรุงสต็อก</h1>
+          <p class="gg-pagehead-sub">ปรับจำนวนผ้าคงเหลือให้ตรงกับของจริง เช่น หลังตรวจนับ พบผ้าชำรุด หรือตัดเศษปลายม้วน</p>
+        </div>
+        <div class="gg-pagehead-actions">
+          <a class="gg-btn gg-btn-secondary" href="lts-products.html" id="backBtn"><span data-icon="chevron-left"></span>ย้อนกลับ</a>
+        </div>
+      </div>
+
+      <form class="gg-card" id="adjForm" novalidate>
+        <div class="gg-card-body" style="padding-top:var(--space-6)">
+          <div class="adj-head">
+            <div class="gg-field"><span class="gg-label">เลขที่เอกสาร</span>
+              <div class="ref" id="docRef">ADJ-2569-0013</div>
+              <div class="gg-hint">ระบบออกเลขให้อัตโนมัติ</div></div>
+            <div class="gg-field"><label class="gg-label" for="warehouse">คลังสินค้า<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control disabled"><select id="warehouse" required disabled><option selected>คลังสินค้าหลัก</option><option>หน้าร้านสำเพ็ง</option><option>ฝ่ายตัดผ้า</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>
+              <div class="gg-hint">ล็อกตามคลังสินค้าที่คุณดูแล</div></div>
+            <div class="gg-field"><label class="gg-label" for="date">วันที่<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><input id="date" type="date" required></div>
+              <div class="gg-hint" id="dateTh"></div></div>
+            <div class="gg-field"><label class="gg-label" for="reason">เหตุผลการปรับปรุง<span class="gg-req" aria-hidden="true">*</span></label>
+              <div class="gg-control"><select id="reason" required><option value="" disabled selected>เลือกเหตุผล</option><option>ตรวจนับสต็อก</option><option>ผ้าชำรุด / มีตำหนิ</option><option>เศษผ้า / ปลายม้วน</option><option>ผ้าหดตัวหลังฟอก</option><option>สูญหาย</option><option>พบสินค้าเกิน</option><option>อื่น ๆ</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></div>
+          </div>
+
+          <div class="psearch" id="psearch">
+            <label class="gg-label" for="pq" style="display:block;margin-bottom:var(--space-2)">สินค้า</label>
+            <div class="gg-control"><span class="gg-lead"><span data-icon="search" data-size="sm"></span></span>
+              <input id="pq" autocomplete="off" placeholder="ค้นหาผ้าด้วยรหัสหรือชื่อ แล้วกด Enter เพื่อเพิ่ม" role="combobox" aria-expanded="false" aria-controls="presults" aria-autocomplete="list"></div>
+            <div class="presults" id="presults" role="listbox" hidden></div>
+          </div>
+
+          <div class="lines-title"><h2>รายการสินค้า<span class="gg-req" aria-hidden="true">*</span></h2><span class="gg-hint" id="linesHint">ปรับได้หลายรายการในเอกสารเดียว</span></div>
+          <div class="lines" id="lines">
+            <div class="gg-table-wrap">
+              <table class="gg-table">
+                <thead><tr>
+                  <th>สินค้า</th><th>ล็อตย้อม</th><th class="right">คงเหลือ</th>
+                  <th>จำนวน</th><th>ประเภท</th><th class="right">คงเหลือหลังปรับ</th><th class="gg-actions-cell right"><span class="gg-sr">ลบรายการ</span></th>
+                </tr></thead>
+                <tbody id="lineRows"></tbody>
+              </table>
+            </div>
+            <div class="lines-summary" id="summary"></div>
+          </div>
+
+          <div class="gg-field notes"><label class="gg-label" for="notes">หมายเหตุ</label>
+            <div class="gg-control textarea"><textarea id="notes" rows="3" placeholder="เช่น ตรวจนับประจำเดือน พบผ้าเปียกน้ำ 2 ม้วน"></textarea></div></div>
+        </div>
+
+        <div class="gg-card-foot">
+          <span class="form-alert gg-badge danger" id="formAlert" role="alert"><span class="gg-badge-dot"></span><span id="formAlertText"></span></span>
+          <span class="form-alert gg-badge success" id="formOk" role="status"><span class="gg-badge-dot"></span><span id="formOkText"></span></span>
+          <a class="gg-btn gg-btn-secondary" href="lts-products.html">ยกเลิก</a>
+          <button type="submit" class="gg-btn gg-btn-primary"><span data-icon="check"></span>บันทึก</button>
+        </div>
+      </form>
+===JS===
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SHORT = { meter: 'ม.', kilogram: 'กก.', yard: 'หลา' };
+  var PRODUCTS = [
+    { code: 'COT58A101001', name: 'ผ้าคอตตอนป๊อปลิน 60s สีขาวออปติก', unit: 'yard', stock: 2680, alert: 330, swatch: 'poplin', lots: ['LOT-2409-03', 'LOT-2410-11'] },
+    { code: 'DEN58A201014', name: 'ผ้ายีนส์ยืด 10 ออนซ์ สีคราม', unit: 'yard', stock: 1290, alert: 220, swatch: 'denim', lots: ['LOT-2408-21', 'LOT-2410-02'] },
+    { code: 'VIS44B305022', name: 'ผ้าเรยอนพิมพ์ลายดอกไม้', unit: 'yard', stock: 700, alert: 165, swatch: 'floral', lots: ['LOT-2410-07'] },
+    { code: 'PLY58A410012', name: 'ผ้าจอร์เจ็ตโพลีเอสเตอร์ สีกรมท่า', unit: 'yard', stock: 82, alert: 110, swatch: 'georgette', lots: ['LOT-2407-15'] },
+    { code: 'LIN54C120003', name: 'ผ้าลินินผสมฝ้าย สีธรรมชาติ', unit: 'yard', stock: 0, alert: 90, swatch: 'linen', lots: ['LOT-2406-09'] },
+    { code: 'KNT72A160008', name: 'ผ้ายืดซิงเกิลเจอร์ซีย์ 160 แกรม สีเทาท็อปดราย', unit: 'yard', stock: 350, alert: 60, swatch: 'jersey', lots: ['LOT-2410-18', 'LOT-2410-19'] }
+  ];
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function num(x) { return Number(x).toLocaleString('th-TH', { maximumFractionDigits: 2 }); }
+  function find(code) { return PRODUCTS.filter(function (p) { return p.code === code; })[0]; }
+  function stockBadge(p, qty) {
+    var tone = qty <= 0 ? 'danger' : qty <= p.alert ? 'warning' : 'neutral';
+    return '<span class="gg-badge ' + tone + '">' + (tone !== 'neutral' ? '<span class="gg-badge-dot"></span>' : '') + num(qty) + ' ' + SHORT[p.unit] + '</span>';
+  }
+
+  /* Date: today, shown in Thai B.E. underneath */
+  var today = new Date(); var iso = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  $('date').value = iso; $('date').max = iso;
+  function showDate() { $('dateTh').textContent = $('date').value ? GG.thDate($('date').value + 'T00:00') : ''; }
+  $('date').addEventListener('change', showDate); showDate();
+
+  var sel = $('reason'); function mark() { sel.classList.toggle('is-placeholder', sel.value === ''); } sel.addEventListener('change', mark); mark();
+
+  /* Lines */
+  var LINES = [{ code: 'VIS44B305022', lot: 'LOT-2410-07', qty: 1, type: 'add' }];
+  var tried = false;
+  function lineError(l) {
+    var p = find(l.code);
+    if (!(l.qty > 0)) return 'กรุณากรอกจำนวนมากกว่า 0';
+    if (l.type === 'sub' && l.qty > p.stock) return 'ลดได้ไม่เกินคงเหลือ ' + num(p.stock) + ' ' + SHORT[p.unit];
+    return '';
+  }
+  function renderLines() {
+    var body = $('lineRows');
+    if (!LINES.length) {
+      body.innerHTML = '<tr><td colspan="7" class="empty-lines"><span data-icon="box"></span><div>ยังไม่มีสินค้า ค้นหาผ้าด้านบนเพื่อเพิ่มรายการ</div></td></tr>';
+    } else {
+      body.innerHTML = LINES.map(function (l, i) {
+        var p = find(l.code), after = p.stock + (l.type === 'add' ? 1 : -1) * (l.qty || 0), err = tried || l.touched ? lineError(l) : '';
+        return '<tr data-i="' + i + '">' +
+          '<td class="pcol"><div class="pcell"><span class="swatch sw-' + p.swatch + '" role="img" aria-label="ตัวอย่างผ้า"></span><div><div class="n">' + esc(p.name) + '</div><span class="gg-badge neutral mono code">' + p.code + '</span></div></div></td>' +
+          '<td><div class="gg-control lot-ctl"><select data-f="lot" aria-label="ล็อตย้อมของ ' + esc(p.name) + '">' + p.lots.map(function (x) { return '<option' + (x === l.lot ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></td>' +
+          '<td class="right">' + stockBadge(p, p.stock) + '</td>' +
+          '<td><div class="qty-wrap"><div class="gg-stepper' + (err ? ' invalid' : '') + '">' +
+            '<button type="button" data-step="-1" aria-label="ลดจำนวน"><span data-icon="minus" data-size="sm"></span></button>' +
+            '<input data-f="qty" inputmode="decimal" value="' + (l.qty === '' ? '' : l.qty) + '" aria-label="จำนวนของ ' + esc(p.name) + '">' +
+            '<button type="button" data-step="1" aria-label="เพิ่มจำนวน"><span data-icon="plus" data-size="sm"></span></button></div><span class="u">' + SHORT[p.unit] + '</span></div></td>' +
+          '<td><div class="gg-control type-ctl"><select data-f="type" aria-label="ประเภทการปรับ"><option value="add"' + (l.type === 'add' ? ' selected' : '') + '>เพิ่ม (รับเข้า)</option><option value="sub"' + (l.type === 'sub' ? ' selected' : '') + '>ลด (ตัดออก)</option></select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div></td>' +
+          '<td class="right"><div class="after">' + stockBadge(p, after) + '<span class="delta ' + (l.type === 'add' ? 'up' : 'down') + '">' + (l.type === 'add' ? '+' : '−') + num(l.qty || 0) + ' ' + SHORT[p.unit] + '</span>' + (err ? '<span class="row-err" role="alert">' + err + '</span>' : '') + '</div></td>' +
+          '<td class="gg-actions-cell right"><button type="button" class="gg-btn gg-btn-ghost sm icon-only danger" data-remove aria-label="ลบรายการ ' + esc(p.name) + '"><span data-icon="trash" data-size="sm"></span></button></td>' +
+          '</tr>';
+      }).join('');
+    }
+    GG.hydrateIcons(body);
+    renderSummary();
+  }
+  function renderSummary() {
+    var add = {}, sub = {};
+    LINES.forEach(function (l) { var u = SHORT[find(l.code).unit], b = l.type === 'add' ? add : sub; b[u] = (b[u] || 0) + (+l.qty || 0); });
+    function fmt(o, sign) { var k = Object.keys(o); return k.length ? k.map(function (u) { return sign + num(o[u]) + ' ' + u; }).join(', ') : '0'; }
+    $('summary').innerHTML = '<span>ทั้งหมด <b>' + LINES.length + '</b> รายการ</span><span>เพิ่ม <b class="up">' + fmt(add, '+') + '</b></span><span>ลด <b class="down">' + fmt(sub, '−') + '</b></span>';
+  }
+  /* Delegated line events (rows are re-rendered) */
+  $('lineRows').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr[data-i]'); if (!tr) return; var l = LINES[+tr.dataset.i];
+    var step = e.target.closest('[data-step]');
+    if (step) { l.qty = Math.max(0, Math.round(((+l.qty || 0) + +step.dataset.step) * 100) / 100); l.touched = true; renderLines(); return; }
+    if (e.target.closest('[data-remove]')) { LINES.splice(+tr.dataset.i, 1); renderLines(); $('pq').focus(); }
+  });
+  $('lineRows').addEventListener('change', function (e) {
+    var tr = e.target.closest('tr[data-i]'); if (!tr) return; var l = LINES[+tr.dataset.i], f = e.target.dataset.f;
+    if (f === 'qty') { var v = e.target.value.trim().replace(',', '.'); l.qty = v === '' ? '' : (isNaN(+v) ? '' : Math.max(0, +v)); l.touched = true; }
+    else if (f) l[f] = e.target.value;
+    renderLines();
+  });
+
+  /* Product search */
+  var results = $('presults'), q = $('pq'), active = 0, shown = [];
+  function openResults() {
+    var t = q.value.trim().toLowerCase();
+    shown = PRODUCTS.filter(function (p) { return !t || (p.name + ' ' + p.code).toLowerCase().indexOf(t) >= 0; });
+    active = 0;
+    results.innerHTML = shown.length ? shown.map(function (p, i) {
+      var inList = LINES.some(function (l) { return l.code === p.code; });
+      return '<button type="button" role="option" class="presult' + (i === 0 ? ' on' : '') + '" data-code="' + p.code + '"><span class="swatch sw-' + p.swatch + '" style="width:32px;height:32px"></span>' +
+        '<span><span class="n">' + esc(p.name) + '</span><br><span class="gg-badge neutral mono" style="height:20px;padding:0 6px;font-size:11px">' + p.code + '</span></span>' +
+        '<span class="meta">' + (inList ? '<span class="added">อยู่ในรายการแล้ว</span>' : '') + stockBadge(p, p.stock) + '</span></button>';
+    }).join('') : '<div class="none">ไม่พบผ้าที่ตรงกับ "' + esc(q.value) + '"</div>';
+    results.hidden = false; q.setAttribute('aria-expanded', 'true');
+  }
+  function closeResults() { results.hidden = true; q.setAttribute('aria-expanded', 'false'); }
+  function addProduct(code) {
+    var existing = LINES.filter(function (l) { return l.code === code; })[0];
+    if (existing) { existing.qty = (+existing.qty || 0) + 1; }
+    else { var p = find(code); LINES.push({ code: code, lot: p.lots[p.lots.length - 1], qty: 1, type: 'add' }); }
+    q.value = ''; closeResults(); $('lines').classList.remove('invalid'); renderLines();
+    var idx = LINES.findIndex(function (l) { return l.code === code; });
+    var inp = document.querySelector('tr[data-i="' + idx + '"] [data-f="qty"]'); if (inp) { inp.focus(); inp.select(); }
+  }
+  q.addEventListener('focus', openResults);
+  q.addEventListener('input', openResults);
+  q.addEventListener('keydown', function (e) {
+    var items = results.querySelectorAll('.presult');
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); if (!items.length) return;
+      items[active].classList.remove('on'); active = (active + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      items[active].classList.add('on'); items[active].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') { e.preventDefault(); if (shown[active]) addProduct(shown[active].code); }
+    else if (e.key === 'Escape') closeResults();
+  });
+  results.addEventListener('mousedown', function (e) { var b = e.target.closest('.presult'); if (b) { e.preventDefault(); addProduct(b.dataset.code); } });
+  document.addEventListener('mousedown', function (e) { if (!$('psearch').contains(e.target)) closeResults(); });
+
+  /* Save */
+  function fieldErr(el, msg) {
+    var f = el.closest('.gg-field'), c = el.closest('.gg-control'); c.classList.add('invalid'); el.setAttribute('aria-invalid', 'true');
+    var err = f.querySelector('.gg-error'); if (!err) { err = document.createElement('div'); err.className = 'gg-error'; f.appendChild(err); } err.textContent = msg;
+  }
+  function fieldOk(el) { var f = el.closest('.gg-field'); el.closest('.gg-control').classList.remove('invalid'); el.removeAttribute('aria-invalid'); var e = f.querySelector('.gg-error'); if (e) e.remove(); }
+  ['reason', 'date'].forEach(function (id) { $(id).addEventListener('change', function () { fieldOk($(id)); }); });
+  $('adjForm').addEventListener('submit', function (e) {
+    e.preventDefault(); tried = true; var bad = 0, first = null;
+    if (!$('date').value) { fieldErr($('date'), 'กรุณาเลือกวันที่'); bad++; first = first || $('date'); }
+    if (!$('reason').value) { fieldErr($('reason'), 'กรุณาเลือกเหตุผลการปรับปรุง'); bad++; first = first || $('reason'); }
+    if (!LINES.length) { $('lines').classList.add('invalid'); $('linesHint').textContent = 'กรุณาเพิ่มสินค้าอย่างน้อย 1 รายการ'; $('linesHint').style.color = 'var(--danger-text)'; bad++; first = first || q; }
+    else { $('linesHint').textContent = 'ปรับได้หลายรายการในเอกสารเดียว'; $('linesHint').style.color = ''; }
+    renderLines();
+    var lineBad = LINES.filter(function (l) { return lineError(l); }).length; bad += lineBad;
+    if (lineBad && !first) first = document.querySelector('.gg-stepper.invalid input');
+    $('formOk').classList.remove('show');
+    if (bad) { $('formAlertText').textContent = 'มี ' + bad + ' จุดที่ต้องแก้ไข'; $('formAlert').classList.add('show'); if (first) first.focus(); return; }
+    $('formAlert').classList.remove('show');
+    $('formOkText').textContent = 'บันทึก ' + $('docRef').textContent + ' แล้ว ปรับสต็อก ' + LINES.length + ' รายการ';
+    $('formOk').classList.add('show');
+  });
+
+  renderLines();
+})();

@@ -1,0 +1,217 @@
+===CSS===
+.pf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-8); }
+.pf-grid .full { grid-column: 1 / -1; }
+.gg-hint, .gg-error { line-height: 18px; }
+.gg-control select.is-placeholder { color: var(--placeholder); }
+.gg-control select option { color: var(--ink); }
+.gg-control.textarea textarea { min-height: 96px; }
+.auto-box { display: flex; align-items: center; gap: var(--space-2); height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px dashed var(--border-input); font: 600 14px/20px var(--font-sans); color: var(--ink); }
+.auto-box.found { border-style: solid; border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.optional { margin-left: 6px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.foot-note { margin-right: auto; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.form-ok { display: none; margin-right: auto; }
+.form-ok.show { display: inline-flex; }
+.eye { width: 36px; height: 36px; margin-right: 2px; border: 0; background: none; color: var(--muted); border-radius: var(--radius-sm); cursor: pointer; display: grid; place-items: center; flex: none; }
+.eye:hover { color: var(--primary); background: var(--surface-hover); }
+.meter { display: flex; gap: 4px; margin-top: 6px; }
+.meter i { flex: 1; height: 4px; border-radius: var(--radius-pill); background: var(--border); }
+.meter.s1 i:nth-child(-n+1) { background: var(--danger); }
+.meter.s2 i:nth-child(-n+2) { background: var(--warning); }
+.meter.s3 i:nth-child(-n+3) { background: var(--success); }
+.meter.s4 i { background: var(--success); }
+/* Photo */
+.photo { display: flex; align-items: center; gap: var(--space-5); }
+.photo-box { position: relative; width: 96px; height: 96px; flex: none; }
+.photo-img { width: 96px; height: 96px; border-radius: var(--radius-pill); background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; font: 700 30px/1 var(--font-display); overflow: hidden; border: 3px solid var(--surface); box-shadow: var(--shadow-1); }
+.photo-img img { width: 100%; height: 100%; object-fit: cover; }
+.photo-img .gg-icon { width: 36px; height: 36px; }
+.photo-edit { position: absolute; right: -2px; top: -2px; width: 30px; height: 30px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--surface); color: var(--primary); display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow-1); }
+.photo-edit:hover { background: var(--primary-soft); }
+.photo-meta { font: 500 13px/20px var(--font-sans); color: var(--muted); }
+.photo-meta button { margin-top: 6px; }
+.role-note { margin-top: 6px; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title" id="pageTitle"></h1>
+          <p class="gg-pagehead-sub" id="pageSub"></p>
+        </div>
+        <div class="gg-pagehead-actions">
+          <a class="gg-btn gg-btn-secondary" id="backBtn" href="#"><span data-icon="chevron-left"></span>ย้อนกลับ</a>
+        </div>
+      </div>
+
+      <form class="gg-card" id="pfForm" novalidate autocomplete="off">
+        <div class="gg-card-body" style="padding-top:var(--space-6);padding-bottom:var(--space-6)">
+          <div class="pf-grid" id="grid"></div>
+        </div>
+        <div class="gg-card-foot">
+          <span class="foot-note" id="footNote"></span>
+          <span class="form-ok gg-badge success" id="formOk" role="status"><span class="gg-badge-dot"></span><span id="formOkText"></span></span>
+          <a class="gg-btn gg-btn-secondary" id="cancelBtn" href="#">ยกเลิก</a>
+          <button type="submit" class="gg-btn gg-btn-primary" id="saveBtn" disabled><span data-icon="check"></span>บันทึก</button>
+        </div>
+      </form>
+===JS===
+/*@include sales-data*/
+/*@include people-data*/
+/*@include transfer-data*/
+(function () {
+  var KIND = '__KIND__';
+  var $ = function (id) { return document.getElementById(id); }, D = window.LTS, esc = D.esc;
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function phoneOk(v) { return /^[+0-9][0-9\s\-()]*$/.test(v) && v.replace(/\D/g, '').length >= 9; }
+  var COMMON = {
+    email: { id: 'email', label: 'อีเมล', type: 'email', req: true, ph: 'กรอกอีเมล' },
+    phone: { id: 'phone', label: 'เบอร์โทรศัพท์', type: 'tel', req: true, ph: 'เช่น 081-234-5678' },
+    country: { id: 'country', label: 'ประเทศ', req: true, ph: 'กรอกประเทศ', val: 'ไทย' },
+    city: { id: 'city', label: 'เมือง / จังหวัด', req: true, ph: 'กรอกเมืองหรือจังหวัด' }
+  };
+  var CFG = {
+    suppliers: { noun: 'ผู้จำหน่าย', list: D.SUPPLIERS, back: 'lts-suppliers.html', sub: 'ข้อมูลติดต่อโรงทอหรือผู้ค้าผ้า ใช้ในใบสั่งซื้อและใบคืนสินค้า',
+      fields: [{ id: 'name', label: 'ชื่อผู้จำหน่าย', req: true, ph: 'กรอกชื่อผู้จำหน่าย' }, COMMON.email, COMMON.phone, COMMON.country, COMMON.city,
+        { id: 'address', label: 'ที่อยู่', req: true, ph: 'กรอกที่อยู่' },
+        { id: 'taxId', label: 'เลขประจำตัวผู้เสียภาษี', ph: '13 หลัก', hint: 'ใช้ออกเอกสารภาษีซื้อ' }],
+      get: function (r) { return r; }, title: function (r) { return r.name; } },
+    customers: { noun: 'ลูกค้า', list: D.CUSTOMERS, back: 'lts-customers.html', sub: 'ข้อมูลติดต่อและเงื่อนไขเครดิตของลูกค้า ใช้ในการขายและใบวางบิล',
+      fields: [{ id: 'name', label: 'ชื่อลูกค้า', req: true, ph: 'กรอกชื่อลูกค้าหรือชื่อร้าน' }, COMMON.email, COMMON.phone,
+        { id: 'dob', label: 'วันเกิด', type: 'date', hint: 'ใช้ส่งโปรโมชันวันเกิด' }, COMMON.country,
+        { id: 'city', label: 'จังหวัด', type: 'select', req: true, ph: 'เลือกจังหวัด', options: D.PROVINCE_LIST.map(function (p) { return [p, p]; }).concat([['ต่างประเทศ', 'ต่างประเทศ (นอกประเทศไทย)']]) },
+        { id: 'region', label: 'ภูมิภาค', type: 'auto' },
+        { id: 'address', label: 'ที่อยู่', type: 'textarea', req: true, ph: 'กรอกที่อยู่สำหรับจัดส่งและออกใบกำกับภาษี' },
+        { id: 'terms', label: 'เครดิตเริ่มต้น', type: 'select', options: [['0', 'เงินสด / ชำระทันที'], ['7', 'เครดิต 7 วัน'], ['15', 'เครดิต 15 วัน'], ['30', 'เครดิต 30 วัน'], ['45', 'เครดิต 45 วัน'], ['60', 'เครดิต 60 วัน']], val: '0', hint: 'ใช้เป็นค่าเริ่มต้นตอนขายเชื่อ ปรับได้ในแต่ละบิลขาย' }],
+      get: function (r) { return Object.assign({}, r, { terms: String(r.terms || 0) }); }, title: function (r) { return r.name; } },
+    warehouses: { noun: 'คลังสินค้า', list: D.WAREHOUSES, back: 'lts-warehouses.html', sub: 'คลังหรือหน้าร้านที่เก็บผ้า ใช้ในการซื้อ ขาย และโอนย้ายสินค้า',
+      fields: [{ id: 'name', label: 'ชื่อคลังสินค้า', req: true, ph: 'เช่น คลังบางนา' }, COMMON.email, COMMON.phone, COMMON.country, COMMON.city,
+        { id: 'zip', label: 'รหัสไปรษณีย์', req: true, ph: 'กรอกรหัสไปรษณีย์', inputmode: 'numeric' },
+        { id: 'area', label: 'ที่ตั้ง / ย่าน', ph: 'เช่น ถนนพาหุรัด', hint: 'แสดงใต้ชื่อเมืองในรายการ', full: true }],
+      get: function (r) { return r; }, title: function (r) { return r.name; } },
+    users: { noun: 'ผู้ใช้งาน', list: D.USERS, back: 'lts-users.html', sub: 'สร้างบัญชีให้พนักงานเข้าใช้ระบบตามบทบาทที่กำหนด',
+      fields: [{ id: 'photo', label: 'รูปโปรไฟล์', type: 'photo', full: true }, { id: 'first', label: 'ชื่อ', req: true, ph: 'กรอกชื่อ' }, { id: 'last', label: 'นามสกุล', req: true, ph: 'กรอกนามสกุล' },
+        COMMON.email, COMMON.phone, { id: 'password', label: 'รหัสผ่าน', type: 'password', req: true, ph: 'อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข' }, { id: 'confirm', label: 'ยืนยันรหัสผ่าน', type: 'password', req: true, ph: 'กรอกรหัสผ่านอีกครั้ง' },
+        { id: 'role', label: 'บทบาท', type: 'select', req: true, ph: 'เลือกบทบาท', options: D.ROLES.map(function (r) { return [r.id, r.name]; }) }],
+      get: function (r) { return r; }, title: function (r) { return r.first + ' ' + r.last; } }
+  }, C = CFG[KIND];
+  var ROLE_NOTE = { admin: 'เข้าถึงทุกเมนู รวมถึงตั้งค่าและบทบาท', manager: 'ดูรายงาน อนุมัติการซื้อ ขาย และโอนย้าย', sales: 'ใช้ POS สร้างรายการขาย ใบรับคืน และใบวางบิล', stock: 'จัดการสินค้า ปรับปรุงสต็อก และโอนย้ายสินค้า' };
+
+  var editId = new URLSearchParams(location.search).get('edit'), ED = editId ? C.list.filter(function (r) { return r.id === editId; })[0] : null;
+  var nounTitle = (ED ? 'แก้ไข' : 'เพิ่ม') + C.noun;
+  $('pageTitle').textContent = ED ? nounTitle + ' ' + C.title(ED) : nounTitle;
+  $('pageSub').textContent = editId && !ED ? 'ไม่พบข้อมูลที่ต้องการแก้ไข จึงเพิ่มเป็นรายการใหม่' : C.sub;
+  $('backBtn').href = $('cancelBtn').href = C.back;
+  var cur = document.querySelector('.gg-crumbs .current'); if (cur && ED) cur.textContent = nounTitle;
+  if (ED) document.title = nounTitle + ' · LTS Solution';
+
+  /* Build fields */
+  $('grid').innerHTML = C.fields.map(function (f) {
+    var req = f.req && !(ED && f.type === 'password'), lab = '<label class="gg-label" for="' + f.id + '">' + f.label + (req ? '<span class="gg-req" aria-hidden="true">*</span>' : (f.type === 'photo' ? '' : '<span class="optional">(ไม่บังคับ)</span>')) + '</label>';
+    var ctl;
+    if (f.type === 'auto') return '<div class="gg-field"><span class="gg-label">' + f.label + '<span class="optional">(อัตโนมัติจากจังหวัด · การแบ่ง 6 ภาค)</span></span><div class="auto-box" id="' + f.id + '" aria-live="polite"></div><div class="gg-hint" id="' + f.id + 'Hint"></div></div>';
+    if (f.type === 'photo') return '<div class="gg-field full"><span class="gg-label">' + f.label + '</span><div class="photo"><div class="photo-box"><div class="photo-img" id="photoImg"></div>' +
+      '<label class="photo-edit" for="photoFile" title="เปลี่ยนรูป"><span data-icon="edit" data-size="sm"></span><span class="gg-sr">เปลี่ยนรูปโปรไฟล์</span></label></div>' +
+      '<div class="photo-meta">JPG หรือ PNG ไม่เกิน 1 MB<br>รูปสี่เหลี่ยมจัตุรัสจะแสดงผลได้ดีที่สุด<br><button type="button" class="gg-btn gg-btn-ghost sm" id="photoRemove" hidden>ลบรูป</button><div class="gg-error" id="photoErr" hidden></div></div></div>' +
+      '<input type="file" id="photoFile" accept="image/png,image/jpeg" hidden></div>';
+    if (f.type === 'textarea') ctl = '<div class="gg-control textarea"><textarea id="' + f.id + '" rows="4" placeholder="' + (f.ph || '') + '"></textarea></div>';
+    else if (f.type === 'select') ctl = '<div class="gg-control"><select id="' + f.id + '">' + (f.ph ? '<option value="" disabled selected>' + f.ph + '</option>' : '') + f.options.map(function (o) { return '<option value="' + o[0] + '">' + o[1] + '</option>'; }).join('') + '</select><span class="gg-caret"><span data-icon="chevron-down" data-size="sm"></span></span></div>';
+    else ctl = '<div class="gg-control"><input id="' + f.id + '" type="' + (f.type || 'text') + '"' + (f.type === 'password' ? ' autocomplete="new-password"' : '') + ' placeholder="' + (f.ph || '') + '">' +
+      (f.type === 'password' ? '<button type="button" class="eye" data-eye="' + f.id + '" aria-label="แสดงรหัสผ่าน"><span data-icon="eye" data-size="sm"></span></button>' : '') + '</div>';
+    var hint = f.id === 'password' ? '<div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="gg-hint" id="passwordHint">' + (ED ? 'เว้นว่างไว้หากไม่ต้องการเปลี่ยนรหัสผ่าน' : 'อย่างน้อย 8 ตัว มีทั้งตัวอักษรและตัวเลข') + '</div>'
+      : f.id === 'role' ? '<div class="gg-hint role-note" id="roleHint">กำหนดเมนูที่ผู้ใช้เข้าถึงได้</div>' : f.hint ? '<div class="gg-hint">' + f.hint + '</div>' : '';
+    return '<div class="gg-field' + (f.full ? ' full' : '') + '">' + lab + ctl + hint + '</div>';
+  }).join('');
+  GG.hydrateIcons($('grid'));
+  var INPUTS = C.fields.filter(function (f) { return f.type !== 'photo' && f.type !== 'auto'; });
+
+  /* Prefill */
+  var src = ED ? C.get(ED) : null, photo = ED && ED.photo || '';
+  INPUTS.forEach(function (f) { var el = $(f.id); if (f.type === 'password') return; var v = src ? src[f.id] : f.val; if (v != null && v !== '') el.value = v; });
+
+  /* Photo */
+  function drawPhoto() {
+    if (!$('photoImg')) return;
+    var ini = D.ch(($('first') || {}).value) + D.ch(($('last') || {}).value);
+    $('photoImg').innerHTML = photo ? '<img src="' + photo + '" alt="รูปโปรไฟล์">' : ini ? esc(ini) : '';
+    if (!photo && !ini) $('photoImg').appendChild(GG.icon('user'));
+    $('photoRemove').hidden = !photo;
+  }
+  if ($('photoFile')) {
+    $('photoFile').addEventListener('change', function () {
+      var f = this.files[0], er = $('photoErr'); er.hidden = true; if (!f) return;
+      if (!/^image\/(png|jpeg)$/.test(f.type)) { er.textContent = 'รองรับเฉพาะไฟล์ JPG หรือ PNG'; er.hidden = false; return; }
+      if (f.size > 1024 * 1024) { er.textContent = 'ไฟล์ใหญ่เกิน 1 MB'; er.hidden = false; return; }
+      var fr = new FileReader(); fr.onload = function () { photo = fr.result; drawPhoto(); }; fr.readAsDataURL(f);
+    });
+    $('photoRemove').addEventListener('click', function () { photo = ''; $('photoFile').value = ''; drawPhoto(); });
+  }
+
+  /* Validation */
+  function val(id) { var el = $(id); return el ? el.value.trim() : ''; }
+  function strength(p) { var s = 0; if (p.length >= 8) s++; if (/[A-Za-z]/.test(p) && /\d/.test(p)) s++; if (p.length >= 12) s++; if (/[^A-Za-z0-9]/.test(p)) s++; return p ? Math.max(1, s) : 0; }
+  function problems() {
+    var p = {};
+    INPUTS.forEach(function (f) {
+      var v = val(f.id), req = f.req && !(ED && f.type === 'password' && !val('password'));
+      if (req && !v) { p[f.id] = f.type === 'select' ? 'กรุณาเลือก' + f.label : 'กรุณากรอก' + f.label; return; }
+      if (!v) return;
+      if (f.id === 'email') {
+        if (!EMAIL.test(v)) p.email = 'รูปแบบอีเมลไม่ถูกต้อง';
+        else if (C.list.some(function (r) { return r !== ED && String(r.email).toLowerCase() === v.toLowerCase(); })) p.email = 'อีเมลนี้มีอยู่แล้วใน' + C.noun;
+      }
+      if (f.id === 'phone' && !phoneOk(v)) p.phone = 'เบอร์โทรต้องมีตัวเลขอย่างน้อย 9 หลัก';
+      if (f.id === 'zip' && !/^\d{5}$/.test(v) && val('country') === 'ไทย') p.zip = 'รหัสไปรษณีย์ไทยต้องเป็นตัวเลข 5 หลัก';
+      if (f.id === 'zip' && val('country') !== 'ไทย' && !/^[A-Za-z0-9 -]{3,10}$/.test(v)) p.zip = 'รหัสไปรษณีย์ไม่ถูกต้อง';
+      if (f.id === 'name' && C.list.some(function (r) { return r !== ED && String(r.name).trim().toLowerCase() === v.toLowerCase(); })) p.name = 'มี' + C.noun + 'ชื่อนี้อยู่แล้ว';
+      if (f.id === 'dob' && v > D.today()) p.dob = 'วันเกิดต้องไม่เป็นวันในอนาคต';
+      if (f.id === 'taxId' && !/^\d{13}$/.test(v.replace(/[\s-]/g, ''))) p.taxId = 'เลขประจำตัวผู้เสียภาษีต้องมี 13 หลัก';
+      if (f.id === 'password' && (v.length < 8 || !/[A-Za-z]/.test(v) || !/\d/.test(v))) p.password = 'อย่างน้อย 8 ตัว และต้องมีทั้งตัวอักษรและตัวเลข';
+    });
+    if ($('confirm') && (val('password') || val('confirm')) && val('confirm') !== val('password')) p.confirm = val('confirm') ? 'รหัสผ่านไม่ตรงกัน' : 'กรุณายืนยันรหัสผ่าน';
+    return p;
+  }
+  var touched = {};
+  function setErr(el, msg) {
+    var f = el.closest('.gg-field'), x = f.querySelector('.gg-error:not(#photoErr)'), h = f.querySelector('.gg-hint');
+    el.closest('.gg-control').classList.toggle('invalid', !!msg); if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    if (msg) { if (!x) { x = document.createElement('div'); x.className = 'gg-error'; f.appendChild(x); } x.textContent = msg; if (h) h.hidden = true; }
+    else { if (x) x.remove(); if (h) h.hidden = false; }
+  }
+  function syncRegion() {
+    if (!$('region')) return;
+    var r = val('city') === 'ต่างประเทศ' ? 'ต่างประเทศ' : D.regionOf(val('city'), val('country'));
+    $('region').innerHTML = r ? '<span data-icon="globe" data-size="sm"></span>' + r : '<span style="color:var(--placeholder)">' + (val('city') ? 'ไม่พบจังหวัดนี้' : 'เลือกจังหวัดก่อน') + '</span>';
+    $('region').classList.toggle('found', !!r); GG.hydrateIcons($('region'));
+    $('regionHint').textContent = r ? (r === 'ต่างประเทศ' ? 'ลูกค้าต่างประเทศ' : 'จากจังหวัด ' + val('city') + ' · ใช้ในรายงานภูมิภาคขายดีบนแดชบอร์ด') : '';
+  }
+  function sync() {
+    syncRegion();
+    var p = problems(), n = Object.keys(p).length;
+    INPUTS.forEach(function (f) { if (touched[f.id]) setErr($(f.id), p[f.id] || ''); if (f.type === 'select') $(f.id).classList.toggle('is-placeholder', !$(f.id).value); });
+    if ($('meter')) $('meter').className = 'meter s' + strength(val('password'));
+    if ($('roleHint')) $('roleHint').textContent = ROLE_NOTE[val('role')] || 'กำหนดเมนูที่ผู้ใช้เข้าถึงได้';
+    if (ED && ED.self && $('role')) { $('role').disabled = true; $('roleHint').textContent = 'คุณไม่สามารถเปลี่ยนบทบาทของตัวเองได้'; }
+    drawPhoto();
+    $('saveBtn').disabled = n > 0;
+    $('footNote').textContent = n ? 'กรอกช่องที่มีเครื่องหมาย * ให้ถูกต้องเพื่อบันทึก (เหลือ ' + n + ' ช่อง)' : 'พร้อมบันทึก';
+  }
+  INPUTS.forEach(function (f) {
+    var el = $(f.id);
+    el.addEventListener('input', sync);
+    el.addEventListener('change', function () { touched[f.id] = true; sync(); });
+    el.addEventListener('blur', function () { if (el.value.trim() || f.req) touched[f.id] = true; if (f.id === 'password' && val('confirm')) touched.confirm = true; sync(); });
+  });
+  document.querySelectorAll('[data-eye]').forEach(function (b) {
+    b.addEventListener('click', function () { var i = $(b.dataset.eye), show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.setAttribute('aria-label', show ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'); b.style.color = show ? 'var(--primary)' : ''; });
+  });
+  if (ED) INPUTS.forEach(function (f) { if (f.type !== 'password') touched[f.id] = true; });
+  sync();
+
+  $('pfForm').addEventListener('submit', function (e) {
+    e.preventDefault(); INPUTS.forEach(function (f) { touched[f.id] = true; }); sync();
+    if ($('saveBtn').disabled) return;
+    var name = KIND === 'users' ? val('first') + ' ' + val('last') : val('name');
+    $('footNote').hidden = true; $('saveBtn').disabled = true;
+    $('formOkText').textContent = 'บันทึก "' + name + '" แล้ว กำลังกลับไปหน้ารายการ…'; $('formOk').classList.add('show');
+    setTimeout(function () { location.href = C.back + '?saved=' + encodeURIComponent(name); }, 1400);
+  });
+  var firstInput = $(INPUTS[0].id); if (firstInput) firstInput.focus();
+})();

@@ -1,0 +1,101 @@
+===CSS===
+.doc-title { margin: 0 0 var(--space-6); text-align: center; font: 700 18px/24px var(--font-display); color: var(--ink); }
+.info-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin-bottom: var(--space-8); }
+.panel-h { padding: 12px var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.info { padding: var(--space-4) var(--space-4) 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px var(--space-3); font: 400 14px/20px var(--font-sans); color: var(--ink-2); }
+.info .k { font: 600 12px/20px var(--font-sans); color: var(--muted); }
+.info .v { color: var(--ink); }
+.info .v.strong { font-weight: 600; }
+.lines-wrap { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-top: var(--space-3); }
+.lines-wrap .gg-table td { height: 64px; }
+.pcell { display: flex; align-items: center; gap: var(--space-3); }
+.pcell .n { color: var(--ink); font-weight: 600; white-space: normal; }
+.pcell .code { margin-top: 4px; height: 20px; padding: 0 6px; font-size: 11px; }
+.money .per { display: block; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.bottom { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: var(--space-8); margin-top: var(--space-6); align-items: start; }
+.totals { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.totals .tr { display: flex; justify-content: space-between; align-items: center; height: 48px; padding: 0 var(--space-5); border-bottom: 1px solid var(--border); font: 400 14px/20px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.totals .tr span:last-child { color: var(--ink); }
+.totals .tr.sm { height: 40px; font-size: 13px; }
+.totals .tr.grand { height: 60px; background: var(--primary-soft); }
+.totals .tr.grand span { color: var(--primary) !important; font: 700 16px/20px var(--font-display); }
+.totals .tr.grand span:last-child { font-size: 20px; }
+.totals .tr.due span:last-child { color: var(--danger-text); font-weight: 700; }
+.side-h { margin: 0 0 var(--space-3); font: 700 16px/22px var(--font-display); color: var(--ink); }
+.mini { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: var(--space-6); }
+.mini .gg-table td { height: 44px; }
+.mini .gg-table th:first-child, .mini .gg-table td:first-child { padding-left: var(--space-4); }
+.gg-table td { white-space: nowrap; }
+===CONTENT===
+      <div class="gg-pagehead">
+        <div>
+          <h1 class="gg-pagehead-title">รายละเอียดการขาย</h1>
+          <p class="gg-pagehead-sub" id="sub"></p>
+        </div>
+        <div class="gg-pagehead-actions" id="actions">
+          <button type="button" class="gg-btn gg-btn-secondary" id="pdfBtn"><span data-icon="download"></span>ดาวน์โหลด PDF</button>
+          <a class="gg-btn gg-btn-secondary" id="editBtn" href="#"><span data-icon="edit"></span>แก้ไขรายการขาย</a>
+          <a class="gg-btn gg-btn-secondary" href="lts-sales.html"><span data-icon="chevron-left"></span>ย้อนกลับ</a>
+        </div>
+      </div>
+
+      <section class="gg-card"><div class="gg-card-body" style="padding:var(--space-8) var(--space-6)" id="doc"></div></section>
+===JS===
+/*@include sales-data*/
+(function () {
+  var D = window.LTS, esc = D.esc, $ = function (id) { return document.getElementById(id); };
+  var ref = new URLSearchParams(location.search).get('ref') || 'SA_11149';
+  var s = D.saleByRef(ref);
+  if (!s) {
+    $('doc').innerHTML = '<div class="gg-empty">ไม่พบรายการขาย ' + esc(ref) + ' <a href="lts-sales.html" class="gg-btn gg-btn-ghost sm">กลับไปหน้ารายการขาย</a></div>';
+    $('actions').querySelectorAll('#pdfBtn, #editBtn').forEach(function (x) { x.hidden = true; });
+    return;
+  }
+  var c = D.customer(s.customer), t = D.totals(s), paid = D.paidOf(s), due = D.r2(t.grand - paid), ps = D.payState(t.grand, paid), bn = D.billedOn(s.ref);
+  var returns = D.RETURNS.filter(function (r) { return r.sale === s.ref; });
+  document.title = 'รายละเอียดการขาย ' + s.ref + ' · LTS Solution';
+  $('sub').textContent = c.name + ' · ' + GG.thDate(s.created) + ' ' + GG.thTime(s.created);
+  $('editBtn').href = 'lts-create-sale.html?edit=' + s.ref;
+  document.querySelector('.gg-crumbs .current').textContent = s.ref;
+
+  function row(k, v, strong) { return '<div class="k">' + k + '</div><div class="v' + (strong ? ' strong' : '') + '">' + v + '</div>'; }
+  var html = '<h2 class="doc-title">รายละเอียดการขาย : ' + s.ref + '</h2>' +
+    '<div class="info-grid">' +
+      '<div><div class="panel-h">ข้อมูลลูกค้า</div><div class="info">' + row('ชื่อ', esc(c.name), true) + row('อีเมล', esc(c.email)) + row('โทร', esc(c.phone)) + row('ที่อยู่', esc(c.address)) + '</div></div>' +
+      '<div><div class="panel-h">ข้อมูลบริษัท</div><div class="info">' + row('ชื่อ', esc(D.COMPANY.name), true) + row('อีเมล', esc(D.COMPANY.email)) + row('โทร', esc(D.COMPANY.phone)) + row('ที่อยู่', esc(D.COMPANY.address)) + '</div></div>' +
+      '<div><div class="panel-h">ข้อมูลใบแจ้งหนี้</div><div class="info">' + row('เลขที่', '<span class="gg-badge neutral mono">' + s.ref + '</span>') + row('สถานะ', D.badge(D.STATUS[s.status])) +
+        row('คลังสินค้า', D.WAREHOUSE) + row('พนักงานขาย', esc(D.agent(s.agent).name)) + (s.terms ? row('เครดิต', s.terms + ' วัน · ครบกำหนด ' + GG.thDate(D.dueDate(s) + 'T00:00')) : '') + row('การชำระ', D.badge(D.PAY[ps]) + ' <span class="gg-hint">' + esc(s.method) + '</span>') + (bn ? row('ใบวางบิล', '<a href="lts-billing-notes.html" style="color:var(--primary);font-weight:600">' + bn.ref + '</a>') : '') + '</div></div>' +
+    '</div>' +
+    '<div class="panel-h">สรุปรายการสั่งซื้อ</div>' +
+    '<div class="lines-wrap"><table class="gg-table"><thead><tr><th>สินค้า</th><th class="right">ราคาสุทธิต่อหน่วย</th><th class="right">จำนวน</th><th class="right">ราคาต่อหน่วย</th><th class="right">ส่วนลด</th><th class="right">ภาษี</th><th class="right">ยอดรวมย่อย</th></tr></thead><tbody>' +
+    s.lines.map(function (l) {
+      var p = D.product(l.code), k = D.calc(l), u = l.unit || p.unit;
+      return '<tr><td><div class="pcell"><span class="swatch sw-' + p.swatch + '"></span><div><div class="n">' + esc(p.name) + '</div><span class="gg-badge neutral mono code">' + p.code + '</span></div></div></td>' +
+        '<td class="right money">' + GG.baht(k.net) + '<span class="per">ต่อ' + D.UNIT[u] + '</span></td><td class="right">' + D.num(l.qty) + ' ' + D.SHORT[u] + '</td>' +
+        '<td class="right">' + GG.baht(l.price) + '</td><td class="right">' + GG.baht(k.discT) + '</td><td class="right">' + GG.baht(k.taxT) + '</td><td class="right" style="font-weight:600;color:var(--ink)">' + GG.baht(k.sub) + '</td></tr>';
+    }).join('') + '</tbody></table></div>' +
+    '<div class="bottom"><div>' +
+      '<h3 class="side-h">การชำระเงิน</h3><div class="mini"><table class="gg-table compact"><thead><tr><th>วันที่</th><th>วิธีชำระ</th><th class="right">จำนวนเงิน</th></tr></thead><tbody>' +
+      (s.payments.length ? s.payments.map(function (p) { return '<tr><td>' + GG.thDate(p.date + 'T00:00') + '</td><td><span class="gg-badge info">' + esc(p.method) + '</span></td><td class="right">' + GG.baht(p.amount) + '</td></tr>'; }).join('') : '<tr><td colspan="3" class="gg-empty" style="padding:20px">ยังไม่มีการชำระเงิน</td></tr>') +
+      '</tbody></table></div>' +
+      (returns.length ? '<h3 class="side-h">ใบรับคืนสินค้า</h3><div class="mini"><table class="gg-table compact"><thead><tr><th>เลขที่</th><th>สถานะ</th><th class="right">ยอดคืน</th></tr></thead><tbody>' +
+        returns.map(function (r) { return '<tr><td><a href="lts-sales-returns.html" style="text-decoration:none"><span class="gg-badge neutral mono">' + r.ref + '</span></a></td><td>' + D.badge(D.STATUS[r.status]) + '</td><td class="right">' + GG.baht(D.totals(r).grand) + '</td></tr>'; }).join('') + '</tbody></table></div>' : '') +
+      (s.notes ? '<h3 class="side-h">หมายเหตุ</h3><p style="margin:0;color:var(--ink-2)">' + esc(s.notes) + '</p>' : '') +
+    '</div><div class="totals">' +
+      '<div class="tr"><span>ยอดรวมสินค้า</span><span>' + GG.baht(t.sub) + '</span></div>' +
+      '<div class="tr"><span>ส่วนลดท้ายบิล</span><span>' + GG.baht(t.disc) + '</span></div>' +
+      '<div class="tr"><span>ภาษีมูลค่าเพิ่ม (' + D.num(s.orderTax) + '%)</span><span>' + GG.baht(t.tax) + '</span></div>' +
+      '<div class="tr"><span>ค่าขนส่ง</span><span>' + GG.baht(t.ship) + '</span></div>' +
+      '<div class="tr grand"><span>ยอดรวมสุทธิ</span><span>' + GG.baht(t.grand) + '</span></div>' +
+      '<div class="tr sm"><span>ชำระแล้ว</span><span>' + GG.baht(paid) + '</span></div>' +
+      '<div class="tr sm due" style="border-bottom:0"><span>ค้างชำระ</span><span>' + GG.baht(due) + '</span></div>' +
+    '</div></div>';
+  $('doc').innerHTML = html;
+  GG.hydrateIcons($('doc'));
+
+  $('pdfBtn').addEventListener('click', function () {
+    D.printDoc('ใบกำกับภาษี / ใบเสร็จ ' + s.ref, '<div>ลูกค้า: ' + esc(c.name) + ' · ' + esc(c.address) + '</div><div>วันที่: ' + GG.thDate(s.created) + ' · ' + D.WAREHOUSE + '</div>',
+      '<tr><th>สินค้า</th><th class="r">จำนวน</th><th class="r">ราคาต่อหน่วย</th><th class="r">ยอดรวมย่อย</th></tr>' + s.lines.map(function (l) { var p = D.product(l.code), k = D.calc(l); return '<tr><td>' + esc(p.name) + ' (' + p.code + ')</td><td class="r">' + D.num(l.qty) + ' ' + D.SHORT[l.unit || p.unit] + '</td><td class="r">' + GG.baht(k.unitTotal) + '</td><td class="r">' + GG.baht(k.sub) + '</td></tr>'; }).join(''),
+      '<tr><td colspan="3" class="r">ภาษีมูลค่าเพิ่ม ' + s.orderTax + '%</td><td class="r">' + GG.baht(t.tax) + '</td></tr><tr class="tot"><td colspan="3" class="r">ยอดรวมสุทธิ</td><td class="r">' + GG.baht(t.grand) + '</td></tr>');
+  });
+})();
