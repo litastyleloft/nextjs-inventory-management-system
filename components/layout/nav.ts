@@ -42,7 +42,7 @@ export const NAV: NavEntry[] = [
   },
   { key: "adjustments", label: "ปรับปรุงสต็อก", icon: Diff, href: "/adjustments" },
   { key: "transfers", label: "โอนย้ายสินค้า", icon: ArrowLeftRight, href: "/transfers" },
-  { key: "warehouse", label: "คลังสินค้า", icon: Warehouse, href: "/warehouses" },
+  { key: "warehouse", label: "คลังสินค้า", icon: Warehouse, href: "/warehouse" },
   { section: "ซื้อขาย" },
   { key: "quotations", label: "ใบเสนอราคา", icon: FileText, href: "/quotations" },
   {

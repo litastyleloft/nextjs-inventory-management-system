@@ -3,10 +3,12 @@
 // The interactive pieces of the topbar in design/src/partials/shell_top.html,
 // with the vanilla listeners from shell_bottom.html ported to React.
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { ChevronDown, ChevronRight, LogOut, Maximize, Menu, PanelLeft, Search, SlidersHorizontal, User } from "lucide-react";
+import { ChevronDown, ChevronRight, KeyRound, LogOut, Maximize, Menu, PanelLeft, Search, User } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useShell } from "./AppShell";
 import { findActive } from "./nav";
 
@@ -95,7 +97,7 @@ export function FullscreenButton() {
 }
 
 /** User dropdown (the design's ActionMenu / wireMenu pattern). */
-export function UserMenu({ name }: { name: string }) {
+export function UserMenu({ name, image }: { name: string; image: string | null }) {
   const [open, setOpen] = useState(false);
   const anchor = useRef<HTMLDivElement>(null);
 
@@ -126,7 +128,9 @@ export function UserMenu({ name }: { name: string }) {
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
       >
-        <span className="gg-avatar">{name.charAt(0).toUpperCase()}</span>
+        <span className="gg-avatar">
+          {image ? <Image src={image} alt="" width={36} height={36} unoptimized /> : name.charAt(0).toUpperCase()}
+        </span>
         <span>
           <div className="gg-user-name">{name}</div>
         </span>
@@ -134,19 +138,32 @@ export function UserMenu({ name }: { name: string }) {
       </button>
       {open && (
         <div className="gg-menu" role="menu">
-          <Link href="/profile" role="menuitem" className="gg-menu-item" onClick={close}>
+          {/*
+            prefetch={false}: the Auth.js proxy wrapper re-issues the session cookie on every
+            response, so a prefetch still in flight when Logout is clicked can land after
+            sign-out and log the user straight back in.
+          */}
+          <Link href="/profile" prefetch={false} role="menuitem" className="gg-menu-item" onClick={close}>
             <User className="gg-icon sm" aria-hidden />
             โปรไฟล์ของฉัน
           </Link>
-          <Link href="/settings" role="menuitem" className="gg-menu-item" onClick={close}>
-            <SlidersHorizontal className="gg-icon sm" aria-hidden />
-            ตั้งค่า
+          <Link href="/change-password" prefetch={false} role="menuitem" className="gg-menu-item" onClick={close}>
+            <KeyRound className="gg-icon sm" aria-hidden />
+            เปลี่ยนรหัสผ่าน
           </Link>
           <div className="gg-menu-sep" role="separator" />
-          <Link href="/login?out=1" role="menuitem" className="gg-menu-item danger" onClick={close}>
+          <button
+            type="button"
+            role="menuitem"
+            className="gg-menu-item danger"
+            onClick={() => {
+              close();
+              void signOut({ redirectTo: "/?out=1" });
+            }}
+          >
             <LogOut className="gg-icon sm" aria-hidden />
             ออกจากระบบ
-          </Link>
+          </button>
         </div>
       )}
     </div>

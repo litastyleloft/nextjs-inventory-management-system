@@ -1,0 +1,12 @@
+/* Shared create/edit form styles, from design/src/pages/people-form.tpl.html. Scope: .lts-form */
+.lts-form .pf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-8); }
+.lts-form .pf-grid .full { grid-column: 1 / -1; }
+.lts-form .gg-hint, .lts-form .gg-error { line-height: 18px; }
+.lts-form .optional { margin-left: 6px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.lts-form .foot-note { margin-right: auto; align-self: center; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.lts-form .gg-card-foot .gg-btn { text-decoration: none; }
+.lts-form .spin { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: lts-form-spin .7s linear infinite; }
+@keyframes lts-form-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .lts-form .spin { animation-duration: 2s; } }
+.lts-form .form-denied { display: flex; gap: var(--space-4); align-items: center; }
+.lts-form .form-denied .gg-stat-icon { background: var(--warning-soft); color: var(--warning-text); }

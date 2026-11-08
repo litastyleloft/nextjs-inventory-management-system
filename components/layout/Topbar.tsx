@@ -3,7 +3,7 @@ import { Bell, ScanBarcode } from "lucide-react";
 import { Breadcrumbs, FullscreenButton, GlobalSearch, SidebarToggle, UserMenu } from "./TopbarControls";
 
 /** The header from design/src/partials/shell_top.html. */
-export default function Topbar() {
+export default function Topbar({ userName, userImage }: { userName: string; userImage: string | null }) {
   return (
     <header className="gg-topbar">
       <SidebarToggle />
@@ -21,7 +21,7 @@ export default function Topbar() {
           </button>
         </span>
         <span className="gg-divider-v" aria-hidden="true" />
-        <UserMenu name="แอดมิน" />
+        <UserMenu name={userName} image={userImage} />
       </div>
     </header>
   );
