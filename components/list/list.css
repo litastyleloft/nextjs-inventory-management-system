@@ -38,3 +38,4 @@
 .lts-list .who .tag-default { margin-left: 6px; height: 20px; padding: 0 6px; font-size: 11px; vertical-align: 2px; }
 .lts-list .row-locked { color: var(--muted); cursor: default; }
 .lts-list .row-locked:hover { background: transparent; color: var(--muted); }
+.lts-list .gg-badge.navy { background: var(--primary-soft); color: var(--primary); }

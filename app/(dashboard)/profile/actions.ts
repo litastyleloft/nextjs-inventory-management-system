@@ -72,7 +72,7 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfileRe
     return { status: "invalid", errors };
   }
 
-  const current = await db.user.findUnique({ where: { id: userId }, select: { image: true } });
+  const current = await db.user.findFirst({ where: { id: userId, deletedAt: null }, select: { image: true } });
   if (!current) return { status: "signed-out" };
 
   let image = current.image;

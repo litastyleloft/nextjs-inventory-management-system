@@ -18,5 +18,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     role: string;
+    /** When this session signed in (ms). Sessions older than the last password change end. */
+    signedInAt?: number;
   }
 }

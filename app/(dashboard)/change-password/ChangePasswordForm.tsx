@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import toast from "react-hot-toast";
+import { signOut } from "next-auth/react";
 import { Check, Eye, EyeOff, Shield, X } from "lucide-react";
 
 import { changePassword, type PasswordField } from "./actions";
@@ -78,7 +79,11 @@ export default function ChangePasswordForm({ email }: { email: string }) {
         form.reset();
         setMatch("empty");
         setVisible({ currentPassword: false, newPassword: false, confirmPassword: false });
+        // Every session that used the old password has ended, this one included, so sign
+        // out cleanly and ask for the new password (the login page shows why).
         toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว", { id: "change-password" });
+        await signOut({ redirectTo: "/?pw=changed" });
+        return;
       } else {
         fail(result);
       }

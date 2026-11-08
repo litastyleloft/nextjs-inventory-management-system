@@ -20,3 +20,24 @@
 .lts-form .auto-box.found { border-style: solid; border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
 .lts-form .auto-box .auto-empty { color: var(--placeholder); font-weight: 500; }
 .lts-form .alert-default { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); padding: 12px var(--space-4); border-radius: var(--radius-md); background: var(--gold-soft); color: var(--gold-text); font: 500 13px/20px var(--font-sans); }
+
+/* Photo uploader, password eye toggle and strength meter (people-form.tpl.html, users) */
+.lts-form .role-note { margin-top: 6px; }
+.lts-form .photo { display: flex; align-items: center; gap: var(--space-5); }
+.lts-form .photo-box { position: relative; width: 96px; height: 96px; flex: none; }
+.lts-form .photo-img { width: 96px; height: 96px; border-radius: var(--radius-pill); background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; font: 700 30px/1 var(--font-display); overflow: hidden; border: 3px solid var(--surface); box-shadow: var(--shadow-1); box-sizing: border-box; }
+.lts-form .photo-img img { width: 100%; height: 100%; object-fit: cover; }
+.lts-form .photo-img .gg-icon { width: 36px; height: 36px; }
+.lts-form .photo-edit { position: absolute; right: -2px; top: -2px; width: 30px; height: 30px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--surface); color: var(--primary); display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow-1); }
+.lts-form .photo-edit:hover { background: var(--primary-soft); }
+.lts-form .photo-meta { font: 500 13px/20px var(--font-sans); color: var(--muted); }
+.lts-form .photo-meta button { margin-top: 6px; }
+.lts-form .eye { width: 36px; height: 36px; margin-right: 2px; border: 0; background: none; color: var(--muted); border-radius: var(--radius-sm); cursor: pointer; display: grid; place-items: center; flex: none; align-self: center; }
+.lts-form .eye:hover { color: var(--primary); background: var(--surface-hover); }
+.lts-form .eye.on { color: var(--primary); }
+.lts-form .meter { display: flex; gap: 4px; margin-top: 6px; }
+.lts-form .meter i { flex: 1; height: 4px; border-radius: var(--radius-pill); background: var(--border); }
+.lts-form .meter.s1 i:nth-child(-n+1) { background: var(--danger); }
+.lts-form .meter.s2 i:nth-child(-n+2) { background: var(--warning); }
+.lts-form .meter.s3 i:nth-child(-n+3) { background: var(--success); }
+.lts-form .meter.s4 i { background: var(--success); }

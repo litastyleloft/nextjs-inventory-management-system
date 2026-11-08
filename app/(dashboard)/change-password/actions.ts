@@ -39,7 +39,7 @@ export async function changePassword(input: unknown): Promise<ChangePasswordResu
   }
   const { currentPassword, newPassword } = parsed.data;
 
-  const user = await db.user.findUnique({ where: { id: userId }, select: { password: true } });
+  const user = await db.user.findFirst({ where: { id: userId, deletedAt: null }, select: { password: true } });
   if (!user) return { status: "error", message: "เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่" };
 
   // Nothing changes unless the current password is right.
@@ -52,14 +52,14 @@ export async function changePassword(input: unknown): Promise<ChangePasswordResu
 
   const password = await bcrypt.hash(newPassword, 12);
   await db.$transaction([
-    db.user.update({ where: { id: userId }, data: { password } }),
+    // passwordChangedAt ends every session signed in before now, including this one.
+    db.user.update({ where: { id: userId }, data: { password, passwordChangedAt: new Date() } }),
     // A reset link requested before this change should no longer work.
     db.passwordResetToken.deleteMany({ where: { userId } }),
   ]);
 
-  // Possible enhancement (not implemented yet): sign the user out here, and end their
-  // sessions on other devices, so everyone signs in again with the new password.
-  // JWT sessions cannot be revoked on their own, so this needs a per-user
-  // "sessions valid after" timestamp checked in the auth callbacks.
+  // Setting passwordChangedAt above ends every session signed in before now, on all
+  // devices (checked in the jwt callback in auth.ts). The form then signs this browser
+  // out cleanly and asks for the new password.
   return { status: "success" };
 }

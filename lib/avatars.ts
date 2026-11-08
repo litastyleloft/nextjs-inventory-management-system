@@ -19,6 +19,20 @@ export function detectAvatarType(bytes: Uint8Array): AvatarType | null {
   return null;
 }
 
+/**
+ * Checks an uploaded photo from a form: null when none was chosen, an error message when
+ * it is too big or not really a JPG/PNG (checked by content), otherwise its bytes and type.
+ */
+export async function readAvatarUpload(
+  value: FormDataEntryValue | null,
+): Promise<null | { error: string } | { bytes: Uint8Array; type: AvatarType }> {
+  if (!(value instanceof File) || value.size === 0) return null;
+  if (value.size > MAX_AVATAR_BYTES) return { error: "ไฟล์ใหญ่เกิน 1 MB" };
+  const bytes = new Uint8Array(await value.arrayBuffer());
+  const type = detectAvatarType(bytes);
+  return type ? { bytes, type } : { error: "รองรับเฉพาะไฟล์ JPG หรือ PNG" };
+}
+
 export async function saveAvatar(bytes: Uint8Array, type: AvatarType) {
   await mkdir(AVATAR_DIR, { recursive: true });
   const fileName = `${randomUUID()}.${type}`;

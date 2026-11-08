@@ -15,6 +15,8 @@ async function seedAdmin() {
     firstName: "Sivaek",
     lastName: "Loomba",
     password,
+    // Resetting the password here also ends the admin's existing sessions.
+    passwordChangedAt: new Date(),
     role: "admin",
   };
   const email = "litastyleloft@gmail.com";

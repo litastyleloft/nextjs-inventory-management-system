@@ -15,7 +15,8 @@ const TOKEN_LIFETIME_MS = 30 * 60 * 1000;
 const RESEND_COOLDOWN_MS = 60 * 1000;
 
 async function issueResetEmail(email: string) {
-  const user = await db.user.findUnique({ where: { email } });
+  // Deleted users get no reset email.
+  const user = await db.user.findFirst({ where: { email, deletedAt: null } });
   if (!user) return;
 
   const recent = await db.passwordResetToken.findFirst({
@@ -73,9 +74,11 @@ export async function resetPassword(token: string, newPassword: string): Promise
     const { count } = await tx.passwordResetToken.deleteMany({ where: { id: record.id } });
     if (count !== 1) return false;
 
-    await tx.user.update({ where: { id: record.userId }, data: { password } });
+    // A reset link must not change the password of a user deleted since it was sent.
+    // passwordChangedAt also ends any session that signed in with the old password.
+    const updated = await tx.user.updateMany({ where: { id: record.userId, deletedAt: null }, data: { password, passwordChangedAt: new Date() } });
     await tx.passwordResetToken.deleteMany({ where: { userId: record.userId } });
-    return true;
+    return updated.count === 1;
   });
 
   return { status: changed ? "success" : "invalid-link" };

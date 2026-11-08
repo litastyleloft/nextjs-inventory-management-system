@@ -7,7 +7,6 @@ import { ChevronLeft } from "lucide-react";
 
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { ROLES } from "@/lib/sample-data";
 import ProfileForm from "./ProfileForm";
 import "./profile.css";
 
@@ -19,14 +18,14 @@ async function Profile() {
   if (!session?.user?.id) redirect("/");
 
   // Only the signed-in user's own record, and never the password.
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { firstName: true, lastName: true, email: true, phoneNumber: true, image: true, role: true },
+  const user = await db.user.findFirst({
+    where: { id: session.user.id, deletedAt: null },
+    select: { firstName: true, lastName: true, email: true, phoneNumber: true, image: true, roleRef: { select: { name: true } } },
   });
   if (!user) notFound();
 
-  const { role, ...profile } = user;
-  const roleName = ROLES.find((r) => r.id === role)?.name ?? role;
+  const { roleRef, ...profile } = user;
+  const roleName = roleRef.name;
   return <ProfileForm profile={{ ...profile, phoneNumber: profile.phoneNumber ?? "" }} roleName={roleName} />;
 }
 

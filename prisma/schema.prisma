@@ -14,15 +14,43 @@ model User {
   email       String   @unique
   /// bcrypt hash only. Never store or return the plain password.
   password    String
+  /// When the password last changed. Sessions signed in before this are ended
+  /// (see the jwt callback in auth.ts).
+  passwordChangedAt DateTime?
   phoneNumber String?
   /// Profile image URL.
   image       String?  @db.VarChar(2048)
-  /// Role id, e.g. admin, manager, sales, stock.
+  /// Role id (Role.id), e.g. admin, manager, sales, stock.
   role        String
+  roleRef     Role     @relation(fields: [role], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  /// Soft delete: a deleted user cannot sign in and is hidden everywhere. Every query
+  /// must filter `deletedAt: null`.
+  deletedAt   DateTime?
+
+  passwordResetTokens PasswordResetToken[]
+
+  // Users list: active users, newest first.
+  @@index([deletedAt, createdAt])
+}
+
+/// Staff roles. Filled with the design's four roles (design/src/data/people-data.js);
+/// the Roles page will manage this table. Permissions per role are still in
+/// lib/permissions.ts until then.
+model Role {
+  /// Stable key used in code and on User.role, e.g. "admin".
+  id          String   @id @db.VarChar(30)
+  name        String   @db.VarChar(100)
+  description String?  @db.VarChar(255)
+  /// Badge colour from the design: navy, info, success, warning, neutral.
+  tone        String   @default("neutral") @db.VarChar(20)
+  /// Built-in role (admin) that the Roles page must not delete.
+  isSystem    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  passwordResetTokens PasswordResetToken[]
+  users User[]
 }
 
 model Warehouse {

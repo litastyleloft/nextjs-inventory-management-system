@@ -19,6 +19,10 @@ export const optionalText = (max: number, valid?: (v: string) => boolean, messag
     .transform((v) => (v === "" ? null : v));
 
 export const optionalEmail = () => optionalText(191, emailOk, "รูปแบบอีเมลไม่ถูกต้อง");
+
+/** A required email, trimmed and lower-cased (sign-in emails are compared this way). */
+export const requiredEmail = (message = "กรุณากรอกอีเมล") =>
+  z.string().trim().toLowerCase().min(1, message).max(191, tooLong(191)).refine(emailOk, "รูปแบบอีเมลไม่ถูกต้อง");
 export const optionalPhone = () => optionalText(30, phoneOk, "เบอร์โทรต้องมีตัวเลขอย่างน้อย 9 หลัก");
 
 /** First error message per field, from any schema. */

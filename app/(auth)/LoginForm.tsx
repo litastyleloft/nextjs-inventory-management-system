@@ -42,11 +42,17 @@ function writeRememberedEmail(email: string | null) {
 }
 
 function SignedOutNotice() {
-  if (!useSearchParams().get("out")) return null;
+  const params = useSearchParams();
+  const message = params.get("pw") === "changed"
+    ? "เปลี่ยนรหัสผ่านเรียบร้อยแล้ว กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่"
+    : params.get("out")
+      ? "ออกจากระบบเรียบร้อยแล้ว"
+      : null;
+  if (!message) return null;
   return (
     <div className="alert info" role="status">
       <Check className="gg-icon sm" aria-hidden />
-      <span>ออกจากระบบเรียบร้อยแล้ว</span>
+      <span>{message}</span>
     </div>
   );
 }

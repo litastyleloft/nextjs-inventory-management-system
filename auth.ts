@@ -27,7 +27,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!parsed.success) return null;
 
         const { email, password } = parsed.data;
-        const user = await db.user.findUnique({ where: { email } });
+        // Deleted (soft-deleted) users cannot sign in.
+        const user = await db.user.findFirst({ where: { email, deletedAt: null } });
         if (!user) return null;
 
         const { password: passwordHash, ...safeUser } = user;
@@ -39,12 +40,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
-      // `user` is only present at sign-in; later requests reuse the token's values.
+    async jwt({ token, user }) {
+      // `user` is only present at sign-in.
       if (user) {
         token.id = user.id as string;
         token.role = user.role;
+        token.signedInAt = Date.now();
+        return token;
       }
+      // On every later session check (proxy, pages, server actions): the account must
+      // still exist and not be soft-deleted. Returning null ends the session, so a user
+      // deleted by an admin is signed out on their next request instead of keeping access
+      // until the token expires. Their role is refreshed here too.
+      // Sessions that signed in before the user's last password change also end, so a
+      // changed or reset password signs out every device that knew the old one.
+      // If the database can't be reached this throws, and Auth.js treats the session as
+      // invalid: failing closed is the safe choice for staff accounts.
+      if (!token.id) return null;
+      const current = await db.user.findFirst({ where: { id: token.id, deletedAt: null }, select: { role: true, passwordChangedAt: true } });
+      if (!current) return null;
+      if (current.passwordChangedAt && current.passwordChangedAt.getTime() > (token.signedInAt ?? 0)) return null;
+      token.role = current.role;
       return token;
     },
     session({ session, token }) {
