@@ -12,7 +12,7 @@ import { can } from "@/lib/permissions";
 import { listSuppliers, type SupplierRow } from "@/lib/suppliers";
 import DeleteRecordButton from "@/components/list/DeleteRecordButton";
 import { deleteSupplier } from "./actions";
-import ImportSuppliersButton from "./ImportSuppliersButton";
+import ComingSoonButton from "@/components/list/ComingSoonButton";
 import "@/components/list/list.css";
 
 export const metadata: Metadata = { title: "ผู้จำหน่าย" };
@@ -74,7 +74,7 @@ async function SupplierList({ searchParams }: { searchParams: ListSearchParams }
           <ListSearch basePath={BASE_PATH} q={q} size={size} placeholder="ค้นหาด้วยชื่อ อีเมล หรือเบอร์โทร" label="ค้นหาผู้จำหน่าย" />
           {canManage && (
             <div className="gg-row">
-              <ImportSuppliersButton />
+              <ComingSoonButton label="นำเข้าผู้จำหน่าย" message="การนำเข้าผู้จำหน่ายจากไฟล์ CSV จะเปิดให้ใช้เร็ว ๆ นี้" />
               <Link className="gg-btn gg-btn-primary" href={`${BASE_PATH}/create`}>
                 <Plus className="gg-icon" aria-hidden />
                 เพิ่มผู้จำหน่าย

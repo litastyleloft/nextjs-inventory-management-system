@@ -1,16 +1,17 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-export type Permission = "warehouses.manage" | "suppliers.manage";
+export type Permission = "warehouses.manage" | "suppliers.manage" | "customers.manage";
 
 // TEMPORARY: a fixed role → permission map until the Roles page exists. When it does,
 // replace this lookup (for example with a RolePermission table); callers only use
 // `can` and `requirePermission`, so no server action needs to change.
 const ROLE_PERMISSIONS: Record<string, readonly Permission[]> = {
-  admin: ["warehouses.manage", "suppliers.manage"],
-  manager: ["warehouses.manage", "suppliers.manage"],
+  admin: ["warehouses.manage", "suppliers.manage", "customers.manage"],
+  manager: ["warehouses.manage", "suppliers.manage", "customers.manage"],
   stock: ["warehouses.manage"],
-  sales: [],
+  // Sales staff serve customers at the POS, so they can add and edit them.
+  sales: ["customers.manage"],
 };
 
 export function roleHasPermission(role: string | null | undefined, permission: Permission) {

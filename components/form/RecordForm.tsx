@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Check } from "lucide-react";
+import { Check, ChevronDown, Globe } from "lucide-react";
 
 /** What every create/update server action returns. */
 export type RecordActionResult<K extends string> =
@@ -12,20 +12,37 @@ export type RecordActionResult<K extends string> =
   | { status: "invalid"; errors: Partial<Record<K, string>> }
   | { status: "not-found" | "forbidden" | "signed-out" };
 
+/** An editable field. `kind` defaults to a one-line input. */
 export type RecordField<K extends string> = {
   id: K;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   required?: boolean;
+  hint?: string;
+  kind?: "input" | "textarea" | "select";
+  /** For inputs: "text" (default), "email", "tel", "date", … */
   type?: string;
   inputMode?: "numeric";
-  hint?: string;
+  /** For selects. */
+  options?: { value: string; label: string }[];
 };
+
+/** A read-only box worked out from other fields (the design's "auto" field, e.g. region). */
+export type ComputedField<K extends string> = {
+  kind: "computed";
+  key: string;
+  label: string;
+  note?: string;
+  compute: (values: Record<K, string>) => { value: string; hint?: string } | { empty: string };
+};
+
+type AnyField<K extends string> = RecordField<K> | ComputedField<K>;
+const isComputed = <K extends string>(f: AnyField<K>): f is ComputedField<K> => f.kind === "computed";
 
 type Props<K extends string> = {
   /** One form, two modes: "create" starts blank, "edit" starts from the saved record. */
   mode: "create" | "edit";
-  fields: RecordField<K>[];
+  fields: AnyField<K>[];
   initial: Record<K, string>;
   empty: Record<K, string>;
   /** Field errors from the shared zod schema (same check the server runs). */
@@ -43,7 +60,8 @@ type Props<K extends string> = {
  */
 export default function RecordForm<K extends string>({ mode, fields, initial, empty, validate, action, listHref, noun }: Props<K>) {
   const router = useRouter();
-  const ids = fields.map((f) => f.id);
+  const editable = fields.filter((f): f is RecordField<K> => !isComputed(f));
+  const ids = editable.map((f) => f.id);
   const allTouched = () => Object.fromEntries(ids.map((f) => [f, true])) as Record<K, boolean>;
   const [values, setValues] = useState<Record<K, string>>(initial);
   const [touched, setTouched] = useState<Partial<Record<K, boolean>>>(mode === "edit" ? allTouched() : {});
@@ -55,6 +73,11 @@ export default function RecordForm<K extends string>({ mode, fields, initial, em
   const errorFor = (id: K) => serverErrors[id] ?? (touched[id] ? clientErrors[id] : undefined);
   const unchanged = mode === "edit" && ids.every((f) => values[f].trim() === initial[f].trim());
   const toastId = `record-form-${noun}`;
+
+  function change(id: K, value: string) {
+    setValues((v) => ({ ...v, [id]: value }));
+    setServerErrors((s) => ({ ...s, [id]: undefined }));
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -91,49 +114,98 @@ export default function RecordForm<K extends string>({ mode, fields, initial, em
     setSaving(false);
   }
 
+  function renderComputed(field: ComputedField<K>) {
+    const result = field.compute(values);
+    const found = "value" in result;
+    return (
+      <div className="gg-field" key={field.key}>
+        <span className="gg-label">
+          {field.label}
+          {field.note && <span className="optional">{field.note}</span>}
+        </span>
+        <div className={`auto-box${found ? " found" : ""}`} id={field.key} aria-live="polite">
+          {found ? (
+            <>
+              <Globe className="gg-icon sm" aria-hidden />
+              {result.value}
+            </>
+          ) : (
+            <span className="auto-empty">{result.empty}</span>
+          )}
+        </div>
+        {found && result.hint && <div className="gg-hint">{result.hint}</div>}
+      </div>
+    );
+  }
+
+  function renderField(field: RecordField<K>, autoFocus: boolean) {
+    const error = errorFor(field.id);
+    const describedBy = error ? `${field.id}Err` : field.hint ? `${field.id}Hint` : undefined;
+    const common = {
+      id: field.id,
+      name: field.id,
+      required: field.required,
+      autoFocus,
+      value: values[field.id],
+      "aria-invalid": error ? true : undefined,
+      "aria-describedby": describedBy,
+      onBlur: (e: { target: { value: string } }) => {
+        if (e.target.value.trim() || field.required) setTouched((t) => ({ ...t, [field.id]: true }));
+      },
+    };
+    const kind = field.kind ?? "input";
+
+    return (
+      <div className="gg-field" key={field.id}>
+        <label className="gg-label" htmlFor={field.id}>
+          {field.label}
+          {field.required ? <span className="gg-req" aria-hidden="true">*</span> : <span className="optional">(ไม่บังคับ)</span>}
+        </label>
+        <div className={`gg-control${kind === "textarea" ? " textarea" : ""}${error ? " invalid" : ""}`}>
+          {kind === "textarea" ? (
+            <textarea {...common} rows={4} placeholder={field.placeholder} onChange={(e) => change(field.id, e.target.value)} />
+          ) : kind === "select" ? (
+            <>
+              <select
+                {...common}
+                className={values[field.id] === "" ? "is-placeholder" : undefined}
+                onChange={(e) => {
+                  change(field.id, e.target.value);
+                  setTouched((t) => ({ ...t, [field.id]: true }));
+                }}
+              >
+                {field.placeholder && <option value="" disabled>{field.placeholder}</option>}
+                {field.options?.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+              <span className="gg-caret"><ChevronDown className="gg-icon sm" aria-hidden /></span>
+            </>
+          ) : (
+            <input
+              {...common}
+              type={field.type ?? "text"}
+              inputMode={field.inputMode}
+              autoComplete="off"
+              placeholder={field.placeholder}
+              onChange={(e) => change(field.id, e.target.value)}
+            />
+          )}
+        </div>
+        {error ? (
+          <div className="gg-error" id={`${field.id}Err`}>{error}</div>
+        ) : (
+          field.hint && <div className="gg-hint" id={`${field.id}Hint`}>{field.hint}</div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <form className="gg-card" noValidate autoComplete="off" onSubmit={handleSubmit}>
       <div className="gg-card-body" style={{ paddingTop: "var(--space-6)", paddingBottom: "var(--space-6)" }}>
         <div className="pf-grid">
-          {fields.map((field, index) => {
-            const error = errorFor(field.id);
-            const describedBy = error ? `${field.id}Err` : field.hint ? `${field.id}Hint` : undefined;
-            return (
-              <div className="gg-field" key={field.id}>
-                <label className="gg-label" htmlFor={field.id}>
-                  {field.label}
-                  {field.required ? <span className="gg-req" aria-hidden="true">*</span> : <span className="optional">(ไม่บังคับ)</span>}
-                </label>
-                <div className={`gg-control${error ? " invalid" : ""}`}>
-                  <input
-                    id={field.id}
-                    name={field.id}
-                    type={field.type ?? "text"}
-                    inputMode={field.inputMode}
-                    autoComplete="off"
-                    placeholder={field.placeholder}
-                    autoFocus={index === 0}
-                    required={field.required}
-                    value={values[field.id]}
-                    aria-invalid={error ? true : undefined}
-                    aria-describedby={describedBy}
-                    onChange={(e) => {
-                      setValues((v) => ({ ...v, [field.id]: e.target.value }));
-                      setServerErrors((s) => ({ ...s, [field.id]: undefined }));
-                    }}
-                    onBlur={(e) => {
-                      if (e.target.value.trim() || field.required) setTouched((t) => ({ ...t, [field.id]: true }));
-                    }}
-                  />
-                </div>
-                {error ? (
-                  <div className="gg-error" id={`${field.id}Err`}>{error}</div>
-                ) : (
-                  field.hint && <div className="gg-hint" id={`${field.id}Hint`}>{field.hint}</div>
-                )}
-              </div>
-            );
-          })}
+          {fields.map((field, index) => (isComputed(field) ? renderComputed(field) : renderField(field, index === 0)))}
         </div>
       </div>
       <div className="gg-card-foot">

@@ -32,3 +32,9 @@
 /* Pager: disabled first/prev/next/last are plain spans */
 .lts-list .gg-page { text-decoration: none; }
 .lts-list .gg-page[aria-disabled="true"] { opacity: .4; cursor: default; background: transparent; }
+
+/* The design's gold avatar for the walk-in / default customer (.gg-avatar.alt) */
+.lts-list .who .gg-avatar.alt { background: var(--gold-soft); color: var(--gold-text); }
+.lts-list .who .tag-default { margin-left: 6px; height: 20px; padding: 0 6px; font-size: 11px; vertical-align: 2px; }
+.lts-list .row-locked { color: var(--muted); cursor: default; }
+.lts-list .row-locked:hover { background: transparent; color: var(--muted); }
