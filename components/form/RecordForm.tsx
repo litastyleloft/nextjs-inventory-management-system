@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Check, ChevronDown, Globe } from "lucide-react";
+import { Check, ChevronDown, Globe, type LucideIcon } from "lucide-react";
 
 /** What every create/update server action returns. */
 export type RecordActionResult<K extends string> =
@@ -33,6 +33,8 @@ export type ComputedField<K extends string> = {
   key: string;
   label: string;
   note?: string;
+  /** Icon shown with the value (default: Globe). */
+  icon?: LucideIcon;
   compute: (values: Record<K, string>) => { value: string; hint?: string } | { empty: string };
 };
 
@@ -117,6 +119,7 @@ export default function RecordForm<K extends string>({ mode, fields, initial, em
   function renderComputed(field: ComputedField<K>) {
     const result = field.compute(values);
     const found = "value" in result;
+    const Icon = field.icon ?? Globe;
     return (
       <div className="gg-field" key={field.key}>
         <span className="gg-label">
@@ -126,7 +129,7 @@ export default function RecordForm<K extends string>({ mode, fields, initial, em
         <div className={`auto-box${found ? " found" : ""}`} id={field.key} aria-live="polite">
           {found ? (
             <>
-              <Globe className="gg-icon sm" aria-hidden />
+              <Icon className="gg-icon sm" aria-hidden />
               {result.value}
             </>
           ) : (

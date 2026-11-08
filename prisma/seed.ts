@@ -95,12 +95,11 @@ async function seedDefaultCustomer() {
     data: {
       systemKey: DIRECT_CUSTOMER_KEY,
       name: "ลูกค้าหน้าร้าน",
-      email: "pos@lts-solution.example",
       phoneNumber: "02-123-4567",
       country: "ไทย",
       city: "กรุงเทพมหานคร",
       address: "ขายหน้าร้าน (ไม่ระบุที่อยู่)",
-      creditTermDays: 0,
+      creditTerm: "cash",
     },
   });
   console.log(`Default customer added: ${created.name}`);

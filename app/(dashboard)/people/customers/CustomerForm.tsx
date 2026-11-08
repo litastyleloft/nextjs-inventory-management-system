@@ -1,16 +1,18 @@
 "use client";
 
 import RecordForm, { type ComputedField, type RecordActionResult, type RecordField } from "@/components/form/RecordForm";
-import { ABROAD, PROVINCE_LIST, regionOf } from "@/lib/thai-provinces";
-import { CREDIT_TERMS, creditTermLabel, EMPTY_CUSTOMER, customerErrors, type CustomerField, type CustomerInput } from "@/lib/validation/customer";
+import { CalendarClock } from "lucide-react";
 
-// The customers config from design/src/pages/people-form.tpl.html. Name and province are
-// required; the region box is worked out from the province and is not saved.
+import { billingDateFor, creditMonths, CREDIT_TERMS, creditTermLabel, isCreditTerm, thaiMonth } from "@/lib/credit-terms";
+import { ABROAD, PROVINCE_LIST, regionOf } from "@/lib/thai-provinces";
+import { EMPTY_CUSTOMER, customerErrors, type CustomerField, type CustomerInput } from "@/lib/validation/customer";
+
+// The customers config from design/src/pages/people-form.tpl.html, without email and
+// birthday. Name and province are required; the region box is worked out from the
+// province and is not saved.
 const FIELDS: (RecordField<CustomerField> | ComputedField<CustomerField>)[] = [
   { id: "name", label: "ชื่อลูกค้า", placeholder: "กรอกชื่อลูกค้าหรือชื่อร้าน", required: true },
-  { id: "email", label: "อีเมล", placeholder: "กรอกอีเมล", type: "email" },
   { id: "phoneNumber", label: "เบอร์โทรศัพท์", placeholder: "เช่น 081-234-5678", type: "tel" },
-  { id: "dateOfBirth", label: "วันเกิด", type: "date", hint: "ใช้ส่งโปรโมชันวันเกิด" },
   { id: "country", label: "ประเทศ", placeholder: "กรอกประเทศ" },
   {
     id: "city",
@@ -33,11 +35,32 @@ const FIELDS: (RecordField<CustomerField> | ComputedField<CustomerField>)[] = [
   },
   { id: "address", label: "ที่อยู่", kind: "textarea", placeholder: "กรอกที่อยู่สำหรับจัดส่งและออกใบกำกับภาษี" },
   {
-    id: "creditTermDays",
+    id: "creditTerm",
     label: "เครดิตเริ่มต้น",
     kind: "select",
-    options: CREDIT_TERMS.map((d) => ({ value: String(d), label: creditTermLabel(d) })),
+    options: CREDIT_TERMS.map((t) => ({ value: t, label: creditTermLabel(t) })),
     hint: "ใช้เป็นค่าเริ่มต้นตอนขายเชื่อ ปรับได้ในแต่ละบิลขาย",
+  },
+  {
+    // Explains the billing rule in lib/credit-terms.ts with a fixed example month (January),
+    // so it renders the same on the server and in the browser.
+    kind: "computed",
+    key: "billingCycle",
+    label: "รอบวางบิล",
+    note: "(ตามเครดิตเริ่มต้น)",
+    icon: CalendarClock,
+    compute: (v) => {
+      if (!isCreditTerm(v.creditTerm)) return { empty: "เลือกเครดิตเริ่มต้นก่อน" };
+      const months = creditMonths(v.creditTerm);
+      if (months === 0) return { value: "ชำระทันทีเมื่อซื้อ", hint: "ไม่มีการวางบิลภายหลัง" };
+      // Uses the real rule on an example purchase in January.
+      const bill = billingDateFor("2000-01-15", v.creditTerm);
+      const nextYear = bill.startsWith("2001") ? " ปีถัดไป" : "";
+      return {
+        value: `วางบิลวันที่ 1 ของเดือนที่ ${months} ถัดจากเดือนที่ซื้อ`,
+        hint: `เช่น ซื้อวันใดก็ได้ในเดือน ม.ค. → วางบิล 1 ${thaiMonth(Number(bill.slice(5, 7)))}${nextYear}`,
+      };
+    },
   },
 ];
 

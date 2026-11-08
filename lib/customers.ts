@@ -18,7 +18,6 @@ export const DIRECT_CUSTOMER_KEY = "direct-customer";
 const listSelect = {
   id: true,
   name: true,
-  email: true,
   phoneNumber: true,
   systemKey: true,
   createdAt: true,
@@ -31,7 +30,6 @@ export async function listCustomers({ q, page, size }: ListParams) {
     ? {
         OR: [
           { name: { contains: q } },
-          { email: { contains: q } },
           { phoneNumber: { contains: q } },
           { city: { contains: q } },
         ],

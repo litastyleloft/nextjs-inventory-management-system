@@ -45,8 +45,6 @@ async function EditForm({ params }: { params: Params }) {
           // A newer save (here or elsewhere) remounts the form with fresh values.
           key={customer.updatedAt.toISOString()}
           mode="edit"
-          // toCustomerInput turns the DATE column into "YYYY-MM-DD" using UTC, so the
-          // date field shows the stored day whatever the server's time zone is.
           initial={toCustomerInput(customer)}
           action={updateCustomer.bind(null, customer.id)}
         />

@@ -69,16 +69,14 @@ model Customer {
   id          String    @id @default(cuid())
   name        String
   // Name and province (city) are required; the rest are optional.
-  email       String?
   phoneNumber String?
-  /// Date only (no time or time zone), so it can never shift by a day.
-  dateOfBirth DateTime? @db.Date
   country     String?
   /// Province from the design's list (lib/thai-provinces.ts), or "ต่างประเทศ".
   city        String
   address     String?   @db.VarChar(500)
-  /// Default credit term in days; 0 = cash. Allowed values: lib/validation/customer.ts.
-  creditTermDays Int    @default(0)
+  /// Default credit term as a code: "cash" or "1m" … "12m" (calendar months, which are
+  /// not a fixed number of days). Allowed values and the billing rule: lib/credit-terms.ts.
+  creditTerm  String    @default("cash") @db.VarChar(10)
   /// Set only on built-in records. "direct-customer" is the POS walk-in customer used
   /// when no customer is chosen: it must never be deleted, and the POS finds it by this
   /// key (not by name, which may be edited). Unique, so there is only ever one.

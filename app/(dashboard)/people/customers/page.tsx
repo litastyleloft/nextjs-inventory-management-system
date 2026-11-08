@@ -43,7 +43,6 @@ function Row({ c, canManage }: { c: CustomerRow; canManage: boolean }) {
               {c.name}
               {isDefault && <span className="gg-badge gold tag-default">ลูกค้าเริ่มต้น</span>}
             </span>
-            {c.email && <span className="sub">{c.email}</span>}
           </div>
         </div>
       </td>
@@ -85,7 +84,7 @@ async function CustomerList({ searchParams }: { searchParams: ListSearchParams }
       <PageHead summary={`ร้านค้าและโรงงานที่ซื้อผ้าจากเรา · ${list.totalActive} ราย`} />
       <div className="gg-table-card">
         <div className="gg-table-toolbar">
-          <ListSearch basePath={BASE_PATH} q={q} size={size} placeholder="ค้นหาด้วยชื่อ อีเมล เบอร์โทร หรือจังหวัด" label="ค้นหาลูกค้า" />
+          <ListSearch basePath={BASE_PATH} q={q} size={size} placeholder="ค้นหาด้วยชื่อ เบอร์โทร หรือจังหวัด" label="ค้นหาลูกค้า" />
           {canManage && (
             <div className="gg-row">
               <ComingSoonButton label="นำเข้าลูกค้า" message="การนำเข้าลูกค้าจากไฟล์ CSV จะเปิดให้ใช้เร็ว ๆ นี้" />
@@ -129,7 +128,7 @@ async function CustomerList({ searchParams }: { searchParams: ListSearchParams }
                     ) : (
                       <div className="list-empty">
                         <b>ไม่พบลูกค้าที่ตรงกับ &ldquo;{q}&rdquo;</b>
-                        <span>ลองค้นหาด้วยชื่อ อีเมล เบอร์โทร หรือจังหวัดอื่น</span>
+                        <span>ลองค้นหาด้วยชื่อ เบอร์โทร หรือจังหวัดอื่น</span>
                       </div>
                     )}
                   </td>
