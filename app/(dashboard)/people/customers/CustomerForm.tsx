@@ -3,7 +3,7 @@
 import RecordForm, { type ComputedField, type RecordActionResult, type RecordField } from "@/components/form/RecordForm";
 import { CalendarClock } from "lucide-react";
 
-import { billingDateFor, creditMonths, CREDIT_TERMS, creditTermLabel, isCreditTerm, thaiMonth } from "@/lib/credit-terms";
+import { BILLING_DAY, billingDateFor, creditMonths, CREDIT_TERMS, creditTermLabel, isCreditTerm, thaiMonth } from "@/lib/credit-terms";
 import { ABROAD, PROVINCE_LIST, regionOf } from "@/lib/thai-provinces";
 import { EMPTY_CUSTOMER, customerErrors, type CustomerField, type CustomerInput } from "@/lib/validation/customer";
 
@@ -57,8 +57,8 @@ const FIELDS: (RecordField<CustomerField> | ComputedField<CustomerField>)[] = [
       const bill = billingDateFor("2000-01-15", v.creditTerm);
       const nextYear = bill.startsWith("2001") ? " ปีถัดไป" : "";
       return {
-        value: `วางบิลวันที่ 1 ของเดือนที่ ${months} ถัดจากเดือนที่ซื้อ`,
-        hint: `เช่น ซื้อวันใดก็ได้ในเดือน ม.ค. → วางบิล 1 ${thaiMonth(Number(bill.slice(5, 7)))}${nextYear}`,
+        value: `วางบิลวันที่ ${BILLING_DAY} ของเดือนที่ ${months} ถัดจากเดือนที่ซื้อ`,
+        hint: `เช่น ซื้อวันใดก็ได้ในเดือน ม.ค. → วางบิล ${BILLING_DAY} ${thaiMonth(Number(bill.slice(5, 7)))}${nextYear}`,
       };
     },
   },
