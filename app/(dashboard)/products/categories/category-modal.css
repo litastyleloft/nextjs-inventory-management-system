@@ -1,0 +1,17 @@
+/* Category modal, from design/src/pages/categories.page.html. The modal is portalled to
+   <body>, outside the page's .lts-cats scope, so these use modal-only class names. */
+.cat-modal-top { display: grid; grid-template-columns: 136px minmax(0, 1fr); gap: var(--space-6); align-items: start; }
+.cat-modal-top .gg-stack { gap: var(--space-5); }
+.cat-modal-spec { margin-top: var(--space-6); }
+.cat-modal-spec .gg-form-section { margin: 0 0 var(--space-2); }
+.cat-modal-spec .spec-hint { margin-bottom: var(--space-5); font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.cat-modal-top .optional, .cat-modal-spec .optional { margin-left: 6px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.cat-modal-top .gg-hint, .cat-modal-top .gg-error, .cat-modal-spec .gg-hint, .cat-modal-spec .gg-error { line-height: 18px; }
+.cat-modal-spec .gg-control select.is-placeholder { color: var(--placeholder); }
+.cat-modal-spec .gg-control select option { color: var(--ink); }
+.cat-code-input { text-transform: uppercase; font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: .12em; }
+
+@media (max-width: 640px) {
+  .cat-modal-top { grid-template-columns: 1fr; }
+  .cat-modal-spec .gg-form-grid { grid-template-columns: 1fr; }
+}

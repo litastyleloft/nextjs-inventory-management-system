@@ -4,13 +4,13 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
 
-import { DEFAULT_PAGE_SIZE, listHref } from "@/lib/list";
+import { DEFAULT_PAGE_SIZE, listHref, type ListFilters } from "@/lib/list";
 
 /**
  * Toolbar search for a list page. Without JavaScript it is a plain GET form (Enter
  * submits); with JavaScript it updates the URL as you type, which re-runs the server query.
  */
-export default function ListSearch({ basePath, q, size, placeholder, label }: { basePath: string; q: string; size: number; placeholder: string; label: string }) {
+export default function ListSearch({ basePath, q, size, placeholder, label, filters = {} }: { basePath: string; q: string; size: number; placeholder: string; label: string; filters?: ListFilters }) {
   const router = useRouter();
   const [value, setValue] = useState(q);
   const [pending, startTransition] = useTransition();
@@ -20,7 +20,7 @@ export default function ListSearch({ basePath, q, size, placeholder, label }: { 
 
   function go(next: string) {
     clearTimeout(timer.current);
-    startTransition(() => router.replace(listHref(basePath, { q: next.trim(), size, page: 1 }), { scroll: false }));
+    startTransition(() => router.replace(listHref(basePath, { q: next.trim(), size, page: 1 }, filters), { scroll: false }));
   }
 
   return (
@@ -35,6 +35,7 @@ export default function ListSearch({ basePath, q, size, placeholder, label }: { 
       }}
     >
       {size !== DEFAULT_PAGE_SIZE && <input type="hidden" name="size" value={size} />}
+      {Object.entries(filters).map(([key, value]) => value && <input key={key} type="hidden" name={key} value={value} />)}
       <div className="gg-control">
         <span className="gg-lead"><Search className="gg-icon sm" aria-hidden /></span>
         <input

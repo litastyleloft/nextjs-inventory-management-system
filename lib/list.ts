@@ -29,9 +29,13 @@ export function parseListParams(raw: Record<string, string | string[] | undefine
   });
 }
 
+/** Extra list URL params, e.g. filters ({ category: "…", stock: "low-stock" }). Empty values are left out. */
+export type ListFilters = Record<string, string | undefined>;
+
 /** Builds a list URL, leaving out values that are already the defaults. */
-export function listHref(basePath: string, { q, page, size }: { q: string; page: number; size: number }) {
+export function listHref(basePath: string, { q, page, size }: { q: string; page: number; size: number }, filters: ListFilters = {}) {
   const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(filters)) if (value) params.set(key, value);
   if (q) params.set("q", q);
   if (size !== DEFAULT_PAGE_SIZE) params.set("size", String(size));
   if (page > 1) params.set("page", String(page));

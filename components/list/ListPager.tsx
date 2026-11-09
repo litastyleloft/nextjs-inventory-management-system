@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
-import { listHref } from "@/lib/list";
+import { listHref, type ListFilters } from "@/lib/list";
 import PageSizeSelect from "./PageSizeSelect";
 
 function PagerLink({ href, label, disabled, children }: { href: string; label: string; disabled: boolean; children: ReactNode }) {
@@ -17,8 +17,8 @@ function pageWindow(page: number, pages: number) {
 }
 
 /** The design's .gg-pager footer: rows per page, "1–10 จาก N", and page links. */
-export default function ListPager({ basePath, q, size, page, pages, total }: { basePath: string; q: string; size: number; page: number; pages: number; total: number }) {
-  const href = (p: number) => listHref(basePath, { q, size, page: p });
+export default function ListPager({ basePath, q, size, page, pages, total, filters }: { basePath: string; q: string; size: number; page: number; pages: number; total: number; filters?: ListFilters }) {
+  const href = (p: number) => listHref(basePath, { q, size, page: p }, filters);
   const from = total ? (page - 1) * size + 1 : 0;
   const to = Math.min(total, page * size);
 
@@ -26,7 +26,7 @@ export default function ListPager({ basePath, q, size, page, pages, total }: { b
     <div className="gg-pager">
       <div className="gg-pager-size">
         แถวต่อหน้า
-        <PageSizeSelect basePath={basePath} q={q} size={size} />
+        <PageSizeSelect basePath={basePath} q={q} size={size} filters={filters} />
         <span className="gg-num" style={{ marginLeft: 8 }}>{`${from}–${to} จาก ${total}`}</span>
       </div>
       <nav className="gg-pager-pages" aria-label="เลขหน้า">

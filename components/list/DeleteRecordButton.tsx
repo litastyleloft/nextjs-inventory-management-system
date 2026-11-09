@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Trash2, X } from "lucide-react";
 
@@ -18,13 +19,20 @@ type Props = {
   noun: string;
   /** The delete server action. It re-checks permission, the record and whether it is in use. */
   action: (id: string) => Promise<DeleteRecordResult>;
+  /** Confirmation text; defaults to a generic "this can't be undone" message. */
+  description?: string;
+  /** Where to go after deleting or finding it gone (e.g. a view page whose record is gone). */
+  redirectTo?: string;
+  /** Shows a labelled secondary button (page header) instead of the row's icon button. */
+  label?: string;
 };
 
 /**
  * Row delete button with the design's confirmation modal (people-list.tpl.html #confirm).
  * Nothing is deleted until the user confirms; the server then re-checks everything.
  */
-export default function DeleteRecordButton({ id, name, noun, action }: Props) {
+export default function DeleteRecordButton({ id, name, noun, action, description, redirectTo, label }: Props) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -53,9 +61,20 @@ export default function DeleteRecordButton({ id, name, noun, action }: Props) {
     setDeleting(true);
     try {
       const result = await action(id);
-      if (result.status === "success") toast.success(`ลบ "${result.name}" แล้ว`, { id: toastId });
-      else if (result.status === "blocked") toast.error(`ลบ "${name}" ไม่ได้: ${result.message}`, { id: toastId, duration: 6000 });
-      else if (result.status === "not-found") toast.error(`ไม่พบ${noun}นี้ อาจถูกลบไปแล้ว`, { id: toastId });
+      if (result.status === "success") {
+        toast.success(`ลบ "${result.name}" แล้ว`, { id: toastId });
+        if (redirectTo) {
+          setOpen(false);
+          router.push(redirectTo);
+          return;
+        }
+      } else if (result.status === "blocked") toast.error(`ลบ "${name}" ไม่ได้: ${result.message}`, { id: toastId, duration: 6000 });
+      else if (result.status === "not-found") {
+        toast.error(`ไม่พบ${noun}นี้ อาจถูกลบไปแล้ว`, { id: toastId });
+        // Someone else deleted it: refresh so the stale row goes away (or leave its page).
+        if (redirectTo) router.push(redirectTo);
+        else router.refresh();
+      }
       else if (result.status === "forbidden") toast.error(`คุณไม่มีสิทธิ์จัดการ${noun}`, { id: toastId });
       else toast.error("เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่", { id: toastId });
     } catch {
@@ -70,13 +89,14 @@ export default function DeleteRecordButton({ id, name, noun, action }: Props) {
       <button
         ref={trigger}
         type="button"
-        className="gg-btn gg-btn-ghost danger sm icon-only"
-        aria-label={`ลบ ${name}`}
-        title="ลบ"
+        className={label ? "gg-btn gg-btn-secondary danger-text" : "gg-btn gg-btn-ghost danger sm icon-only"}
+        aria-label={label ? undefined : `ลบ ${name}`}
+        title={label ? undefined : "ลบ"}
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
-        <Trash2 className="gg-icon sm" aria-hidden />
+        <Trash2 className={label ? "gg-icon" : "gg-icon sm"} aria-hidden />
+        {label}
       </button>
       {open &&
         createPortal(
@@ -92,7 +112,7 @@ export default function DeleteRecordButton({ id, name, noun, action }: Props) {
                 <div className="gg-modal-confirm">
                   <div className="gg-stat-icon"><Trash2 className="gg-icon" aria-hidden /></div>
                   <div id={`del-${id}-text`} style={{ color: "var(--ink-2)", whiteSpace: "normal", textAlign: "left" }}>
-                    ข้อมูลของ{noun}นี้จะถูกลบออกจากรายการ การลบนี้ไม่สามารถย้อนกลับได้
+                    {description ?? `ข้อมูลของ${noun}นี้จะถูกลบออกจากรายการ การลบนี้ไม่สามารถย้อนกลับได้`}
                   </div>
                 </div>
               </div>

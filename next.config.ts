@@ -5,8 +5,9 @@ const nextConfig: NextConfig = {
   experimental: {
     agentFeedback: true,
     serverActions: {
-      // Profile photos may be up to 1 MB, plus the form fields and multipart overhead.
-      bodySizeLimit: "2mb",
+      // Product forms carry up to 5 images of 1 MB each (lib/upload-limits.ts), plus the
+      // form fields and multipart overhead. Each file is still checked for size and type.
+      bodySizeLimit: "6mb",
     },
   },
   cacheComponents: true,

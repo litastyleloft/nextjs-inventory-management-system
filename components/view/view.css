@@ -1,0 +1,45 @@
+/* Read-only "view" pages, in the style of design/src/pages/sale-details.page.html
+   (panel headings, label/value grids, bordered tables, a totals box). Scope: .lts-view */
+.lts-view .view-card { padding: var(--space-8) var(--space-6); }
+.lts-view .view-top { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: var(--space-8); align-items: start; }
+.lts-view .view-panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+.lts-view .view-panels .wide { grid-column: 1 / -1; }
+.lts-view .panel-h { margin: 0; padding: 12px var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); font: 700 11px/16px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.lts-view .info { margin: 0; padding: var(--space-4) var(--space-4) 0; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px var(--space-3); font: 400 14px/20px var(--font-sans); color: var(--ink-2); }
+.lts-view .info dt { font: 600 12px/20px var(--font-sans); color: var(--muted); }
+.lts-view .info dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+.lts-view .info .none { color: var(--muted); }
+.lts-view .view-note { padding: var(--space-4) var(--space-4) 0; margin: 0; font: 400 14px/22px var(--font-sans); color: var(--ink); white-space: pre-wrap; }
+.lts-view .view-section { margin-top: var(--space-8); }
+.lts-view .side-h { margin: 0 0 var(--space-3); font: 700 16px/22px var(--font-display); color: var(--ink); }
+.lts-view .lines-wrap { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.lts-view .lines-wrap .gg-table td { height: 52px; }
+.lts-view .view-bottom { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--space-8); align-items: start; }
+.lts-view .totals { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.lts-view .totals .tr { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); min-height: 48px; padding: 0 var(--space-5); border-bottom: 1px solid var(--border); font: 400 14px/20px var(--font-sans); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.lts-view .totals .tr:last-child { border-bottom: 0; }
+.lts-view .totals .tr span:last-child { color: var(--ink); }
+.lts-view .totals .tr.grand { min-height: 60px; background: var(--primary-soft); }
+.lts-view .totals .tr.grand span { color: var(--primary) !important; font: 700 16px/20px var(--font-display); }
+.lts-view .totals .tr.grand span:last-child { font-size: 20px; }
+.lts-view .empty-box { padding: var(--space-6); border: 1px dashed var(--border-input); border-radius: var(--radius-lg); text-align: center; font: 500 13px/18px var(--font-sans); color: var(--muted); }
+
+/* Image gallery: a large image and thumbnails. */
+.lts-view .gallery-main { aspect-ratio: 1; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-sunken); display: grid; place-items: center; color: var(--muted); }
+.lts-view .gallery-main img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lts-view .gallery-main .gg-icon { width: 40px; height: 40px; }
+.lts-view .gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.lts-view .gallery-thumbs button { width: 100%; aspect-ratio: 1; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: none; cursor: pointer; display: block; }
+.lts-view .gallery-thumbs button[aria-pressed="true"] { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.lts-view .gallery-thumbs button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.lts-view .gallery-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+@media (max-width: 1000px) {
+  .lts-view .view-top, .lts-view .view-bottom { grid-template-columns: 1fr; }
+  .lts-view .view-top .gallery { max-width: 360px; }
+}
+@media (max-width: 640px) {
+  .lts-view .view-panels { grid-template-columns: 1fr; }
+  .lts-view .info { grid-template-columns: 100px minmax(0, 1fr); }
+}
+.lts-view .danger-text, .lts-view .danger-text .gg-icon { color: var(--danger-text, var(--danger)); }

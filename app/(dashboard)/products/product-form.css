@@ -1,0 +1,49 @@
+/* From design/src/pages/create-product.page.html. Scope: .lts-product-form */
+.lts-product-form .create-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.lts-product-form .create-main { padding: var(--space-6); }
+.lts-product-form .create-side { padding: var(--space-6); border-left: 1px solid var(--border); background: var(--surface-sunken); border-top-right-radius: var(--radius-lg); display: flex; flex-direction: column; gap: var(--space-5); }
+.lts-product-form .create-side .gg-form-section { margin-top: var(--space-2); }
+.lts-product-form .create-side .gg-form-section:first-child { margin-top: 0; }
+.lts-product-form .gg-form-section { margin-top: var(--space-4); }
+.lts-product-form .gg-form-grid > .gg-form-section:first-child { margin-top: 0; }
+.lts-product-form .gg-hint, .lts-product-form .gg-error { line-height: 18px; }
+.lts-product-form .gg-hint a, .lts-product-form .price-note a { color: inherit; font-weight: 700; }
+.lts-product-form .form-alert { display: inline-flex; align-items: center; gap: var(--space-2); margin-right: auto; }
+.lts-product-form .gg-control select.is-placeholder { color: var(--placeholder); }
+.lts-product-form .gg-control select option { color: var(--ink); }
+.lts-product-form .spec-note { display: flex; align-items: flex-start; gap: var(--space-2); min-height: var(--control-height); padding: 10px var(--space-4); border-radius: var(--radius-md); background: var(--info-soft); color: var(--info-text); font: 500 12px/18px var(--font-sans); box-sizing: border-box; }
+.lts-product-form .spec-note .gg-icon { margin-top: 1px; flex: none; }
+.lts-product-form .optional { margin-left: 6px; font: 500 12px/18px var(--font-sans); color: var(--muted); }
+.lts-product-form .code-builder { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr 1fr 1fr; gap: var(--space-3); }
+.lts-product-form .code-builder .gg-control input { text-align: center; font: 600 16px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.lts-product-form .code-builder .gg-label { white-space: nowrap; }
+.lts-product-form .code-builder + .gg-hint, .lts-product-form .code-builder + .gg-error { margin-top: var(--space-2); }
+.lts-product-form .code-preview { display: flex; align-items: stretch; gap: 4px; margin-top: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); }
+.lts-product-form .code-preview .seg { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 8px; border-radius: var(--radius-sm); background: var(--surface); min-width: 44px; }
+.lts-product-form .code-preview .seg b { font: 700 22px/28px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); letter-spacing: .06em; }
+.lts-product-form .code-preview .seg b.empty { color: var(--placeholder); }
+.lts-product-form .code-preview .seg span { font: 600 11px/14px var(--font-sans); color: var(--muted); white-space: nowrap; }
+.lts-product-form .code-preview .full { margin-left: auto; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 4px; }
+.lts-product-form .code-preview .full code { font: 700 18px/24px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--primary); letter-spacing: .04em; }
+.lts-product-form .code-preview .full .gg-badge { height: 22px; }
+.lts-product-form .paste-field { margin-top: var(--space-3); }
+.lts-product-form #paste { text-transform: uppercase; }
+.lts-product-form .unit-fixed { display: flex; align-items: center; gap: var(--space-3); height: var(--control-height); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); border: 1px solid var(--border); font: 600 14px/20px var(--font-sans); color: var(--ink); box-sizing: border-box; }
+.lts-product-form .unit-fixed .gg-badge { margin-left: auto; }
+
+@media (max-width: 900px) {
+  .lts-product-form .create-grid { grid-template-columns: 1fr; }
+  .lts-product-form .create-side { border-left: 0; border-top: 1px solid var(--border); border-top-right-radius: 0; }
+  .lts-product-form .code-builder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lts-product-form .code-preview { flex-wrap: wrap; }
+}
+
+/* Edit: read-only stock per warehouse (no stock inputs on edit). */
+.lts-product-form .stock-summary { margin: 0; padding: 0; list-style: none; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.lts-product-form .stock-summary li { display: flex; justify-content: space-between; gap: var(--space-3); padding: 10px var(--space-4); font: 500 13px/18px var(--font-sans); color: var(--ink-2); border-bottom: 1px solid var(--border); }
+.lts-product-form .stock-summary li:last-child { border-bottom: 0; }
+.lts-product-form .stock-summary li b { color: var(--ink); font-weight: 600; }
+.lts-product-form .stock-summary li.total { background: var(--surface-sunken); font-weight: 600; color: var(--ink); border-radius: 0 0 var(--radius-md) var(--radius-md); }
+.lts-product-form .stock-summary-empty { padding: 10px var(--space-4); border: 1px dashed var(--border-input); border-radius: var(--radius-md); font: 500 13px/18px var(--font-sans); color: var(--muted); }
+.lts-product-form .stock-summary + .gg-hint, .lts-product-form .stock-summary-empty + .gg-hint { margin-top: var(--space-2); }
+.lts-product-form .gg-hint a { color: var(--primary); }

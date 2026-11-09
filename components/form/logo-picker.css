@@ -1,0 +1,12 @@
+/* .logo-pick from design/src/pages/categories.page.html. Used inside modals (portalled to
+   <body>), so these are not scoped to a page. */
+.logo-pick { position: relative; display: grid; place-items: center; width: 136px; height: 136px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface-sunken); color: var(--muted); cursor: pointer; overflow: visible; transition: border-color .12s; box-sizing: border-box; }
+.logo-pick:hover { border-color: var(--primary); }
+.logo-pick:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.logo-pick.invalid { border-color: var(--danger); }
+.logo-pick img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.logo-pick .ph { display: flex; flex-direction: column; align-items: center; gap: 6px; font: 500 12px/18px var(--font-sans); text-align: center; padding: 0 8px; }
+.logo-pick .pen { position: absolute; top: -10px; right: -10px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--radius-pill); background: var(--surface); color: var(--primary); box-shadow: var(--shadow-2); }
+.logo-pick:has(input:disabled) { cursor: default; opacity: .6; }
+.logo-label { margin-bottom: var(--space-2); }
+.logo-pick + .gg-hint, .logo-pick + .gg-error { margin-top: var(--space-2); width: 136px; line-height: 18px; }

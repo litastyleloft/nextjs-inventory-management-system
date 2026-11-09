@@ -107,9 +107,82 @@ async function seedDefaultCustomer() {
   console.log(`Default customer added: ${created.name}`);
 }
 
+/** The design's sample categories (design/src/pages/categories.page.html), oldest first. */
+const SAMPLE_CATEGORIES = [
+  { code: "COT", name: "ฝ้าย", composition: "ฝ้าย 100%", weave: "ทอธรรมดา (Plain)", widthInches: 58, gsm: 120, pattern: "สีพื้น" },
+  { code: "DEN", name: "เดนิม", composition: "ฝ้าย 98%, สแปนเด็กซ์ 2%", weave: "ทอลายสอง (Twill)", widthInches: 60, gsm: 340, pattern: "สีพื้น" },
+  { code: "VIS", name: "วิสคอส", composition: "วิสคอส 100%", weave: "ทอธรรมดา (Plain)", widthInches: 56, gsm: 110, pattern: "พิมพ์ลาย" },
+  { code: "PLY", name: "โพลีเอสเตอร์", composition: "โพลีเอสเตอร์ 100%", weave: "เครป / จอร์เจ็ต", widthInches: 58, gsm: 90, pattern: "สีพื้น" },
+  { code: "LIN", name: "ลินิน", composition: "ลินิน 55%, ฝ้าย 45%", weave: "ทอธรรมดา (Plain)", widthInches: 57, gsm: 180, pattern: "สีพื้น" },
+  { code: "KNT", name: "ผ้ายืด", composition: "ฝ้าย 100%", weave: "ถักซิงเกิลเจอร์ซีย์", widthInches: 72, gsm: 160, pattern: "สีพื้น" },
+  { code: "SLK", name: "ไหม", composition: null, weave: "ซาติน (Satin)", widthInches: 44, gsm: null, pattern: "สีพื้น" },
+  { code: "BLD", name: "ผ้าผสม", composition: null, weave: null, widthInches: null, gsm: null, pattern: null },
+];
+
+/** Adds any sample category whose code is not in use yet (ignoring deleted ones). Safe to re-run. */
+async function seedCategories() {
+  // One second apart so "newest first" keeps a stable order.
+  const base = new Date("2026-08-01T09:00:00+07:00").getTime();
+  for (const [i, category] of SAMPLE_CATEGORIES.entries()) {
+    const existing = await db.category.findFirst({ where: { code: category.code, deletedAt: null }, select: { id: true } });
+    if (existing) {
+      console.log(`Category exists, skipped: ${category.code} ${category.name}`);
+      continue;
+    }
+    await db.category.create({ data: { ...category, createdAt: new Date(base + i * 1000) } });
+    console.log(`Category added: ${category.code} ${category.name}`);
+  }
+}
+
+/**
+ * The design's sample fabrics (design/src/pages/products.page.html). Stock goes into
+ * ProductStock: the first quantity into the first warehouse, a second one (if given) into
+ * the second warehouse.
+ */
+const SAMPLE_PRODUCTS = [
+  { code: "COT58A101001", name: "ผ้าคอตตอนป๊อปลิน 60s สีขาวออปติก", colorName: "สีขาวออปติก", alert: 330, stock: [2000, 680], created: "2024-02-03T23:28:00+07:00" },
+  { code: "DEN58A201014", name: "ผ้ายีนส์ยืด 10 ออนซ์ สีคราม", colorName: "สีคราม", alert: 220, stock: [1290], created: "2024-02-03T23:23:00+07:00" },
+  { code: "VIS44B305022", name: "ผ้าเรยอนพิมพ์ลายดอกไม้", colorName: null, alert: 165, stock: [700], created: "2024-02-03T23:15:00+07:00" },
+  { code: "PLY58A410012", name: "ผ้าจอร์เจ็ตโพลีเอสเตอร์ สีกรมท่า", colorName: "สีกรมท่า", alert: 110, stock: [82], created: "2024-02-03T23:12:00+07:00" },
+  { code: "LIN54C120003", name: "ผ้าลินินผสมฝ้าย สีธรรมชาติ", colorName: "สีธรรมชาติ", alert: 90, stock: [], created: "2024-02-03T23:02:00+07:00" },
+  { code: "KNT72A160008", name: "ผ้ายืดซิงเกิลเจอร์ซีย์ 160 แกรม สีเทาท็อปดราย", colorName: "สีเทาท็อปดราย", alert: 60, stock: [350], created: "2024-02-02T23:08:00+07:00" },
+];
+
+/** Adds any sample product whose code is not in use yet. Needs the sample categories. Safe to re-run. */
+async function seedProducts() {
+  const warehouses = await db.warehouse.findMany({ where: { deletedAt: null }, orderBy: { createdAt: "asc" }, select: { id: true }, take: 2 });
+  // Main supplier (required by the product form): the first active supplier, if any.
+  const supplier = await db.supplier.findFirst({ where: { deletedAt: null }, orderBy: { createdAt: "asc" }, select: { id: true } });
+  for (const p of SAMPLE_PRODUCTS) {
+    if (await db.product.findFirst({ where: { code: p.code, deletedAt: null }, select: { id: true } })) {
+      console.log(`Product exists, skipped: ${p.code}`);
+      continue;
+    }
+    const category = await db.category.findFirst({ where: { code: p.code.slice(0, 3), deletedAt: null }, select: { id: true } });
+    if (!category) {
+      console.log(`Product skipped (no category ${p.code.slice(0, 3)}; run --only categories first): ${p.code}`);
+      continue;
+    }
+    const stocks = p.stock.flatMap((quantity, i) => (warehouses[i] ? [{ warehouseId: warehouses[i].id, quantity }] : []));
+    await db.product.create({
+      data: {
+        code: p.code,
+        name: p.name,
+        colorName: p.colorName,
+        categoryId: category.id,
+        supplierId: supplier?.id ?? null,
+        stockAlert: p.alert,
+        createdAt: new Date(p.created),
+        stocks: { create: stocks },
+      },
+    });
+    console.log(`Product added: ${p.code} ${p.name}`);
+  }
+}
+
 // `npx prisma db seed` runs everything. To add only some data (and leave the admin's
-// password alone): npx prisma db seed -- --only customers   (or: warehouses, suppliers)
-const PARTS = ["admin", "warehouses", "suppliers", "customers"] as const;
+// password alone): npx prisma db seed -- --only customers   (or: warehouses, suppliers, categories, products)
+const PARTS = ["admin", "warehouses", "suppliers", "customers", "categories", "products"] as const;
 
 async function main() {
   const onlyIndex = process.argv.indexOf("--only");
@@ -122,6 +195,8 @@ async function main() {
   if (!only || only === "warehouses") await seedWarehouses();
   if (!only || only === "suppliers") await seedSuppliers();
   if (!only || only === "customers") await seedDefaultCustomer();
+  if (!only || only === "categories") await seedCategories();
+  if (!only || only === "products") await seedProducts();
 }
 
 main()

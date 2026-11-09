@@ -4,9 +4,9 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
-import { listHref, PAGE_SIZES } from "@/lib/list";
+import { listHref, PAGE_SIZES, type ListFilters } from "@/lib/list";
 
-export default function PageSizeSelect({ basePath, q, size }: { basePath: string; q: string; size: number }) {
+export default function PageSizeSelect({ basePath, q, size, filters }: { basePath: string; q: string; size: number; filters?: ListFilters }) {
   const router = useRouter();
   const [, startTransition] = useTransition();
 
@@ -17,7 +17,7 @@ export default function PageSizeSelect({ basePath, q, size }: { basePath: string
         value={size}
         onChange={(e) => {
           const next = Number(e.target.value);
-          startTransition(() => router.replace(listHref(basePath, { q, size: next, page: 1 }), { scroll: false }));
+          startTransition(() => router.replace(listHref(basePath, { q, size: next, page: 1 }, filters), { scroll: false }));
         }}
       >
         {PAGE_SIZES.map((n) => (

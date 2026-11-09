@@ -53,14 +53,15 @@ export async function listSuppliers({ q, page, size }: ListParams) {
  * Why this supplier can't be deleted right now, or null if it can. Deleting is a soft
  * delete, but purchases will point at suppliers, so a supplier in use must stay.
  *
- * Add the check here when the Purchases module is built, e.g.:
+ * Checked now: active products that have this supplier as their main supplier.
+ * Add when the Purchases module is built:
  *   - Purchases / purchase returns referencing this supplier
  *     → "มีใบสั่งซื้อ … ใบที่อ้างถึงผู้จำหน่ายรายนี้ ระบบจึงเก็บประวัติไว้"
- * (Message from design/src/pages/people-list.tpl.html.) Until then nothing references
- * suppliers, so every supplier can be deleted.
+ *     (message from design/src/pages/people-list.tpl.html)
  */
 export async function supplierDeleteBlocker(id: string): Promise<string | null> {
-  void id;
+  const products = await db.product.count({ where: { supplierId: id, deletedAt: null } });
+  if (products > 0) return `เป็นผู้จำหน่ายหลักของสินค้า ${products.toLocaleString("th-TH")} รายการ เปลี่ยนผู้จำหน่ายของสินค้าเหล่านั้นก่อน แล้วจึงลบ`;
   return null;
 }
 

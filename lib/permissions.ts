@@ -1,16 +1,24 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-export type Permission = "warehouses.manage" | "suppliers.manage" | "customers.manage" | "users.manage";
+export type Permission =
+  | "warehouses.manage"
+  | "suppliers.manage"
+  | "customers.manage"
+  | "users.manage"
+  | "categories.manage"
+  | "products.manage"
+  | "adjustments.manage";
 
 // TEMPORARY: a fixed role → permission map until the Roles page exists. When it does,
 // replace this lookup (for example with a RolePermission table); callers only use
 // `can` and `requirePermission`, so no server action needs to change.
 const ROLE_PERMISSIONS: Record<string, readonly Permission[]> = {
   // Only admins manage staff accounts.
-  admin: ["warehouses.manage", "suppliers.manage", "customers.manage", "users.manage"],
-  manager: ["warehouses.manage", "suppliers.manage", "customers.manage"],
-  stock: ["warehouses.manage"],
+  admin: ["warehouses.manage", "suppliers.manage", "customers.manage", "users.manage", "categories.manage", "products.manage", "adjustments.manage"],
+  manager: ["warehouses.manage", "suppliers.manage", "customers.manage", "categories.manage", "products.manage", "adjustments.manage"],
+  // Stock staff look after product master data (categories, products; later units).
+  stock: ["warehouses.manage", "categories.manage", "products.manage", "adjustments.manage"],
   // Sales staff serve customers at the POS, so they can add and edit them.
   sales: ["customers.manage"],
 };
